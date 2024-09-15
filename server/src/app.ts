@@ -1,15 +1,14 @@
 import { Response } from "express";
-import { handleError, verifyUser } from "@cl-ticket/common";
 import cookieSession from "cookie-session";
-import { handleAsync } from "@cl-ticket/common";
 
 import cors from "cors";
+import { handleError } from "./middlewares/handle_error";
+import { passportU } from "./configs/passport";
+import routerU from "./routes/user";
+import routerA from "./routes/admin";
 const express = require("express");
 const app = express();
 app.set("trust proxy", true);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 const corsOptions = {
   origin: (
     origin: string | undefined,
@@ -19,16 +18,38 @@ const corsOptions = {
   },
   credentials: true,
 };
-
 app.use(cors(corsOptions));
 
+// app.use(
+//   cookieSession({
+//     signed: false,
+//     // secure: true, // must be connect in https connection
+//   })
+// );
 app.use(
+  "/api/user",
   cookieSession({
+    name: "user-session",
     signed: false,
     // secure: true, // must be connect in https connection
   })
 );
-
+app.use(
+  "/api/admin",
+  cookieSession({
+    name: "admin-session",
+    signed: false,
+    // secure: true, // must be connect in https connection
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(passportU.initialize({ userProperty: "user" }));
+app.use(passportU.session());
+app.use(passportU.initialize({ userProperty: "user" }));
+app.use(passportU.session());
+app.use("/api/user", routerU);
+app.use("/api/admin", routerA);
 app.use("/test", (req: Request, res: Response) => {
   res.json("test");
 });
