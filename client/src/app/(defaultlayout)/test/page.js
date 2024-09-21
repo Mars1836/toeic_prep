@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useEffect, useState } from "react";
-import { questions as questionsDb } from "./db";
+import { questions as questionsDb, textOfTypeQues } from "./db";
 import Link from "next/link";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -45,6 +45,20 @@ function changeQuestionsToObjectWithIdKey(questions = []) {
   }, {});
   return rs1;
 }
+function getListIndexPart(questions = []) {
+  const arr = [];
+  for (let i = 0; i < questions.length; i++) {
+    const curq = questions[i];
+    const pre = arr[arr.length - 1];
+    if (pre?.type !== curq.type) {
+      arr.push({
+        index: i,
+        type: curq.type,
+      });
+    }
+  }
+  return arr;
+}
 function numberQuestion(questions = []) {
   return questions.map((questions, index) => {
     return {
@@ -55,6 +69,7 @@ function numberQuestion(questions = []) {
 }
 function TestPage() {
   const questions = numberQuestion(questionsDb);
+  const listIndexPart = getListIndexPart(questions); // show part in button question number
   const questionsObject = changeQuestionsToObjectWithIdsKey(questions);
   const [isCheck, setIsCheck] = useState(false);
   const [questionIdsList, setQuestionIdsList] = useState(
@@ -95,7 +110,7 @@ function TestPage() {
   }
 
   useEffect(() => {
-    console.log(checkList);
+    console.log(getListIndexPart(questions));
   }, [checkList]);
   return (
     <div className="container mx-auto px-4 py-8">
@@ -125,7 +140,7 @@ function TestPage() {
             ></ToeicQuestionGroup>
           )}
         </div>
-        <Card className="w-full md:w-64">
+        <Card className="w-full md:w-64 min-w-64">
           <CardHeader>
             <CardTitle>Question List</CardTitle>
           </CardHeader>
@@ -134,37 +149,49 @@ function TestPage() {
               <div className="grid grid-cols-4 gap-1 p-4">
                 {questions.map((question, index) => {
                   return (
-                    <Button
-                      key={question.id}
-                      variant={
-                        selectedQuestion.id === question.id
-                          ? "default"
-                          : "outline"
-                      }
-                      size="sm"
-                      onClick={() => {
-                        handleSelectQuestion(question);
-                      }}
-                      className={`w-full transition-all duration-200 ${
-                        answerList[question.id]
-                          ? "bg-yellow-500 text-white hover:bg-green-200 " //dark:bg-green-900 dark:hover:bg-green-800
-                          : ""
-                      } ${
-                        selectedQuestion.id === question.id
-                          ? "ring-2 ring-primary ring-offset-2 ring-offset-gray-90 " //dark:ring-offset-gray-900
-                          : ""
-                      }
-                      ${
-                        checkList[question.id]
-                          ? checkList[question.id].isRight
-                            ? "bg-green-500 hover:bg-green-600 text-white"
-                            : "bg-red-500 hover:bg-red-600 text-white"
-                          : ""
-                      }
-                      `}
-                    >
-                      {index + 1}
-                    </Button>
+                    <>
+                      {listIndexPart.map((item, ix) => {
+                        if (item.index === index) {
+                          return (
+                            <span className="col-span-4 font-semibold px-2">
+                              {textOfTypeQues[item.type]}
+                            </span>
+                          );
+                        }
+                        return;
+                      })}
+                      <Button
+                        key={question.id}
+                        variant={
+                          selectedQuestion.id === question.id
+                            ? "default"
+                            : "outline"
+                        }
+                        size="sm"
+                        onClick={() => {
+                          handleSelectQuestion(question);
+                        }}
+                        className={`w-full transition-all duration-200 ${
+                          answerList[question.id]
+                            ? "bg-yellow-500 text-white hover:bg-yellow-300 " //dark:bg-green-900 dark:hover:bg-green-800
+                            : ""
+                        } ${
+                          selectedQuestion.id === question.id
+                            ? "ring-2 ring-primary ring-offset-2 ring-offset-gray-90 " //dark:ring-offset-gray-900
+                            : ""
+                        }
+                        ${
+                          checkList[question.id]
+                            ? checkList[question.id].isRight
+                              ? "bg-green-500 hover:bg-green-600 text-white"
+                              : "bg-red-500 hover:bg-red-600 text-white"
+                            : ""
+                        }
+                        `}
+                      >
+                        {index + 1}
+                      </Button>
+                    </>
                   );
                 })}
               </div>

@@ -15,6 +15,9 @@ export function ToeicPart1Questions({
 }) {
   const [selectedOption, setSelectedOption] = useState(optionChoosed);
   const handleOptionChange = (value) => {
+    if (isCheck) {
+      return;
+    }
     setSelectedOption(value);
     handleChooseOption(value);
   };

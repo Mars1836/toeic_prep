@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { CheckCircle, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
 
-export function ToeicPart3Questions({
+export function ToeicPart5Questions({
   question,
   handleChooseOption,
   optionChoosed,

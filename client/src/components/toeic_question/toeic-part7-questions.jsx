@@ -6,8 +6,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { CheckCircle, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
-
-export function ToeicPart3Questions({
+// must be wrapped by ToeicQuestionGroup
+export function ToeicPart7Questions({
   question,
   handleChooseOption,
   optionChoosed,

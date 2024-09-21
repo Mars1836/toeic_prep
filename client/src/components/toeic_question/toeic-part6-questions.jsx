@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { CheckCircle, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
 
-export function ToeicPart3Questions({
+export function ToeicPart6Questions({
   question,
   handleChooseOption,
   optionChoosed,
@@ -28,8 +28,8 @@ export function ToeicPart3Questions({
   };
   return (
     <div className="p-6 space-y-8">
-      <div className="aspect-w-16 aspect-h-9 relative"></div>
-      <p>Câu {question.number}</p>
+      {/* <div className="aspect-w-16 aspect-h-9 relative"></div> */}
+      <p className="font-semibold -mb-4">Câu {question.number}</p>
       <RadioGroup
         value={selectedOption || ""}
         onValueChange={handleOptionChange}
@@ -40,6 +40,7 @@ export function ToeicPart3Questions({
             <RadioGroupItem
               value={option.id}
               id={`q${question.id}-${option.id}`}
+              className="min-w-4"
             />
             <Label htmlFor={`q${question.id}-${option.id}`}>
               {option.id}. {option.text}
