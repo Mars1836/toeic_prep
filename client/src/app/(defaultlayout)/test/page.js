@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ToeicQuestion from "@/components/toeic_question/toeic-question";
 import ToeicQuestionGroup from "@/components/toeic_question/toeic-question-group";
+import Clock from "@/components/clock";
 const checkListForm = {
   asdasd: {
     type: "asdas",
@@ -67,6 +68,13 @@ function numberQuestion(questions = []) {
     };
   });
 }
+function checkIsGroupTypePart(questionIdsList) {
+  const listGroupPart = ["part6", "part7", "part3", "part4"];
+  return !(
+    questionIdsList.length > 0 &&
+    listGroupPart.includes(questionIdsList[0].type)
+  );
+}
 function TestPage() {
   const questions = numberQuestion(questionsDb);
   const listIndexPart = getListIndexPart(questions); // show part in button question number
@@ -79,6 +87,8 @@ function TestPage() {
   const [answerList, setAnswerList] = useState({});
   const [checkList, setCheckList] = useState({});
   function handleSelectQuestion(question) {
+    console.log(question.ids);
+    console.log(questionsObject[question.ids]);
     setSelectedQuestion(question);
     setQuestionIdsList(questionsObject[question.ids]);
   }
@@ -110,21 +120,20 @@ function TestPage() {
   }
 
   useEffect(() => {
-    console.log(getListIndexPart(questions));
-  }, [checkList]);
+    console.log(isCheck);
+  }, [isCheck]);
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-4">
-        TOEIC Test Questions
-      </h1>
-      <div className="flex justify-end mb-6">
+      <Clock run={!isCheck}></Clock>
+
+      <div className="mb-6 flex justify-end">
         <Button asChild onClick={handleSubmitAnswer}>
           <Link href="/start-test">Submit</Link>
         </Button>
       </div>
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex-grow">
-          {questionIdsList.length === 1 ? (
+          {checkIsGroupTypePart(questionIdsList) ? (
             <ToeicQuestion
               question={questionIdsList[0]}
               isCheck={isCheck}
@@ -140,7 +149,7 @@ function TestPage() {
             ></ToeicQuestionGroup>
           )}
         </div>
-        <Card className="w-full md:w-64 min-w-64">
+        <Card className="w-full min-w-64 md:w-64">
           <CardHeader>
             <CardTitle>Question List</CardTitle>
           </CardHeader>
@@ -153,7 +162,10 @@ function TestPage() {
                       {listIndexPart.map((item, ix) => {
                         if (item.index === index) {
                           return (
-                            <span className="col-span-4 font-semibold px-2">
+                            <span
+                              className="col-span-4 px-2 font-semibold"
+                              key={ix}
+                            >
                               {textOfTypeQues[item.type]}
                             </span>
                           );
@@ -173,21 +185,19 @@ function TestPage() {
                         }}
                         className={`w-full transition-all duration-200 ${
                           answerList[question.id]
-                            ? "bg-yellow-500 text-white hover:bg-yellow-300 " //dark:bg-green-900 dark:hover:bg-green-800
+                            ? "bg-yellow-500 text-white hover:bg-yellow-300" //dark:bg-green-900 dark:hover:bg-green-800
                             : ""
                         } ${
                           selectedQuestion.id === question.id
-                            ? "ring-2 ring-primary ring-offset-2 ring-offset-gray-90 " //dark:ring-offset-gray-900
+                            ? "ring-primary ring-offset-gray-90 ring-2 ring-offset-2" //dark:ring-offset-gray-900
                             : ""
-                        }
-                        ${
+                        } ${
                           checkList[question.id]
                             ? checkList[question.id].isRight
-                              ? "bg-green-500 hover:bg-green-600 text-white"
-                              : "bg-red-500 hover:bg-red-600 text-white"
+                              ? "bg-green-500 text-white hover:bg-green-600"
+                              : "bg-red-500 text-white hover:bg-red-600"
                             : ""
-                        }
-                        `}
+                        } `}
                       >
                         {index + 1}
                       </Button>

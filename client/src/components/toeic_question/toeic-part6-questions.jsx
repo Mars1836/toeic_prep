@@ -27,16 +27,16 @@ export function ToeicPart6Questions({
     return question.answerKey === optionChoosed;
   };
   return (
-    <div className="p-6 space-y-8">
+    <div className="space-y-8 p-6">
       {/* <div className="aspect-w-16 aspect-h-9 relative"></div> */}
-      <p className="font-semibold -mb-4">Câu {question.number}</p>
+      <p className="-mb-4 font-semibold">Câu {question.number}</p>
       <RadioGroup
         value={selectedOption || ""}
         onValueChange={handleOptionChange}
         className="mb-4"
       >
         {question.options.map((option) => (
-          <div key={option.id} className="flex items-center space-x-2 mb-2">
+          <div key={option.id} className="mb-2 flex items-center space-x-2">
             <RadioGroupItem
               value={option.id}
               id={`q${question.id}-${option.id}`}
@@ -46,12 +46,12 @@ export function ToeicPart6Questions({
               {option.id}. {option.text}
             </Label>
             {isCheck && option.id === question.answerKey && (
-              <CheckCircle className="text-green-500 ml-2" />
+              <CheckCircle className="ml-2 text-green-500" />
             )}
             {isCheck &&
               option.id === optionChoosed &&
               option.id !== question.answerKey && (
-                <XCircle className="text-red-500 ml-2" />
+                <XCircle className="ml-2 text-red-500" />
               )}
           </div>
         ))}
