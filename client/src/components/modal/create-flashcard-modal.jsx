@@ -15,11 +15,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PlusIcon } from "lucide-react";
+import useInput from "@/hooks/useInput";
 
 export function CreateFlashcardModal() {
   const [open, setOpen] = useState(false);
-  const [front, setFront] = useState("");
-  const [back, setBack] = useState("");
+  const inputWord = useInput("");
+  const inputDefinition = useInput("");
+  const inputTranslation = useInput("");
+  const inputExample = useInput("");
+  const inputPronunciation = useInput("");
+  const inputNote = useInput("");
+  const inputPartOfSpeech = useInput("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,48 +41,108 @@ export function CreateFlashcardModal() {
       <DialogTrigger asChild>
         <Button variant="outline">
           <PlusIcon className="mr-2 h-4 w-4" />
-          Create Flashcard
+          Add new word
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] md:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Create New Flashcard</DialogTitle>
+          <DialogTitle> Add new word</DialogTitle>
           <DialogDescription>
-            Add a new flashcard to your collection. Fill in the front and back
-            of the card.
+            Add a new word to your flashcard set.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="max-h-96 overflow-scroll">
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="front" className="text-right">
-                Front
+              <Label htmlFor="word" className="text-right">
+                Word
               </Label>
               <Input
-                id="front"
-                value={front}
-                onChange={(e) => setFront(e.target.value)}
+                id="word"
+                value={inputWord.value}
+                onChange={inputWord.onChange}
                 className="col-span-3"
                 required
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="back" className="text-right">
-                Back
+              <Label htmlFor="translation" className="text-right">
+                Translation
+              </Label>
+              <Input
+                id="translation"
+                value={inputTranslation.value}
+                onChange={inputTranslation.onChange}
+                className="col-span-3"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="definition" className="text-right">
+                Definition
+              </Label>
+              <Input
+                id="definition"
+                value={inputDefinition.value}
+                onChange={inputDefinition.onChange}
+                className="col-span-3"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="example" className="text-right">
+                Example
               </Label>
               <Textarea
-                id="back"
-                value={back}
-                onChange={(e) => setBack(e.target.value)}
+                id="example"
+                value={inputExample.value}
+                onChange={inputExample.onChange}
+                className="col-span-3"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="note" className="text-right">
+                Note
+              </Label>
+              <Input
+                id="note"
+                value={inputNote.value}
+                onChange={inputNote.onChange}
+                className="col-span-3"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="part_of_speech" className="text-right">
+                Part of speech
+              </Label>
+              <Textarea
+                value={inputWord.value}
+                onChange={inputWord.onChange}
+                className="col-span-3"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="pronunciation" className="text-right">
+                Pronunciation
+              </Label>
+              <Input
+                id="pronunciation"
+                value={inputPronunciation.value}
+                onChange={inputPronunciation.onChange}
                 className="col-span-3"
                 required
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button type="submit">Create Flashcard</Button>
-          </DialogFooter>
         </form>
+        <DialogFooter>
+          <Button type="submit" variant="">
+            Save
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

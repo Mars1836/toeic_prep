@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
@@ -18,7 +18,7 @@ export default function FlashcardSlider({ flashcards }) {
       (prev) => (prev - 1 + flashcards.length) % flashcards.length
     );
   };
-
+  useEffect(() => {}, []);
   return (
     <div className="relative mx-auto w-full max-w-3xl">
       <div className="overflow-hidden">
@@ -27,7 +27,12 @@ export default function FlashcardSlider({ flashcards }) {
           style={{ transform: `translateX(-${currentCard * 100}%)` }}
         >
           {flashcards.map((flashcard, index) => {
-            return <Flashcard flashcard={flashcard}></Flashcard>;
+            return (
+              <Flashcard
+                flashcard={flashcard}
+                isHide={currentCard !== index}
+              ></Flashcard>
+            );
           })}
         </div>
       </div>

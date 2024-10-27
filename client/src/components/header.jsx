@@ -33,12 +33,12 @@ function Header() {
     sendLogoutRequest();
   }
   return (
-    <header className="bg-primary text-primary-foreground py-4 px-6 flex items-center justify-between fixed left-0 right-0 top-0 z-50">
+    <header className="bg-primary text-primary-foreground fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-4">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
         <BookIcon className="h-6 w-6" />
         <span className="text-lg font-semibold">TOEIC Prep</span>
       </Link>
-      <nav className="hidden md:flex items-center gap-6">
+      <nav className="hidden items-center gap-6 md:flex">
         <Link
           href="#"
           className="text-sm font-medium hover:underline"
@@ -88,35 +88,35 @@ function Header() {
             <nav className="grid gap-6 text-lg font-medium">
               <Link
                 href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 About
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 Resources
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 Practice Tests
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 Contact
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 TOEIC Full Exam
@@ -132,33 +132,33 @@ function Header() {
           ) : (
             <Popover placement="bottom">
               <PopoverTrigger>
-                <Avatar className="h-8 w-8 border-2 border-primary">
+                <Avatar className="border-primary h-8 w-8 border-2">
                   <AvatarImage src="/placeholder-user.jpg" alt="@shadcn" />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
               <PopoverContent>
-                <div className="flex items-center gap-2 p-2 w-52">
+                <div className="flex w-52 items-center gap-2 p-2">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder-user.jpg" />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
                   <div className="grid gap-0.5 leading-none">
                     <div className="font-semibold">{user.name}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-muted-foreground text-sm">
                       {user.email}
                     </div>
                   </div>
                 </div>
-                <div className="w-full ">
-                  <div className="p-2 font-medium hover:bg-gray-200 rounded pl-4 cursor-pointer w-full transition duration-100">
+                <div className="w-full">
+                  <div className="w-full cursor-pointer rounded p-2 pl-4 font-medium transition duration-100 hover:bg-gray-200">
                     <span>Profile</span>
                   </div>
-                  <div className="p-2 font-medium hover:bg-gray-200 rounded pl-4 cursor-pointer w-full transition duration-100">
+                  <div className="w-full cursor-pointer rounded p-2 pl-4 font-medium transition duration-100 hover:bg-gray-200">
                     <span>Settings</span>
                   </div>
                   <div
-                    className="p-2 font-medium hover:bg-gray-200 rounded pl-4 cursor-pointer w-full border-t transition duration-100"
+                    className="w-full cursor-pointer rounded border-t p-2 pl-4 font-medium transition duration-100 hover:bg-gray-200"
                     onClick={logout}
                   >
                     <span>Logout</span>

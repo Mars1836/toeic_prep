@@ -5,6 +5,8 @@ import WordCard from "@/components/flashcard/word_card";
 import { Button } from "@/components/ui/button";
 import { Shuffle, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { CreateFlashcardModal } from "@/components/modal/create-flashcard-modal";
+import ExcelUploader from "../../../../../components/excelupload/ExcelUploader";
 function loadFlashcardSet(id) {
   return listOfSetFlashCard.find((item) => {
     return item.id === id;
@@ -31,8 +33,9 @@ function FCDetailPage({ params }) {
           </h1>
           <div className="mb-10 flex gap-2">
             <Button>Chỉnh sửa</Button>
-            <Button>Thêm từ mới</Button>
+            <CreateFlashcardModal />
             <Button>Tạo hàng loạt</Button>
+            <ExcelUploader></ExcelUploader>
           </div>
         </div>
         <div className="my-4">

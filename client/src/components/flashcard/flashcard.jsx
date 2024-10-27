@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftRight } from "lucide-react";
 
-export function Flashcard({ flashcard }) {
+export function Flashcard({ flashcard, isHide = false }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isFront, setIsFront] = useState(false);
   const flipCard = () => {
@@ -15,9 +15,15 @@ export function Flashcard({ flashcard }) {
       setIsFront(isFlipped);
     }, 150);
   }, [isFlipped]);
+  useEffect(() => {
+    if (isHide) {
+      setIsFlipped(false);
+    }
+  }, [isHide]);
   if (!flashcard) {
     return <div></div>;
   }
+
   return (
     <Card className="perspective-1000 min-h-80 w-full min-w-96 flex-shrink-0">
       <CardContent
