@@ -1,5 +1,6 @@
+//@ts-nocheck
 import express, { Request, Response } from "express";
-import { userCtrl } from "../../../controllers/user.ctrl";
+import { userCtrl } from "../../../controllers/user";
 import { handleAsync } from "../../../middlewares/handle_async";
 import { requireAuth } from "../../../middlewares/require_auth";
 import { BadRequestError } from "../../../errors/bad_request_error";
@@ -16,12 +17,13 @@ import {
   sendMailVerifyEmail,
 } from "../../../configs/nodemailer";
 import { userModel } from "../../../models/user.model";
-import { hashPassword, userSrv } from "../../../services/user.srv";
+
 import mongoose from "mongoose";
+import { hashPassword, userSrv } from "../../../services/user";
 
 const userAuthRouter = express.Router();
 
-userAuthRouter.get("/login", (req, res) => {
+userAuthRouter.get("/login", handleAsync(requireAuth), (req, res) => {
   res.json("Test success");
 });
 userAuthRouter.post(
@@ -178,8 +180,11 @@ userAuthRouter.post(
 
 userAuthRouter.post(
   "/otp/verify-email",
-  [body("key").notEmpty().withMessage("Key is required")],
-  [body("email").isEmail().withMessage("Email is required")],
+  [
+    body("key").notEmpty().withMessage("Key is required"),
+    body("email").isEmail().withMessage("Email is required"),
+  ],
+
   handleAsync(validate_request),
   handleAsync(async (req: Request, res: Response) => {
     const { key, email } = req.body;
@@ -204,8 +209,11 @@ userAuthRouter.post(
 );
 userAuthRouter.post(
   "/request/verify-email",
-  [body("otp").notEmpty().withMessage("OTP is required")],
-  [body("email").isEmail().withMessage("Email is required")],
+  [
+    body("otp").notEmpty().withMessage("OTP is required"),
+    body("email").isEmail().withMessage("Email is required"),
+  ],
+
   handleAsync(validate_request),
   handleAsync(async (req: Request, res: Response) => {
     const { email, otp } = req.body;

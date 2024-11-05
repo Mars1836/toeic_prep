@@ -3,7 +3,7 @@ import { passportA } from "../../../configs/passport";
 import { handleAsync } from "../../../middlewares/handle_async";
 import { BadRequestError } from "../../../errors/bad_request_error";
 import { requireAuth } from "../../../middlewares/require_auth";
-import { userCtrl } from "../../../controllers/user.ctrl";
+import { userCtrl } from "../../../controllers/user";
 
 const adminAuthRouter = express.Router();
 adminAuthRouter.get("/login", (req, res) => {

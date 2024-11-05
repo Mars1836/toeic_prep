@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { AccountType, UserStatus } from "../configs/enum";
+import { AccountType, Role, UserStatus } from "../configs/enum";
 const { Schema } = mongoose;
 export interface UserAttr {
   email?: string;
@@ -7,6 +7,7 @@ export interface UserAttr {
   name: string;
   facebookId?: string;
   googleId?: string;
+  role?: Role;
 }
 export interface UserDoc extends mongoose.Document {
   email?: string;
@@ -14,6 +15,7 @@ export interface UserDoc extends mongoose.Document {
   name: string;
   facebookId?: string;
   googleId?: string;
+  role?: Role;
 }
 export interface UserModel extends mongoose.Model<UserDoc> {}
 const userSchema = new Schema(
@@ -46,6 +48,11 @@ const userSchema = new Schema(
       enum: Object.values(AccountType), // Các mức người dùng
       default: AccountType.basic,
     },
+    role: {
+      type: String,
+      enum: Object.values(Role),
+      default: Role.user,
+    },
   },
   {
     // collection: "user_collection",
@@ -59,4 +66,4 @@ const userSchema = new Schema(
     },
   }
 );
-export const userModel = mongoose.model<UserDoc, UserModel>("user", userSchema);
+export const userModel = mongoose.model<UserDoc, UserModel>("User", userSchema);

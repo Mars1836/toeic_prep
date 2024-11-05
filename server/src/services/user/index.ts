@@ -1,9 +1,9 @@
-import { UserAttr, userModel } from "../models/user.model";
+import { UserAttr, userModel } from "../../models/user.model";
 import bcrypt from "bcrypt";
 import * as _ from "lodash";
 import jwt from "jsonwebtoken";
-import { constEnv } from "../configs/const";
-import { BadRequestError } from "../errors/bad_request_error";
+import { constEnv } from "../../configs/const";
+import { BadRequestError } from "../../errors/bad_request_error";
 async function localCreate(data: {
   email: string;
   password: string;

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Passport } from "passport";
 import {
   Strategy as GoogleStrategy,
@@ -14,7 +15,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { userModel } from "../models/user.model";
 import { UserType } from "./interface";
 import { constEnv } from "./const";
-import { userSrv } from "../services/user.srv";
+import { userSrv } from "../services/user";
 export const passportU = new Passport();
 export const passportA = new Passport();
 passportU.use(

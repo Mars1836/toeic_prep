@@ -1,9 +1,9 @@
 import { validationResult } from "express-validator";
-import { UserAttr, userModel } from "../models/user.model";
+import { UserAttr, userModel } from "../../models/user.model";
 import { Request, Response } from "express";
-import { RequestValidationError } from "../errors/request_validation_error";
-import { NotAuthorizedError } from "../errors/not_authorized_error";
-import { userSrv } from "../services/user.srv";
+import { RequestValidationError } from "../../errors/request_validation_error";
+import { NotAuthorizedError } from "../../errors/not_authorized_error";
+import { userSrv } from "../../services/user";
 
 async function login(req: Request, res: Response) {
   const errors = validationResult(req);

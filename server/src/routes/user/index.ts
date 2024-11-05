@@ -1,17 +1,21 @@
 import express from "express";
 import { UserType } from "../../configs/interface";
 import userAuthRouter from "./auth";
-
-declare global {
-  namespace Express {
-    interface Request {
-      admin?: UserType; // Add the clientUser property (replace UserType with the correct type)
-      // user?: UserType; // Add the user property from the User interface
-    }
-  }
-}
+import userFlashcardRouter from "./flashcard";
+import { handleAsync } from "../../middlewares/handle_async";
+import { requireAuth } from "../../middlewares/require_auth";
+import userSetFlashcardRouter from "./set_flashcard";
+import testRouter from "./test";
+import userResultRouter from "./result";
+import userResultItemRouter from "./result_item";
+import userPaymentRouter from "./payment";
 
 const routerU = express.Router();
 routerU.use("/auth", userAuthRouter);
-
+routerU.use("/flashcard", handleAsync(requireAuth), userFlashcardRouter);
+routerU.use("/set-flashcard", handleAsync(requireAuth), userSetFlashcardRouter);
+routerU.use("/result", handleAsync(requireAuth), userResultRouter);
+routerU.use("/result-item", handleAsync(requireAuth), userResultItemRouter);
+routerU.use("/test", handleAsync(requireAuth), testRouter);
+routerU.use("/payment", handleAsync(requireAuth), userPaymentRouter);
 export default routerU;
