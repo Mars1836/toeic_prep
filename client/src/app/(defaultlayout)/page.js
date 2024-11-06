@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import TestCardList from "@/components/component/test_card";
+import ResultCardList from "@/components/component/result_card";
+import ToeicBanner from "@/components/component/banner";
+import BlogList from "@/components/component/bloglist";
 import {
   Card,
   CardHeader,
@@ -12,151 +16,46 @@ export default function Home() {
   return (
     <div className="flex min-h-[100dvh] flex-col">
       <main className="flex-1">
+      <ToeicBanner></ToeicBanner>
         <section
           id="toeic-full-exam"
-          className="bg-muted py-12 md:py-16 lg:py-20"
+          className="bg-muted py-0 md:py-2 lg:py-4"
         >
           <div className="px-4 md:px-6">
-            <div className="space-y-6 text-center">
+            {/* <div className="space-y-6 text-center">
               <h2 className="text-3xl font-bold md:text-4xl">
                 TOEIC Full Exam Practice
               </h2>
               <p className="text-muted-foreground mx-auto max-w-2xl">
                 Test your TOEIC skills with our full-length practice exam,
                 covering all sections of the test.
-              </p>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <Card className="bg-background shadow-sm transition-shadow hover:shadow-md">
-                  <CardHeader>
-                    <CardTitle>Listening Section</CardTitle>
-                    <CardDescription>
-                      Practice the listening comprehension portion of the TOEIC
-                      exam.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Link
-                      href="/test"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-medium shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-                      prefetch={false}
-                    >
-                      Start Listening Practice
-                    </Link>
-                  </CardContent>
-                </Card>
-                <Card className="bg-background shadow-sm transition-shadow hover:shadow-md">
-                  <CardHeader>
-                    <CardTitle>Reading Section</CardTitle>
-                    <CardDescription>
-                      Practice the reading comprehension portion of the TOEIC
-                      exam.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Link
-                      href="#"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-medium shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-                      prefetch={false}
-                    >
-                      Start Reading Practice
-                    </Link>
-                  </CardContent>
-                </Card>
-                <Card className="bg-background shadow-sm transition-shadow hover:shadow-md">
-                  <CardHeader>
-                    <CardTitle>Full Exam</CardTitle>
-                    <CardDescription>
-                      Take a full-length TOEIC practice exam to simulate the
-                      real test experience.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Link
-                      href="#"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-medium shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-                      prefetch={false}
-                    >
-                      Start Full Exam
-                    </Link>
-                  </CardContent>
-                </Card>
+              </p> */}
+              <div>
+                <TestCardList></TestCardList>
               </div>
-            </div>
+            {/* </div> */}
           </div>
         </section>
         <section
           id="practice-toeic-part1"
-          className="bg-muted py-12 md:py-16 lg:py-20"
+          className="bg-muted py-0 md:py-2 lg:py-4"
         >
           <div className="px-4 md:px-6">
-            <div className="space-y-6 text-center">
+            {/* <div className="space-y-6 text-center">
               <h2 className="text-3xl font-bold md:text-4xl">
                 TOEIC Part 1 Practice
               </h2>
               <p className="text-muted-foreground mx-auto max-w-2xl">
                 Test your listening comprehension skills with our TOEIC Part 1
                 practice questions.
-              </p>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <Card className="bg-background shadow-sm transition-shadow hover:shadow-md">
-                  <CardHeader>
-                    <CardTitle>Photographs</CardTitle>
-                    <CardDescription>
-                      Practice identifying the correct response based on
-                      photographs.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Link
-                      href="#"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-medium shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-                      prefetch={false}
-                    >
-                      Start Practice
-                    </Link>
-                  </CardContent>
-                </Card>
-                <Card className="bg-background shadow-sm transition-shadow hover:shadow-md">
-                  <CardHeader>
-                    <CardTitle>Question-Response</CardTitle>
-                    <CardDescription>
-                      Practice identifying the correct response to a spoken
-                      question.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Link
-                      href="#"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-medium shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-                      prefetch={false}
-                    >
-                      Start Practice
-                    </Link>
-                  </CardContent>
-                </Card>
-                <Card className="bg-background shadow-sm transition-shadow hover:shadow-md">
-                  <CardHeader>
-                    <CardTitle>Statements</CardTitle>
-                    <CardDescription>
-                      Practice identifying the correct statement based on a
-                      spoken conversation.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Link
-                      href="#"
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary inline-flex items-center justify-center rounded-md px-6 py-2 text-sm font-medium shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-                      prefetch={false}
-                    >
-                      Start Practice
-                    </Link>
-                  </CardContent>
-                </Card>
+              </p> */}
+              <div>
+                <ResultCardList />
               </div>
-            </div>
+            {/* </div> */}
           </div>
         </section>
-        <section id="toeic-questions" className="py-12 md:py-16 lg:py-20">
+        <section id="toeic-questions" className="bg-muted py-0 md:py-2 lg:py-4">
           <div className="px-4 md:px-6">
             <div className="space-y-6 text-center">
               <h2 className="text-3xl font-bold md:text-4xl">
@@ -224,6 +123,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </section>
+        <section id="blog-list" className="bg-muted py-0 md:py-2 lg:py-4">
+          <BlogList></BlogList>
         </section>
       </main>
     </div>

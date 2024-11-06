@@ -38,14 +38,14 @@ function PasswordChangePage() {
     sendRequest();
   };
   return (
-    <div className="min-h-screen flex items-center">
+    <div className="flex min-h-screen items-center">
       <div className="mx-auto max-w-md space-y-6">
         <Link href="/">
           <Button
             variant="outline"
             className="px-4 py-2 text-lg transition-colors duration-200 ease-in-out hover:bg-gray-200"
           >
-            <ArrowLeftIcon className="w-5 h-5 mr-2" />
+            <ArrowLeftIcon className="mr-2 h-5 w-5" />
             Go back
           </Button>
         </Link>

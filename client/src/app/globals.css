@@ -76,6 +76,9 @@ span, button {
 *{
   border-width:auto
 }
+.custom-scrollbar-sm::-webkit-scrollbar {
+  width: 3px; /* Điều chỉnh độ rộng */
+}
 /* @layer base {
   * {
     @apply border-border;
@@ -83,4 +86,12 @@ span, button {
   body {
     @apply bg-background text-foreground;
   }
+} */
+ /* .custom-audio::-webkit-media-controls-play-button,
+.custom-audio::-webkit-media-controls-start-playback-button {
+  display: none;
+}
+
+.custom-audio {
+  width: 100%;
 } */

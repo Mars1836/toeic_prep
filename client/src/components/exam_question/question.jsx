@@ -7,13 +7,12 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { CheckCircle, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
 
-export function ToeicPart1Questions({
+export function Question({
   question,
   handleChooseOption,
   answerList,
   isCheck,
 }) {
-  console.log(question, answerList[question.id]);
   const [selectedOption, setSelectedOption] = useState(answerList[question.id]);
   const handleOptionChange = (value) => {
     if (isCheck) {

@@ -7,6 +7,7 @@ import { Shuffle, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { CreateFlashcardModal } from "@/components/modal/create-flashcard-modal";
 import ExcelUploader from "../../../../../components/excelupload/ExcelUploader";
+import ExcelUploaderTest from "../../../../../components/excelupload/ExcelUploaderTest";
 function loadFlashcardSet(id) {
   return listOfSetFlashCard.find((item) => {
     return item.id === id;
@@ -34,8 +35,8 @@ function FCDetailPage({ params }) {
           <div className="mb-10 flex gap-2">
             <Button>Chỉnh sửa</Button>
             <CreateFlashcardModal />
-            <Button>Tạo hàng loạt</Button>
             <ExcelUploader></ExcelUploader>
+            <ExcelUploaderTest></ExcelUploaderTest>
           </div>
         </div>
         <div className="my-4">
@@ -61,7 +62,7 @@ function FCDetailPage({ params }) {
         </p>
         <div className="flex flex-col gap-4">
           {flashcards.map((fc, index) => {
-            return <WordCard flashcard={fc}></WordCard>;
+            return <WordCard flashcard={fc} key={index}></WordCard>;
           })}
         </div>
       </div>

@@ -120,8 +120,9 @@ function TestPage() {
   }
 
   useEffect(() => {
-    console.log(isCheck);
+    // console.log(isCheck);
   }, [isCheck]);
+  useEffect(() => {}, [selectedQuestion]);
   return (
     <div className="container mx-auto px-4 py-8">
       <Clock run={!isCheck}></Clock>
@@ -137,8 +138,8 @@ function TestPage() {
             <ToeicQuestion
               question={questionIdsList[0]}
               isCheck={isCheck}
-              handleChooseOption={handleChooseOption(questionIdsList[0].id)}
-              optionChoosed={answerList[questionIdsList[0].id]}
+              handleChooseOption={handleChooseOption(selectedQuestion.id)}
+              answerList={answerList}
             ></ToeicQuestion>
           ) : (
             <ToeicQuestionGroup
@@ -186,10 +187,6 @@ function TestPage() {
                         className={`w-full transition-all duration-200 ${
                           answerList[question.id]
                             ? "bg-yellow-500 text-white hover:bg-yellow-300" //dark:bg-green-900 dark:hover:bg-green-800
-                            : ""
-                        } ${
-                          selectedQuestion.id === question.id
-                            ? "ring-primary ring-offset-gray-90 ring-2 ring-offset-2" //dark:ring-offset-gray-900
                             : ""
                         } ${
                           checkList[question.id]

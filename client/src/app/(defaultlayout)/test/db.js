@@ -62,8 +62,8 @@ const part1 = {
   answerKey: "A",
 };
 const part11 = {
-  id: "1q23122",
-  ids: "1q23312",
+  id: "1q231221",
+  ids: "1q233121",
   text: ``, // empty
   type: "part1",
   audio: "/part1-1.mp3",
@@ -71,10 +71,10 @@ const part11 = {
   img: "https://picsum.photos/400/400",
   section: "Listening", // or reading
   options: [
-    { id: "A", text: "The man is sitting at a desk." },
-    { id: "B", text: "The woman is typing on a computer." },
-    { id: "C", text: "The people are having a meeting." },
-    { id: "D", text: "The dog is running under the rain" },
+    { id: "A", text: "The sky" },
+    { id: "B", text: "The carrr." },
+    { id: "C", text: "The people ." },
+    { id: "D", text: "The rainbowl" },
   ],
   answerKey: "A",
 };

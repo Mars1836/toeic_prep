@@ -59,5 +59,6 @@ module.exports = {
   plugins: [
     tailwindcssAnimate, // Import tailwindcss-animate plugin correctly
     nextui(), // Use NextUI theme
+    require("tailwind-scrollbar"), // Thêm dòng này
   ],
 };

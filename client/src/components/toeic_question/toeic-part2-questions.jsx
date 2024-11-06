@@ -10,11 +10,11 @@ import { CheckCircle, ChevronLeft, ChevronRight, XCircle } from "lucide-react";
 export function ToeicPart2Questions({
   question,
   handleChooseOption,
-  optionChoosed,
+  answerList,
   isCheck,
 }) {
-  const [selectedOption, setSelectedOption] = useState(optionChoosed);
-  const [checkedAnswers, setCheckedAnswers] = useState({});
+  console.log(question, answerList[question.id]);
+  const [selectedOption, setSelectedOption] = useState(answerList[question.id]);
   const handleOptionChange = (value) => {
     if (isCheck) {
       return;
@@ -22,15 +22,15 @@ export function ToeicPart2Questions({
     setSelectedOption(value);
     handleChooseOption(value);
   };
-  // const handleCheckAnswer = (questionId) => {
-  //   setCheckedAnswers((prev) => ({ ...prev, [questionId]: true }));
-  // };
 
   const isAnswerCorrect = () => {
-    return question.answerKey === optionChoosed;
+    return question.answerKey === answerList[question.id];
   };
+  useEffect(() => {
+    setSelectedOption(answerList[question.id]);
+  }, [question]);
   return (
-    <div className="p-6 space-y-8">
+    <div className="space-y-8 p-6">
       <p>Câu {question.number}</p>
 
       <audio controls className="w-full">
@@ -43,7 +43,7 @@ export function ToeicPart2Questions({
         className="mb-4"
       >
         {question.options.map((option) => (
-          <div key={option.id} className="flex items-center space-x-2 mb-2">
+          <div key={option.id} className="mb-2 flex items-center space-x-2">
             <RadioGroupItem
               value={option.id}
               id={`q${question.id}-${option.id}`}
@@ -52,12 +52,12 @@ export function ToeicPart2Questions({
               {option.id}. {option.text}
             </Label>
             {isCheck && option.id === question.answerKey && (
-              <CheckCircle className="text-green-500 ml-2" />
+              <CheckCircle className="ml-2 text-green-500" />
             )}
             {isCheck &&
-              option.id === optionChoosed &&
+              option.id === answerList[question.id] &&
               option.id !== question.answerKey && (
-                <XCircle className="text-red-500 ml-2" />
+                <XCircle className="ml-2 text-red-500" />
               )}
           </div>
         ))}

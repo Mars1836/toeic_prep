@@ -1,16 +1,16 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { BookIcon, MenuIcon } from "@/components/component/overview";
-import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Button } from "../ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserState, setUserState } from "@/lib/redux/userSlice";
@@ -33,10 +33,10 @@ function Header() {
     sendLogoutRequest();
   }
   return (
-    <header className="bg-primary text-primary-foreground fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-4">
+    <header className="bg-primary text-primary-foreground fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-12 py-4">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
-        <BookIcon className="h-6 w-6" />
-        <span className="text-lg font-semibold">TOEIC Prep</span>
+        <BookIcon className="h-7 w-7" />
+        <span className="text-xl font-semibold">TOEIC Prep</span>
       </Link>
       <nav className="hidden items-center gap-6 md:flex">
         <Link

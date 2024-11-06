@@ -20,27 +20,15 @@ import {
 } from "@/components/ui/table";
 import { Upload, Table as TableIcon } from "lucide-react";
 import { toast } from "react-toastify";
-
-export default function ExcelUploader() {
+export default function ExcelUploaderTest() {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const header = ["a", "ab", "abc", "abcd"];
   const fillCols = [0, 1];
-  const checkValueTable = () => {
-    const check = data.every((item, index) => {
-      const check2 = fillCols.every((col) => {
-        if (!item[col]) {
-          setError(`The ${data[0][col]} field on row ${index} requires input.`);
-          return false;
-        }
-        return true;
-      });
-      return check2;
-    });
-    return check;
-  };
+  const fileExcel =
+    "https://storage.googleapis.com/simpl-project138_cloudbuild/file/excel/exam.1.mini-test1.xlsx";
   const checkHeader = () => {
     // Check if the lengths are the same
     if (header.length !== data[0].length) {
@@ -63,16 +51,14 @@ export default function ExcelUploader() {
     }
   }
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
+  const handleFileUpload = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const arrayBuffer = await file.arrayBuffer();
-      const workbook = XLSX.read(arrayBuffer);
+      const response = await fetch(fileExcel);
+      const arrayBuffer = await response.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: "array" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, {
         header: 1,
@@ -93,12 +79,15 @@ export default function ExcelUploader() {
       setError(null);
     }
   }, [error]);
+  useEffect(() => {
+    handleFileUpload();
+  }, []);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>
           <TableIcon className="mr-2 h-4 w-4" />
-          Tạo hàng loạt
+          Check excel
         </Button>
       </DialogTrigger>
       <DialogContent className="flex max-h-[80vh] w-full max-w-4xl flex-col">

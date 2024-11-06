@@ -39,9 +39,9 @@ export function CreateFlashcardModal() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button>
           <PlusIcon className="mr-2 h-4 w-4" />
-          Add new word
+          Tạo từ mới
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] md:max-w-2xl">
