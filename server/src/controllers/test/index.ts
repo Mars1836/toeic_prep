@@ -14,6 +14,21 @@ namespace TestCtrl {
     const rs = await TestSrv.getAll();
     res.status(200).json(rs);
   }
+  export async function getByQuery(req: Request, res: Response) {
+    const query = req.query;
+    const rs = await TestSrv.getByQuery(query);
+    res.status(200).json(rs);
+  }
+  export async function getByCode(req: Request, res: Response) {
+    const { code } = req.query;
+    const rs = await TestSrv.getByCode(code);
+    res.status(200).json(rs);
+  }
+  export async function getById(req: Request, res: Response) {
+    const { id } = req.query;
+    const rs = await TestSrv.getById(id);
+    res.status(200).json(rs);
+  }
   export async function handleTest(req: Request, res: Response) {
     const linkExcel =
       "https://storage.googleapis.com/simpl-project138_cloudbuild/file/excel/exam.1.mini-test1.xlsx";

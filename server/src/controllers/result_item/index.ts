@@ -18,6 +18,7 @@ namespace ResultItemCtrl {
       userId,
       resultId: resultId as string,
     };
+    console.log(data);
     const rs = await ResultItemSrv.getByResult(data);
     res.status(200).json(rs);
   }

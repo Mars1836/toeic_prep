@@ -27,5 +27,11 @@ namespace ResultCtrl {
     const rs = await ResultSrv.getByUser(data);
     res.status(200).json(rs);
   }
+  export async function getById(req: Request, res: Response) {
+    const { id } = req.query;
+    const data = { userId: req.user!.id, id: id as string };
+    const rs = await ResultSrv.getById(data);
+    res.status(200).json(rs);
+  }
 }
 export default ResultCtrl;

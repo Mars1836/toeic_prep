@@ -6,4 +6,8 @@ const testRouter = express.Router();
 testRouter.get("/", handleAsync(TestCtrl.getAll));
 testRouter.get("/handleTest", handleAsync(TestCtrl.handleTest));
 testRouter.get("/handleTest2", handleAsync(TestCtrl.handleTest2));
+testRouter.get("/code", handleAsync(TestCtrl.getByCode));
+testRouter.get("/id", handleAsync(TestCtrl.getById));
+// testRouter.get("/code", handleAsync(TestCtrl.getByCode));
+// testRouter.get("/exam", handleAsync(TestCtrl.handleTest2));
 export default testRouter;

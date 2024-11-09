@@ -47,7 +47,7 @@ namespace ResultSrv {
     }
 
     const newResults = await ResultItemRepo.createMany(rsItems!);
-    return newResults;
+    return newResult;
   }
   export async function getByUser(data: { userId: string }) {
     const isExist = await UserRepo.checkExist(data.userId);
@@ -69,6 +69,19 @@ namespace ResultSrv {
     const rs = await resultModel.find({
       userId: data.userId,
       testId: data.testId,
+    });
+    return rs;
+  }
+  export async function getById(data: { userId: string; id?: string }) {
+    if (!data.id) {
+      throw new NotFoundError("Id phải được cung cấp");
+    }
+    if (!data.userId) {
+      throw new NotFoundError("UserId phải được cung cấp");
+    }
+    const rs = await resultModel.findOne({
+      userId: data.userId,
+      _id: data.id,
     });
     return rs;
   }

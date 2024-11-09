@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { PartOfSpeech, TestType } from "../configs/enum";
+import { PartOfSpeech, QuestionCategory, TestType } from "../configs/enum";
 const { Schema } = mongoose;
 
 // Định nghĩa interface cho ResultItem
@@ -13,6 +13,8 @@ export interface ResultItemAttr {
   resultId: string; // ID kết quả
   part: number;
   isReading: boolean;
+  timeSecond: number;
+  category: QuestionCategory[];
 }
 
 // Định nghĩa interface cho tài liệu ResultItem (Document)
@@ -26,6 +28,8 @@ export interface ResultItemDoc extends mongoose.Document {
   resultId: string; // ID kết quả
   part: number;
   isReading: boolean;
+  timeSecond: number;
+  category: QuestionCategory[];
 }
 
 // Định nghĩa interface cho model ResultItem
@@ -72,6 +76,15 @@ const resultItemSchema = new Schema(
     isReading: {
       type: Boolean,
       default: true,
+    },
+    timeSecond: {
+      type: Number,
+      default: 0,
+    },
+    questionCategory: {
+      type: [String], // Đảm bảo đây là một mảng các chuỗi
+      enum: Object.values(QuestionCategory), // Giới hạn các giá trị trong mảng theo QuestionCategory enum
+      default: [], // Giá trị mặc định là một mảng rỗng
     },
   },
   {

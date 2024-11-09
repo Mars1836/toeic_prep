@@ -13,6 +13,7 @@ export interface ResultAttr {
   numberOfUserAnswers: number;
   numberOfCorrectAnswers: number;
   secondTime: number; // Thời gian (tính bằng giây)
+  parts: number[];
 }
 
 // Định nghĩa interface cho tài liệu Result (Document)
@@ -24,6 +25,7 @@ export interface ResultDoc extends mongoose.Document {
   numberOfUserAnswers: number;
   numberOfCorrectAnswers: number;
   secondTime: number; // Thời gian (tính bằng giây)
+  parts: number[];
 }
 
 // Định nghĩa interface cho model Result
@@ -62,6 +64,10 @@ const resultSchema = new Schema(
     secondTime: {
       type: Number,
       required: true, // Thời gian tính bằng giây
+    },
+    parts: {
+      type: [Number],
+      default: [],
     },
   },
   {

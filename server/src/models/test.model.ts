@@ -9,7 +9,12 @@ export interface TestAttr {
   title: string;
   url: string;
   type: TestType;
-  attempts: TestAttempt[];
+  attempts?: TestAttempt[];
+  code?: string;
+  numberOfParts: number;
+  numberOfQuestions: number;
+  duration: number;
+  fileName: string;
 }
 
 export interface TestDoc extends mongoose.Document {
@@ -17,6 +22,11 @@ export interface TestDoc extends mongoose.Document {
   url: string;
   type: TestType;
   attempts: TestAttempt[];
+  code: string;
+  numberOfParts: number;
+  numberOfQuestions: number;
+  duration: number;
+  fileName: string;
 }
 export interface TestModel extends mongoose.Model<TestDoc> {}
 const testSchema = new Schema(
@@ -37,6 +47,26 @@ const testSchema = new Schema(
     attempts: {
       type: Array<TestAttempt>,
       default: [],
+    },
+    numberOfParts: {
+      type: Number,
+      require: true,
+    },
+    code: {
+      type: String,
+      require: true,
+    },
+    numberOfQuestions: {
+      type: Number,
+      require: true,
+    },
+    duration: {
+      type: Number,
+      require: true,
+    },
+    fileName: {
+      type: String,
+      require: true,
     },
   },
   {

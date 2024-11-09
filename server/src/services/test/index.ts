@@ -9,5 +9,21 @@ namespace TestSrv {
     const rs = await testModel.find({});
     return rs;
   }
+  export async function getByCode(code: string) {
+    const rs = await testModel.findOne({
+      code: code,
+    });
+    return rs;
+  }
+  export async function getById(id: string) {
+    const rs = await testModel.findById(id);
+    return rs;
+  }
+  export async function getByQuery(query: { id?: string }) {
+    const rs = await testModel.find({
+      ...query,
+    });
+    return rs;
+  }
 }
 export default TestSrv;
