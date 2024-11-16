@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { BookIcon, MenuIcon } from "@/components/component/overview";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import {
@@ -13,9 +12,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUserState, setUserState } from "@/lib/redux/userSlice";
+import { logoutUserState } from "@/lib/redux/userSlice";
 import useFetch from "@/hooks/useFetch";
 import { endpoint } from "@/consts";
+import { BookIcon, MenuIcon } from "lucide-react";
 
 function Header() {
   const dispatch = useDispatch();
@@ -44,35 +44,35 @@ function Header() {
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
-          About
+          Giới thiệu
         </Link>
         <Link
-          href="#"
+          href="/test3"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
-          Resources
+          Đề thi online
         </Link>
         <Link
-          href="#"
+          href="/flashcards"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
-          Practice Tests
+          Flashcards
         </Link>
         <Link
-          href="#"
+          href="/blogs"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
-          Contact
+          Blog
         </Link>
         <Link
-          href="#"
+          href="/upgrade"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
-          TOEIC Full Exam
+          Kích hoạt tài khoản
         </Link>
       </nav>
 
@@ -98,28 +98,28 @@ function Header() {
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
-                Resources
+                Đề thi online
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
-                Practice Tests
+                Flashcards
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
-                Contact
+                Blog
               </Link>
               <Link
                 href="#"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
-                TOEIC Full Exam
+                Kích hoạt tài khoản
               </Link>
             </nav>
           </SheetContent>

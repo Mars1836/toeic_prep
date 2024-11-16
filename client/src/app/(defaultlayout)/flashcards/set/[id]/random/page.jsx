@@ -5,23 +5,24 @@ import WordCard from "@/components/flashcard/word_card";
 import { Button } from "@/components/ui/button";
 import { Flashcard } from "@/components/flashcard/flashcard";
 import FlashcardSlider from "@/components/flashcard/flashcardSlider";
-function loadFlashcardSet(id) {
-  return listOfSetFlashCard.find((item) => {
-    return item.id === id;
-  });
-}
+import instance from "~configs/axios.instance";
+import { endpoint } from "~consts";
+
 function FCRan({ params }) {
-  //id of set flashcard
   const id = params.id;
   const [flashcards, setFlashcards] = useState([]);
   const [setCard, setSetCard] = useState({});
   useEffect(() => {
-    const set = loadFlashcardSet(id);
-    if (set) {
-      setFlashcards(set.flashcards);
-      setSetCard({ ...set });
+    async function fetchFlashcards() {
+      const { data } = await instance.get(endpoint.flashcardItem.getBySet, {
+        params: {
+          setFlashcardId: id,
+        },
+      });
+      setFlashcards(data);
     }
-  }, [id]);
+    fetchFlashcards();
+  }, []);
   return (
     <div className="min-h-[100vh]">
       <div className="py-8 md:px-6">

@@ -40,10 +40,40 @@ export function Flashcard({ flashcard, isHide = false }) {
           </div>
         ) : (
           <div
-            className="w-fullbackface-hidden absolute inset-0 flex h-full items-center justify-center rounded-lg bg-white p-6 shadow-lg"
+            className="absolute inset-0 flex h-full items-center justify-center rounded-lg bg-white p-6 shadow-lg"
             style={{ transform: "rotateY(180deg)" }}
           >
-            <p className="text-center text-lg">{flashcard.definition}</p>
+            <div>
+              {flashcard.translation && (
+                <div className="flex gap-2">
+                  <h3 className="mb-1 font-semibold">Translate:</h3>
+                  <p className="font-semibold">{flashcard.translation}</p>
+                  {console.log(flashcard)}
+                </div>
+              )}
+              {flashcard.definition && (
+                <div>
+                  <h3 className="mb-1 font-semibold">Definition:</h3>
+                  <p>{flashcard.definition}</p>
+                </div>
+              )}
+              {!!flashcard.exampleSentence.length && (
+                <div>
+                  <h3 className="mb-1 font-semibold">Example Sentences:</h3>
+                  <ul className="list-disc space-y-1 pl-5">
+                    {flashcard.exampleSentence.map((sentence, index) => (
+                      <li key={index}>{sentence}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {flashcard.note && (
+                <div>
+                  <h3 className="mb-1 font-semibold">Note:</h3>
+                  <p>{flashcard.note}</p>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </CardContent>

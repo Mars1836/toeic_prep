@@ -31,6 +31,7 @@ export default function FlashcardSlider({ flashcards }) {
               <Flashcard
                 flashcard={flashcard}
                 isHide={currentCard !== index}
+                key={flashcard.id}
               ></Flashcard>
             );
           })}

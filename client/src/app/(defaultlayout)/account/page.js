@@ -1,4 +1,4 @@
-import { Account } from "@/components/account";
+import { Account } from "@/components/component/account";
 import React from "react";
 
 function AccountPage() {

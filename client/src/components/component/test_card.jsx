@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -16,48 +16,26 @@ import {
   MessageSquare,
   Layers,
   CheckCircle,
+  Repeat1,
 } from "lucide-react";
+import instance from "~configs/axios.instance";
+import { endpoint } from "~consts";
+import { useRouter } from "next/navigation";
 
-const examCards = [
-  {
-    id: "listening",
-    title: "TOEIC Listening",
-    description: "Test your English listening skills",
-    duration: "45 min",
-    questions: 100,
-    comments: 24,
-    parts: 4,
-  },
-  {
-    id: "reading",
-    title: "TOEIC Reading",
-    description: "Assess your English reading comprehension",
-    duration: "75 min",
-    questions: 100,
-    comments: 32,
-    parts: 3,
-  },
-  {
-    id: "speaking",
-    title: "TOEIC Speaking",
-    description: "Evaluate your English speaking abilities",
-    duration: "20 min",
-    questions: 11,
-    comments: 18,
-    parts: 6,
-  },
-  {
-    id: "writing",
-    title: "TOEIC Writing",
-    description: "Measure your English writing skills",
-    duration: "60 min",
-    questions: 8,
-    comments: 22,
-    parts: 2,
-  },
-];
-
-function ExamCard({ card, isTaken, onTakeTest, onViewResults }) {
+export function ExamCard({ card, isTaken }) {
+  const router = useRouter();
+  function goToPracticeTest() {
+    router.push(`/test3/${card.id}/practice-set`);
+  }
+  const getAttempts = () => {
+    if (!card?.attempts?.length) {
+      return 0;
+    }
+    return card.attempts.reduce((acc, curr) => {
+      console.log(curr);
+      return acc + curr.times;
+    }, 0);
+  };
   return (
     <Card className="relative flex h-full flex-col bg-white">
       {isTaken && (
@@ -76,27 +54,36 @@ function ExamCard({ card, isTaken, onTakeTest, onViewResults }) {
         <div className="flex flex-wrap gap-2">
           <Badge variant="primary" className="text-xs">
             <Clock className="mr-1 h-3 w-3" />
-            {card.duration}
+            {card.duration ?? 100}
           </Badge>
           <Badge variant="primary" className="text-xs">
             <BookOpen className="mr-1 h-3 w-3" />
-            {card.questions} questions
+            {card.numberOfQuestions} questions
+          </Badge>
+          <Badge variant="primary" className="text-xs">
+            <CheckCircle className="mr-1 h-3 w-3" />
+            {getAttempts()} attempts
           </Badge>
           <Badge variant="primary" className="text-xs">
             <MessageSquare className="mr-1 h-3 w-3" />
-            {card.comments} comments
+            {card.comments ?? 0} comments
           </Badge>
           <Badge variant="primary" className="text-xs">
             <Layers className="mr-1 h-3 w-3" />
-            {card.parts} parts
+            {card.numberOfParts} parts
           </Badge>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <p className="p-2 font-semibold text-sm">#{card.type}</p>
         </div>
       </CardContent>
       <CardFooter>
         <Button
           className="w-full"
           variant={isTaken ? "outline" : "default"}
-          onClick={isTaken ? onViewResults : onTakeTest}
+          onClick={() => {
+            goToPracticeTest();
+          }}
         >
           {isTaken ? "View Results" : "Take Test"}
         </Button>
@@ -107,7 +94,7 @@ function ExamCard({ card, isTaken, onTakeTest, onViewResults }) {
 
 export default function TestCardList() {
   const [takenTests, setTakenTests] = useState(new Set());
-
+  const [testData, setTestData] = useState([]);
   const handleTakeTest = (id) => {
     setTakenTests((prev) => new Set(prev).add(id));
   };
@@ -116,20 +103,27 @@ export default function TestCardList() {
     alert(`Viewing results for ${id} test`);
     // Trong ứng dụng thực tế, bạn sẽ điều hướng đến trang kết quả hoặc mở modal ở đây
   };
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await instance.get(endpoint.test.getByQuery);
+      if (data) {
+        setTestData(data);
+      }
+    }
 
+    fetchData();
+  }, []);
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-center text-3xl font-bold">
         TOEIC Exam Sections
       </h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {examCards.map((card) => (
+        {testData.map((card) => (
           <ExamCard
             key={card.id}
             card={card}
             isTaken={takenTests.has(card.id)}
-            onTakeTest={() => handleTakeTest(card.id)}
-            onViewResults={() => handleViewResults(card.id)}
           />
         ))}
       </div>

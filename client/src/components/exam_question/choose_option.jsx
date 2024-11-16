@@ -6,9 +6,10 @@ import React, { useState } from "react";
 function ChooseOption({
   question,
   isCheck = false,
+  value,
   handleChooseOption = () => {},
 }) {
-  const [selectedOption, setSelectedOption] = useState();
+  const [selectedOption, setSelectedOption] = useState(value);
   const handleOptionChange = (value) => {
     if (isCheck) {
       return;
@@ -17,7 +18,6 @@ function ChooseOption({
     handleChooseOption(value);
   };
   const isAnswerCorrect = () => {
-    // return question.answerKey === answerList[question.id];
     return question.correctanswer === selectedOption;
   };
   return (
@@ -25,14 +25,19 @@ function ChooseOption({
       <RadioGroup
         value={selectedOption || ""}
         onValueChange={handleOptionChange}
-        className="mb-4"
+        className="mb-4 mt-12"
       >
         {question.options.map((option, index) => (
           <div key={option.id} className="mb-2 flex items-center space-x-2">
             <RadioGroupItem value={option.id} id={`q${question.id}-${index}`} />
             <Label htmlFor={`q${question.id}-${index}`}>
-              {option.id}. {option.content}
+              {option.id}
+              {!isCheck &&
+                ![1, 2].includes(question.part) &&
+                `.${option.content}`}
+              {isCheck && `.${option.content}`}
             </Label>
+
             {isCheck && option.id === question.correctanswer && (
               <CheckCircle className="ml-2 text-green-500" />
             )}

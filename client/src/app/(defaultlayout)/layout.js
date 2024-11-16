@@ -13,7 +13,6 @@ function DefaultLayout({ children }) {
     url: endpoint.auth.currentUser,
     method: "get",
     onSuccess: (data) => {
-      console.log(data);
       dispatch(setUserState(data));
     },
   });
@@ -21,7 +20,7 @@ function DefaultLayout({ children }) {
     sendRequest();
   }, []);
   return (
-    <div>
+    <div className="max-h-screen">
       <Header></Header>
       <div className="min-h-screen py-16"> {children}</div>
 

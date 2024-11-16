@@ -14,34 +14,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Loader2, PlusIcon } from "lucide-react";
+import { Loader2, PlusIcon, RefreshCw } from "lucide-react";
 import useInput from "@/hooks/useInput";
 import { toast } from "react-toastify";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
-import useFetch from "~hooks/useFetch";
-const AICompletion = async (word) => {
-  // Trong thực tế, đây sẽ là một cuộc gọi API đến dịch vụ AI
-  const { data } = await instance.post(endpoint.aichat.getFlashcardInfor, {
-    prompt: word,
-  });
-  return data;
-};
-export function CreateFlashcardModal({ setId, setFlashcards }) {
-  const [open, setOpen] = useState(false);
-  const inputWord = useInput("");
-  const inputDefinition = useInput("");
-  const inputTranslation = useInput("");
-  const inputExample1 = useInput("");
-  const inputExample2 = useInput("");
-  const inputPronunciation = useInput("");
-  const inputNote = useInput("");
-  const inputPartOfSpeech = useInput("");
+
+export function UpdateFlashcardModal({
+  isUpdateDialogOpen,
+  setIsUpdateDialogOpen,
+  setId,
+  setFlashcards,
+  flashcard,
+}) {
+  const inputWord = useInput(flashcard.word || "");
+  const inputDefinition = useInput(flashcard.definition || "");
+  const inputTranslation = useInput(flashcard.translation || "");
+  const inputExample1 = useInput(flashcard.exampleSentence[0] || "");
+  const inputExample2 = useInput(flashcard.exampleSentence[1] || "");
+  const inputPronunciation = useInput(flashcard.pronunciation || "");
+  const inputNote = useInput(flashcard.note || "");
+  const inputPartOfSpeech = useInput(flashcard.partOfSpeech?.join(",") || "");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const flashcard = {
+    const nflashcard = {
+      id: flashcard.id,
       word: inputWord.value, // Lấy giá trị của từ
       translation: inputTranslation.value, // Lấy bản dịch
 
@@ -58,61 +57,38 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
       pronunciation: inputPronunciation.value || "", // Phiên âm, nếu không rỗng
     };
     // return console.log(flashcard);
-    const { data } = await instance.post(
-      endpoint.flashcardItem.create,
-      flashcard
+    const { data } = await instance.patch(
+      endpoint.flashcardItem.update,
+      nflashcard
     );
     if (data) {
-      toast.success("Lưu flashcard thành công");
-      inputWord.clear();
-      inputDefinition.clear();
-      inputTranslation.clear();
-      inputExample1.clear();
-      inputExample2.clear();
-      inputPronunciation.clear();
-      inputNote.clear();
-      inputPartOfSpeech.clear();
+      setIsUpdateDialogOpen(false);
       setFlashcards((pre) => {
-        return [data, ...pre];
+        return pre.map((item) => {
+          if (item.id === nflashcard.id) {
+            return nflashcard;
+          }
+          return item;
+        });
       });
+      toast.success("Lưu flashcard thành công");
     }
   };
-  const handleAutoComplete = async () => {
-    setIsLoading(true);
-    try {
-      const data = await AICompletion(inputWord.value);
-      const aiResult = JSON.parse(data);
-      if (aiResult) {
-        inputDefinition.setInput(aiResult?.definition || "");
-        inputTranslation.setInput(aiResult?.translation || "");
-        inputExample1.setInput(aiResult?.example1 || "");
-        inputExample2.setInput(aiResult?.example2 || "");
-        inputPronunciation.setInput(aiResult?.pronunciation || "");
-        inputNote.setInput(aiResult?.note || "");
-        inputPartOfSpeech.setInput(aiResult?.partOfSpeech.join(",") || "");
-        toast.success("Hoàn tất tự động điền");
-      }
-    } catch (error) {
-      toast.error("Có lỗi xảy ra vui lòng thử lại");
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
   useEffect(() => {
     console.log(isLoading);
   }, [isLoading]);
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusIcon className="mr-2 h-4 w-4" />
-          Tạo từ mới
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isUpdateDialogOpen} onOpenChange={setIsUpdateDialogOpen}>
+      {/* <DialogTrigger asChild>
+        <>
+          <RefreshCw className="mr-2 h-4 w-4" />
+          <span>Update</span>
+        </>
+      </DialogTrigger> */}
       <DialogContent className="sm:max-w-[425px] md:max-w-2xl">
         <DialogHeader>
-          <DialogTitle> Add new word</DialogTitle>
+          <DialogTitle> Update word</DialogTitle>
           <DialogDescription>
             Add a new word to your flashcard set.
           </DialogDescription>
@@ -212,20 +188,6 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
             </div>
           </div>
           <DialogFooter>
-            <Button
-              onClick={handleAutoComplete}
-              disabled={isLoading}
-              className=""
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Đang tự động điền...
-                </>
-              ) : (
-                "Tự động điền bằng AI"
-              )}
-            </Button>
             <Button type="submit" variant="">
               Save
             </Button>

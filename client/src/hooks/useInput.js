@@ -9,6 +9,6 @@ const useInput = (init) => {
   function clear() {
     setInput("");
   }
-  return { value: input, onChange: updateInput, clear };
+  return { value: input, onChange: updateInput, clear, setInput };
 };
 export default useInput;
