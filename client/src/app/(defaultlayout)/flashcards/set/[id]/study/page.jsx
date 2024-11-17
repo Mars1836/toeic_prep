@@ -32,7 +32,6 @@ async function getLearningFlashcardData(learningSetId) {
   }
 }
 async function simulateGetDataFromAI(prompt) {
-  console.log(prompt);
   const rs =
     '[{"flashcardId": "6735c30fc1ce28d58c2c1a9e", "quiz": {"correctAnswer": "serenity", "options": ["anxiety", "chaos", "serenity", "turmoil"], "question": "Which word means \\"the state of being calm, peaceful, and untroubled\\"?"}, "word": "serenity"}, {"flashcardId": "6735c30fc1ce28d58c2c1a9f", "quiz": {"correctAnswer": "tranquility", "options": ["tranquility", "disturbance", "agitation", "noise"], "question": "What word describes a state of peace and calm?"}, "word": "tranquility"}, {"flashcardId": "6735c30fc1ce28d58c2c1aa0", "quiz": {"correctAnswer": "calmness", "options": ["panic", "calmness", "excitement", "stress"], "question": "Which word refers to the quality of being free from agitation?"}, "word": "calmness"}]\n';
   await new Promise((res) => setTimeout(res, 2000));
@@ -45,15 +44,15 @@ async function getQuizDataFromAI(prompt) {
   });
   return data;
 }
-async function updateShortTermScore(id, score) {
-  try {
-    await instance.post(endpoint.learningFlashcard.updateShortTermScore, {
-      learningFlashcardId: id,
-      score,
-    });
-  } catch (error) {
-    handleErrorWithToast(error);
-  }
+async function updateTrackingMapFetch(id, score) {
+  // try {
+  //   await instance.post(endpoint.learningFlashcard.updateShortTermScore, {
+  //     learningFlashcardId: id,
+  //     score,
+  //   });
+  // } catch (error) {
+  //   handleErrorWithToast(error);
+  // }
 }
 async function getLearningSetData(setFlashcardId) {
   try {
@@ -67,11 +66,11 @@ async function getLearningSetData(setFlashcardId) {
     handleErrorWithToast(error);
   }
 }
-const confidenceLevels = [
-  { value: "0", label: "Không biết" },
-  { value: "1", label: "Đang học" },
-  { value: "2", label: "Gần thuộc" },
-  { value: "3", label: "Đã thuộc" },
+const diffLevels = [
+  { value: 1, label: "Khó nhớ" }, // Rất khó, cần ôn tập thường xuyên.
+  { value: 0.6, label: "Tương đối khó" }, // Khó, nhưng có thể ghi nhớ với nỗ lực trung bình.
+  { value: 0.3, label: "Dễ nhớ" }, // Nội dung dễ tiếp thu, chỉ cần ôn tập nhẹ nhàng.
+  { value: 0, label: "Rất dễ nhớ" }, // Rất dễ, ít cần lặp lại.
 ];
 
 // const slides = [
@@ -142,7 +141,7 @@ const confidenceLevels = [
 
 export default function FlashcardLearning({ params }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [userConfidence, setUserConfidence] = useState("");
+  const [wordDifficulty, setWordDifficulty] = useState("");
   const [userAnswer, setUserAnswer] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [isCorrect, setIsCorrect] = useState(null);
@@ -152,9 +151,9 @@ export default function FlashcardLearning({ params }) {
     start: 0,
     end: 0,
   });
+
   const [learningFlashcardData, setLearningFlashcardData] = useState([]);
-  // const [flashcardConfidence, setFlashcardConfidence] = useState([]);
-  const [shortTermScoreMap, setShortTermScoreMap] = useState({});
+  const [trackingMap, setTrackingMap] = useState({});
   const [slides, setSlides] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
   const [firstTimeCheck, setFirstTime] = useState(true);
@@ -164,8 +163,8 @@ export default function FlashcardLearning({ params }) {
   }, [currentIndex]);
 
   const handleNext = () => {
-    if (userConfidence) {
-      handleShortTermScore(currentSlide.id, Number(userConfidence));
+    if (wordDifficulty) {
+      handleDiffScore(currentSlide.id, Number(wordDifficulty));
     }
     if (currentIndex < slides.length - 1) {
       setDirection(1);
@@ -174,12 +173,15 @@ export default function FlashcardLearning({ params }) {
       alert("Bạn đã hoàn thành bài học!");
     }
   };
-  const handleShortTermScore = (id, score) => {
-    setShortTermScoreMap((prev) => ({
+  const handleDiffScore = (id, value) => {
+    setTrackingMap((prev) => ({
       ...prev,
-      [id]: prev[id] + Number(score),
+      [id]: {
+        ...prev[id],
+        difficult_rate: 1,
+      },
     }));
-    updateShortTermScore(id, shortTermScoreMap[id] + Number(score));
+    // updateTrackingMapFetch(id, trackingMap[id] + Number(value));
   };
   const handlePrevious = () => {
     if (currentIndex > 0) {
@@ -187,7 +189,7 @@ export default function FlashcardLearning({ params }) {
       setCurrentIndex(currentIndex - 1);
     }
   };
-  const addConfidenceSlide = (learningFlashcardDataSlice) => {
+  const addDifficultySlide = (learningFlashcardDataSlice) => {
     const slidesArray = [];
     for (const item of learningFlashcardDataSlice) {
       const slide = {
@@ -239,7 +241,6 @@ export default function FlashcardLearning({ params }) {
           type: "writing",
           word: item.flashcardId.word,
           translation: item.flashcardId.translation,
-          point: 0.75,
         };
         slidesArray.push(slide);
       }
@@ -259,25 +260,32 @@ export default function FlashcardLearning({ params }) {
         start: newStart,
         end: newEnd,
       });
-    } else if (indexWord.start + step <= max) {
+    } else if (indexWord.end + step <= max) {
       newStart = indexWord.end;
       newEnd = indexWord.end + step;
       setIndexWord({
         start: newStart,
         end: newEnd,
       });
-    } else if (indexWord.start + step > max) {
+    } else if (indexWord.end + step > max) {
+      newStart = max;
+      newEnd = max;
+      setIndexWord({
+        start: max,
+        end: max,
+      });
     }
+
     const learningFlashcardDataSlice = learningFlashcardData.slice(
       newStart,
       newEnd
     );
-    addConfidenceSlide(learningFlashcardDataSlice);
+    addDifficultySlide(learningFlashcardDataSlice);
     // addQuizSlide(learningFlashcardDataSlice);
     addWritingSlide(learningFlashcardDataSlice);
   };
   const resetUserInputs = () => {
-    setUserConfidence("");
+    setWordDifficulty("");
     setUserAnswer("");
     setSelectedOption("");
     setIsCorrect(null);
@@ -288,8 +296,8 @@ export default function FlashcardLearning({ params }) {
     // setFirstTime(false);
     setShowAnswer(true);
   };
-  const handleConfidenceChange = (value) => {
-    setUserConfidence(value);
+  const handleWordDifficultyChange = (value) => {
+    setWordDifficulty(value);
   };
 
   const handleOptionSelect = (option) => {
@@ -297,19 +305,51 @@ export default function FlashcardLearning({ params }) {
     setIsCorrect(option === currentSlide.meaning);
   };
 
-  const handleAnswerSubmit = () => {
+  const handleAnswerWritingSubmit = () => {
     const isAnswerCorrect =
       userAnswer.toLowerCase() === currentSlide.word.toLowerCase();
     setIsCorrect(isAnswerCorrect);
     if (firstTimeCheck) {
-      handleShortTermScore(
-        currentSlide.id,
-        isAnswerCorrect ? currentSlide.point : 0
-      );
+      const num_of_quiz = trackingMap[currentSlide.id].num_of_quiz;
+      const accuracy = trackingMap[currentSlide.id].accuracy;
+      if (isAnswerCorrect) {
+        setTrackingMap((prev) => ({
+          ...prev,
+          [currentSlide.id]: {
+            ...prev[currentSlide.id],
+            accuracy: (
+              (1 + num_of_quiz * accuracy) /
+              (num_of_quiz + 1)
+            ).toFixed(2),
+            num_of_quiz: num_of_quiz + 1,
+          },
+        }));
+      } else {
+        setTrackingMap((prev) => ({
+          ...prev,
+          [currentSlide.id]: {
+            ...prev[currentSlide.id],
+            accuracy: (
+              (0 + num_of_quiz * accuracy) /
+              (num_of_quiz + 1)
+            ).toFixed(2),
+            num_of_quiz: num_of_quiz + 1,
+          },
+        }));
+        const wrongWritingSlide = {
+          id: currentSlide.id,
+          type: "writing",
+          word: currentSlide.word,
+          translation: currentSlide.translation,
+        };
+        setSlides((prev) => [...prev, wrongWritingSlide]);
+      }
       setFirstTime(false);
     }
   };
-
+  const handleFinish = () => {
+    alert("Bạn đã hoàn thành bài học!");
+  };
   const slideVariants = {
     enter: (direction) => ({ x: direction > 0 ? "100%" : "-100%", opacity: 0 }),
     center: { x: 0, opacity: 1 },
@@ -329,16 +369,16 @@ export default function FlashcardLearning({ params }) {
                 Bạn đã thuộc từ này ở mức nào?
               </p>
               <RadioGroup
-                value={userConfidence}
-                onValueChange={handleConfidenceChange}
+                value={wordDifficulty}
+                onValueChange={handleWordDifficultyChange}
                 className="grid grid-cols-1 gap-3"
               >
-                {confidenceLevels.map((level) => (
+                {diffLevels.map((level) => (
                   <Label
                     key={level.value}
                     htmlFor={`confidence-${level.value}`}
                     className={`flex items-center space-x-3 p-4 rounded-lg border transition-colors ${
-                      userConfidence === level.value
+                      wordDifficulty === level.value
                         ? "bg-purple-100 border-purple-500"
                         : "border-gray-300 hover:bg-gray-100"
                     }`}
@@ -416,7 +456,7 @@ export default function FlashcardLearning({ params }) {
               />
               <div className="flex space-x-4">
                 <Button
-                  onClick={handleAnswerSubmit}
+                  onClick={handleAnswerWritingSubmit}
                   className="flex-1 text-lg py-6"
                 >
                   Check
@@ -457,21 +497,35 @@ export default function FlashcardLearning({ params }) {
   };
 
   useEffect(() => {
-    console.log(shortTermScoreMap);
-  }, [shortTermScoreMap]);
+    console.log(trackingMap);
+  }, [trackingMap]);
   useEffect(() => {
     if (currentIndex > slides.length - 3) {
-      handleIncreaseIndexWord(learningFlashcardData.length);
+      if (
+        learningFlashcardData.length &&
+        learningFlashcardData.length === indexWord.start
+      ) {
+        // alert("Bạn đã hoàn thành bài học!");
+        return;
+      }
+      if (indexWord.start < indexWord.end) {
+        handleIncreaseIndexWord(learningFlashcardData.length);
+      }
     }
   }, [currentIndex, slides]);
   useEffect(() => {
     if (learningFlashcardData.length > 0) {
       handleIncreaseIndexWord(learningFlashcardData.length);
       const opt = {};
+      console.log(learningFlashcardData);
       learningFlashcardData.forEach((item) => {
-        opt[item.id] = item.shortTermScore;
+        opt[item.id] = {
+          difficult_rate: item.value, // Độ dễ 0-5
+          accuracy: 0, // Độ chính xác 0-1,
+          num_of_quiz: 0, //so luong cau hoi
+        };
       });
-      setShortTermScoreMap(opt);
+      setTrackingMap(opt);
     }
   }, [learningFlashcardData]);
 
@@ -525,6 +579,15 @@ export default function FlashcardLearning({ params }) {
             </Card>
           </motion.div>
         </AnimatePresence>
+        <div className="text-center mt-6">
+          <Button
+            onClick={handleFinish}
+            size="lg"
+            className="text-lg w-full py-8 bg-gray-800 text-white hover:bg-gray-900"
+          >
+            Kết thúc
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ import useInput from "~hooks/useInput";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
 import { handleErrorWithToast } from "~helper";
+import { toast } from "react-toastify";
 
 export function UpdateFlashcardSetModal({
   setFCFocused,
@@ -46,13 +47,11 @@ export function UpdateFlashcardSetModal({
       }
       setSetFC((pre) => {
         const a = pre.map((item) => {
-          console.log(item, setFCFocused);
-          console.log(data);
           return item.id === setFCFocused.id ? data : item;
         });
-
         return a;
       });
+      toast.success("Cập nhật thành công");
     } catch (error) {
       handleErrorWithToast(error);
     }

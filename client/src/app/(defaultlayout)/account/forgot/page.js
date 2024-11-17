@@ -11,7 +11,6 @@ import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 
 function ForgetPage() {
   const email = useInput();

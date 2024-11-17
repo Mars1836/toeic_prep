@@ -151,7 +151,6 @@ function FlashcartsPage() {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuItem
                                   onClick={() => {
-                                    console.log(item);
                                     handleUpdate(item);
                                   }}
                                 >

@@ -1,5 +1,5 @@
 import "./globals.css";
-import { ToastContainer } from "react-toastify";
+import { Bounce, ToastContainer } from "react-toastify";
 import StoreProvider from "./StoreProvider";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
@@ -21,16 +21,17 @@ function LayoutWrapper({ children }) {
         </StoreProvider>
         <ToastContainer
           position="top-right"
-          autoClose={2000}
+          autoClose={1000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
-          pauseOnHover
+          draggable
+          pauseOnHover={false}
           theme="light"
+          transition={Bounce}
         />
-        <ToastContainer />
       </body>
     </html>
   );

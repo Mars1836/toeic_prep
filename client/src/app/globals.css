@@ -58,23 +58,28 @@
     --chart-5: hsl(340, 75%, 55%);
   }
 }
-
-span, button {
+body[data-scroll-locked] {
+  .header {
+    right: 15px !important;
+  }
+}
+span,
+button {
   user-select: none;
 }
-.passage{
+.passage {
   line-height: 30px;
-  table{
-    margin : 20px;
-    border-width :1px;
+  table {
+    margin: 20px;
+    border-width: 1px;
   }
-  td{
+  td {
     border-width: 1px;
   }
 }
 
-*{
-  border-width:auto
+* {
+  border-width: auto;
 }
 .custom-scrollbar-sm::-webkit-scrollbar {
   width: 3px; /* Điều chỉnh độ rộng */
@@ -87,7 +92,7 @@ span, button {
     @apply bg-background text-foreground;
   }
 } */
- /* .custom-audio::-webkit-media-controls-play-button,
+/* .custom-audio::-webkit-media-controls-play-button,
 .custom-audio::-webkit-media-controls-start-playback-button {
   display: none;
 }
