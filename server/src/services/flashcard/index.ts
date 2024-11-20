@@ -9,6 +9,21 @@ import { setFlashcardModel } from "../../models/set_flashcard.model";
 import SetFlashcardUtil from "../set_flashcard/repos";
 
 namespace FlashCardSrv {
+  export async function getBySet(setFlashcardId: string, userId: string) {
+    const isSetExist = await setFlashcardModel.findOne({
+      _id: setFlashcardId,
+      userId: userId,
+    });
+    if (!isSetExist) {
+      throw new BadRequestError("Set flashcard not exist.");
+    }
+    const rs = await flashcardModel
+      .find({
+        setFlashcardId: setFlashcardId,
+      })
+      .sort({ createdAt: -1 });
+    return rs;
+  }
   export async function create(data: FlashcardAttr, userId: string) {
     const isSetExist = await setFlashcardModel.findOne({
       _id: data.setFlashcardId,
@@ -24,8 +39,36 @@ namespace FlashCardSrv {
     );
     return newCard;
   }
+  export async function createMany(
+    data: FlashcardAttr[] | undefined,
+    userId: string
+  ) {
+    if (!data) {
+      throw new BadRequestError("Dữ liệu truyền vào trống");
+    }
+    if (data!.length === 0) {
+      throw new BadRequestError("Dữ liệu truyền vào trống");
+    }
+    const setFlashcardId = data[0].setFlashcardId;
+    const isSetExist = await setFlashcardModel.findOne({
+      _id: setFlashcardId,
+      userId: userId,
+    });
+    const dataUser = data.map((item) => {
+      return { ...item, userId: userId };
+    });
+    if (!isSetExist) {
+      throw new BadRequestError("Set flashcard not exist.");
+    }
+    const newCards = await flashcardModel.insertMany(dataUser);
+    await setFlashcardModel.updateOne(
+      { _id: setFlashcardId, userId: userId },
+      { $inc: { numberOfFlashcards: dataUser.length } }
+    );
+    return newCards;
+  }
   export async function remove(data: { id: string; userId: string }) {
-    const fc = await flashcardModel.findById(data.id).lean();
+    const fc = await flashcardModel.findById(data.id);
     if (!fc) {
       throw new NotFoundError("Flashcard này không tồn tại");
     }
@@ -56,7 +99,7 @@ namespace FlashCardSrv {
     query: { id: string; userId: string },
     data: FlashcardAttr
   ) {
-    const fc = await flashcardModel.findById(query.id).lean();
+    const fc = await flashcardModel.findById(query.id);
     if (!fc) {
       throw new NotFoundError("Flashcard này không tồn tại");
     }

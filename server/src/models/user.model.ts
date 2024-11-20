@@ -8,6 +8,7 @@ export interface UserAttr {
   facebookId?: string;
   googleId?: string;
   role?: Role;
+  upgradeExpiredDate?: Date;
 }
 export interface UserDoc extends mongoose.Document {
   email?: string;
@@ -16,6 +17,7 @@ export interface UserDoc extends mongoose.Document {
   facebookId?: string;
   googleId?: string;
   role?: Role;
+  upgradeExpiredDate?: Date;
 }
 export interface UserModel extends mongoose.Model<UserDoc> {}
 const userSchema = new Schema(
@@ -53,6 +55,10 @@ const userSchema = new Schema(
       enum: Object.values(Role),
       default: Role.user,
     },
+    upgradeExpiredDate: {
+      type: Date,
+      default: null,
+    },
   },
   {
     // collection: "user_collection",
@@ -66,4 +72,14 @@ const userSchema = new Schema(
     },
   }
 );
+userSchema.methods.isExpiredUpgrade = function () {
+  // Kiểm tra nếu upgradeExpiredDate là null
+  if (!this.upgradeExpiredDate) {
+    return true; // Có thể xử lý theo yêu cầu, ví dụ coi là chưa hết hạn
+  }
+
+  // So sánh ngày hiện tại với upgradeExpiredDate
+  const currentDate = new Date();
+  return currentDate > this.upgradeExpiredDate;
+};
 export const userModel = mongoose.model<UserDoc, UserModel>("User", userSchema);

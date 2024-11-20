@@ -29,6 +29,11 @@ namespace TestCtrl {
     const rs = await TestSrv.getById(id);
     res.status(200).json(rs);
   }
+  export async function updateAll(req: Request, res: Response) {
+    const body = req.body;
+    const rs = await TestSrv.updateAll(body);
+    res.status(200).json(rs);
+  }
   export async function handleTest(req: Request, res: Response) {
     const linkExcel =
       "https://storage.googleapis.com/simpl-project138_cloudbuild/file/excel/exam.1.mini-test1.xlsx";

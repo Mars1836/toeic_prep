@@ -4,20 +4,21 @@ import axios from "axios";
 import moment from "moment";
 import qs from "qs";
 import { BadRequestError } from "../../errors/bad_request_error";
+import UserRepo from "../user/repos";
 
 namespace PaymentSrv {
-  export async function create() {
-    const items = [{}];
+  export async function create(userId: string) {
+    const items = [{ userId: userId, upgradeFor: 30 }];
     const transID = Math.floor(Math.random() * 1000000);
     const order = {
       app_id: configZalo.app_id,
       app_trans_id: `${moment().format("YYMMDD")}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
-      app_user: "user123",
+      app_user: userId,
       app_time: Date.now(), // miliseconds
       item: JSON.stringify(items),
       embed_data: JSON.stringify(embedDataZalo),
       amount: 5000,
-      description: `Lazada - Payment for the order #${transID}`,
+      description: `Toeic - Payment for the upgrade account #${transID}`,
       callback_url: configZalo.callbackUrl,
       bank_code: "",
       mac: "",
@@ -51,12 +52,11 @@ namespace PaymentSrv {
       return_message: "",
       data: {},
     };
-
+    console.log(data);
     let dataStr = data.data;
     let reqMac = data.mac;
 
     let mac = generateMac(dataStr, configZalo.key2);
-    console.log("mac =", mac);
 
     // kiểm tra callback hợp lệ (đến từ ZaloPay server)
     if (reqMac !== mac) {
@@ -73,7 +73,7 @@ namespace PaymentSrv {
       result.return_code = 1;
       result.return_message = "success";
       result.data = dataJson;
-      console.log(result);
+      await UserRepo.upgrade(dataJson.app_user);
       return result;
     }
   }

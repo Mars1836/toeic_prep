@@ -29,5 +29,22 @@ namespace SetFlashcardCtrl {
     const rs = await SetFlashcardSrv.getPublic();
     res.status(200).json(rs);
   }
+  export async function remove(req: Request, res: Response) {
+    const data = req.body as { id: string; userId: string };
+    // @ts-ignore
+    data.userId = req.user!.id;
+    const rs = await SetFlashcardSrv.remove(data);
+    res.status(200).json(rs);
+  }
+  export async function update(req: Request, res: Response) {
+    const data = req.body as {
+      id: string;
+      title: string;
+      description: string;
+      userId: string;
+    };
+    const rs = await SetFlashcardSrv.update(data);
+    res.status(200).json(rs);
+  }
 }
 export default SetFlashcardCtrl;

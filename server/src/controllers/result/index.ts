@@ -17,13 +17,16 @@ namespace ResultCtrl {
     res.status(200).json(_rs);
   }
   export async function getByTest(req: Request, res: Response) {
-    const { testId } = req.query;
-    const data = { testId: testId as string, userId: req.user!.id };
+    const data = req.query;
+    data.userId = req.user!.id;
+    //@ts-ignore
     const rs = await ResultSrv.getByTest(data);
     res.status(200).json(rs);
   }
   export async function getByUser(req: Request, res: Response) {
-    const data = { userId: req.user!.id };
+    const data = req.query;
+    data.userId = req.user!.id;
+    //@ts-ignore
     const rs = await ResultSrv.getByUser(data);
     res.status(200).json(rs);
   }

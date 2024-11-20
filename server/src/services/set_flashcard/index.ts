@@ -32,29 +32,52 @@ namespace SetFlashcardSrv {
   export async function getById(data: { id: string; userId?: string }) {
     let rs;
     if (!data.userId) {
-      rs = await setFlashcardModel
-        .findOne({
-          _id: data.id,
-          isPublic: true,
-        })
-        .lean();
-    }
-    rs = await setFlashcardModel
-      .findOne({
-        userId: data.userId,
+      rs = await setFlashcardModel.findOne({
         _id: data.id,
-      })
-      .lean();
+        isPublic: true,
+      });
+    }
+    rs = await setFlashcardModel.findOne({
+      userId: data.userId,
+      _id: data.id,
+    });
+
     if (!rs) {
       throw new NotFoundError("Không thể truy cập bộ flashcard này");
     }
-    const fls = await flashcardModel
-      .find({
-        setFlashcardId: rs?._id,
-      })
-      .lean();
+    const fls = await flashcardModel.find({
+      setFlashcardId: rs?._id,
+    });
+
     const t = { ...rs, flashcards: fls };
     return t;
+  }
+  export async function remove(data: { id: string; userId: string }) {
+    const rs = await setFlashcardModel.findByIdAndDelete({
+      _id: data.id,
+      userId: data.userId,
+    });
+    if (rs) {
+      const fls = await flashcardModel.deleteMany({
+        setFlashcardId: rs._id,
+      });
+    }
+    return rs;
+  }
+  export async function update(data: {
+    id: string;
+    title: string;
+    description: string;
+    userId: string;
+  }) {
+    const rs = await setFlashcardModel.findByIdAndUpdate(
+      { _id: data.id, userId: data.userId },
+      data,
+      {
+        new: true,
+      }
+    );
+    return rs;
   }
 }
 export default SetFlashcardSrv;

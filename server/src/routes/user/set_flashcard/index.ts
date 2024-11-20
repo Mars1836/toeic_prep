@@ -8,4 +8,6 @@ userSetFlashcardRouter.post("/", handleAsync(SetFlashcardCtrl.create));
 userSetFlashcardRouter.get("/id", handleAsync(SetFlashcardCtrl.getById));
 userSetFlashcardRouter.get("/user", handleAsync(SetFlashcardCtrl.getByUser));
 userSetFlashcardRouter.get("/public", handleAsync(SetFlashcardCtrl.getPublic));
+userSetFlashcardRouter.delete("/", handleAsync(SetFlashcardCtrl.remove));
+userSetFlashcardRouter.patch("/", handleAsync(SetFlashcardCtrl.update));
 export default userSetFlashcardRouter;

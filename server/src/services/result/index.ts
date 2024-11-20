@@ -23,7 +23,7 @@ namespace ResultSrv {
     rs: ResultAttr;
     rsis: ResultItemAttr[];
   }) {
-    const test = await testModel.findById(data.rs.testId).lean();
+    const test = await testModel.findById(data.rs.testId);
     if (!test) {
       throw new BadRequestError("Bài test không tồn tại.");
     }
@@ -47,29 +47,49 @@ namespace ResultSrv {
     }
 
     const newResults = await ResultItemRepo.createMany(rsItems!);
+    await TestRepo.addAttempt(data.rs.testId, data.rs.userId);
     return newResult;
   }
-  export async function getByUser(data: { userId: string }) {
+  export async function getByUser(data: {
+    userId: string;
+    limit?: number;
+    skip?: number;
+  }) {
     const isExist = await UserRepo.checkExist(data.userId);
     if (!isExist) {
       throw new BadRequestError("Người dùng không tồn tại");
     }
-    const result = await resultModel.find({
-      userId: data.userId,
-    });
+    const result = await resultModel
+      .find({
+        userId: data.userId,
+      })
+      .populate("testId")
+      .sort({ createdAt: -1 })
+      .skip(data.skip || 0)
+      .limit(data.limit || 3);
     return result;
   }
-  export async function getByTest(data: { userId: string; testId: string }) {
+  export async function getByTest(data: {
+    userId: string;
+    testId: string;
+    limit?: number;
+    skip?: number;
+  }) {
     if (!data.testId) {
       throw new NotFoundError("TestId phải được cung cấp");
     }
     if (!data.userId) {
       throw new NotFoundError("UserId phải được cung cấp");
     }
-    const rs = await resultModel.find({
-      userId: data.userId,
-      testId: data.testId,
-    });
+    const rs = await resultModel
+      .find({
+        userId: data.userId,
+        testId: data.testId,
+      })
+      .populate("testId")
+      .sort({ createdAt: -1 })
+      .skip(data.skip || 0)
+      .limit(data.limit || 3);
     return rs;
   }
   export async function getById(data: { userId: string; id?: string }) {

@@ -15,6 +15,7 @@ export interface TestAttr {
   numberOfQuestions: number;
   duration: number;
   fileName: string;
+  parts: number[];
 }
 
 export interface TestDoc extends mongoose.Document {
@@ -27,6 +28,7 @@ export interface TestDoc extends mongoose.Document {
   numberOfQuestions: number;
   duration: number;
   fileName: string;
+  parts: number[];
 }
 export interface TestModel extends mongoose.Model<TestDoc> {}
 const testSchema = new Schema(
@@ -50,8 +52,12 @@ const testSchema = new Schema(
     },
     numberOfParts: {
       type: Number,
-      require: true,
     },
+    parts: {
+      type: [Number],
+      default: [],
+    },
+
     code: {
       type: String,
       require: true,
