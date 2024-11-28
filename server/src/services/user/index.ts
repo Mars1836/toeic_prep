@@ -50,11 +50,16 @@ async function localLogin(data: { email: string; password: string }) {
 
   return user;
 }
+export async function getById(id: string) {
+  const user = await userModel.findById(id).select("-password");
+  return user;
+}
 export const userSrv = {
   localCreate,
   localLogin,
   googleCreate,
   facebookCreate,
+  getById,
 };
 export async function hashPassword(password: string) {
   return await bcrypt.hash(password, parseInt(constEnv.passwordSalt!));

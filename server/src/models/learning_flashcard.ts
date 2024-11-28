@@ -63,6 +63,7 @@ const learningFlashcardSchema = new Schema(
     learningSetId: {
       type: String,
       required: true,
+      ref: "LearningSet",
     },
     optimalTime: {
       type: Date,

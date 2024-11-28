@@ -6,6 +6,7 @@ import {
   flashcardModel,
 } from "../../models/flashcard.model";
 import { setFlashcardModel } from "../../models/set_flashcard.model";
+import LearningFlashcardRepo from "../learning_flashcard/repos";
 import SetFlashcardUtil from "../set_flashcard/repos";
 
 namespace FlashCardSrv {
@@ -33,6 +34,11 @@ namespace FlashCardSrv {
       throw new BadRequestError("Set flashcard not exist.");
     }
     const newCard = await flashcardModel.create(data);
+    await LearningFlashcardRepo.createMany(
+      [{ flashcardId: newCard.id }],
+      userId,
+      data.setFlashcardId
+    );
     await setFlashcardModel.updateOne(
       { _id: data.setFlashcardId, userId: userId },
       { $inc: { numberOfFlashcards: 1 } }

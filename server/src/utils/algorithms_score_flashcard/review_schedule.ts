@@ -24,7 +24,6 @@ export class SuperMemo {
     EF = this.countEF(EF, Q, difficult_rate);
     // Đảm bảo EF không nhỏ hơn 1.3
     // Cập nhật số lần ôn tập
-    console.log("n: ", n, "interval, EF: ", interval, EF, interval * EF);
     // Cập nhật Interval (I) tùy thuộc vào số lần ôn tập
     if (n === 1) {
       interval = 1; // Lần học đầu tiên

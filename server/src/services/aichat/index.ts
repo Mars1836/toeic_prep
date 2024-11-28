@@ -1,3 +1,4 @@
+import { explainAIModel } from "../../configs/aichat/explainQues";
 import { modelAI } from "../../configs/aichat/fillField";
 import { modelAIQuizz } from "../../configs/aichat/renderQuizz";
 import { BadRequestError } from "../../errors/bad_request_error";
@@ -21,6 +22,13 @@ namespace AiChatSrv {
       flashcards
     )}`;
     const result = await modelAIQuizz.generateContent(prompt);
+    return result.response.text();
+  }
+  export async function explainQuestion(question: Object) {
+    const prompt = `Tạo lời giải bằng tiếng việt với câu hỏi: ${JSON.stringify(
+      question
+    )}`;
+    const result = await explainAIModel.generateContent(prompt);
     return result.response.text();
   }
 }

@@ -12,6 +12,7 @@ import userPaymentRouter from "./payment";
 import aiChatRouter from "./aichat";
 import learingSetRouter from "./learning_set";
 import learingFlashcardRouter from "./learning_flashcard";
+import userProfileRouter from "./profile";
 
 const routerU = express.Router();
 routerU.use("/auth", userAuthRouter);
@@ -19,7 +20,7 @@ routerU.use("/flashcard", handleAsync(requireAuth), userFlashcardRouter);
 routerU.use("/set-flashcard", handleAsync(requireAuth), userSetFlashcardRouter);
 routerU.use("/result", handleAsync(requireAuth), userResultRouter);
 routerU.use("/result-item", handleAsync(requireAuth), userResultItemRouter);
-routerU.use("/test", handleAsync(requireAuth), testRouter);
+routerU.use("/test", testRouter);
 routerU.use("/payment", handleAsync(requireAuth), userPaymentRouter);
 routerU.use("/ai-chat", handleAsync(requireAuth), aiChatRouter);
 routerU.use("/learning-set", handleAsync(requireAuth), learingSetRouter);
@@ -28,4 +29,6 @@ routerU.use(
   handleAsync(requireAuth),
   learingFlashcardRouter
 );
+routerU.use("/profile", handleAsync(requireAuth), userProfileRouter);
+
 export default routerU;

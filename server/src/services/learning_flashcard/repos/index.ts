@@ -1,8 +1,36 @@
-import { learningFlashcardModel } from "../../../models/learning_flashcard";
+import {
+  LearningFlashcardAttr,
+  learningFlashcardModel,
+} from "../../../models/learning_flashcard";
+import { learningSetModel } from "../../../models/learning_set.model";
+import { setFlashcardModel } from "../../../models/set_flashcard.model";
 import { AlgorithmsScoreFlashcard } from "../../../utils/algorithms_score_flashcard";
 const DISTANCE_FACTOR = 2;
-
+type LearningFlashcardInput = {
+  flashcardId: string;
+};
 namespace LearningFlashcardRepo {
+  export async function createMany(
+    data: LearningFlashcardInput[],
+    userId: string,
+    setFlashcardId: string
+  ) {
+    const learningSet = await learningSetModel.findOne({
+      setFlashcardId: setFlashcardId,
+      userId,
+    });
+    if (!learningSet) {
+      return null;
+    }
+    const learnignFlashcardData = data.map((item) => {
+      return {
+        flashcardId: item.flashcardId,
+        learningSetId: learningSet.id,
+      };
+    });
+    const rs = await learningFlashcardModel.insertMany(learnignFlashcardData);
+    return rs;
+  }
   export async function updateScore(data: {
     id: string;
     difficult_rate: number;
@@ -52,9 +80,13 @@ namespace LearningFlashcardRepo {
       );
     }
     let isCountNextOptimalTime = false;
-    if (t_actual && t_actual / algorithmsScoreFlashcard.interval > 0.8) {
+    if (
+      !learningFlashcard.interval ||
+      (t_actual && t_actual / (learningFlashcard.interval || 0.1) > 0.8)
+    ) {
       isCountNextOptimalTime = true;
     }
+
     const optimalDateNext = new Date(
       now.getTime() +
         algorithmsScoreFlashcard.calculateOptimalTime() * 1000 * 60 * 60 * 24

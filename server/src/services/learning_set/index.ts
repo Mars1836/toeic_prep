@@ -1,12 +1,16 @@
 import { BadRequestError } from "../../errors/bad_request_error";
 import { NotFoundError } from "../../errors/not_found_error";
 import { flashcardModel } from "../../models/flashcard.model";
-import { learningFlashcardModel } from "../../models/learning_flashcard";
+import {
+  LearningFlashcardAttr,
+  learningFlashcardModel,
+} from "../../models/learning_flashcard";
 import {
   learningSetModel,
   LearningSetAttr,
 } from "../../models/learning_set.model";
 import { setFlashcardModel } from "../../models/set_flashcard.model";
+import { getRateDiffDays } from "../../utils";
 
 namespace LearningSetSrv {
   // Add a set to the user's learning list
@@ -40,7 +44,6 @@ namespace LearningSetSrv {
         learningSetId: newLearningSet.id,
       };
     });
-    console.log(learnignFlashcardData);
     const learningFlashcards = await learningFlashcardModel.insertMany(
       learnignFlashcardData
     );
@@ -69,24 +72,47 @@ namespace LearningSetSrv {
     return deletedLearningSet;
   }
   export async function getLearningSetByUser(userId: string) {
-    const result = await learningSetModel
+    let result = await learningSetModel
       .find({
         userId,
       })
-      .populate("setFlashcardId");
-
+      .populate("setFlashcardId")
+      .populate("learningFlashcards")
+      .lean();
     if (!result) {
       throw new Error("Set not found in the learning list.");
     }
 
-    return result;
+    let result1 = result.map((item) => {
+      return {
+        ...item,
+        id: item._id,
+        learningFlashcards: item.learningFlashcards.map(
+          (flashcard: LearningFlashcardAttr) => {
+            return getRateDiffDays(flashcard);
+          }
+        ),
+      };
+    });
+
+    return result1;
   }
   export async function getLearningSetBySetId(setFlashcardId: string) {
     const result = await learningSetModel
       .findOne({
         setFlashcardId,
       })
-      .populate("setFlashcardId"); //TODO: add populate
+      .populate("setFlashcardId")
+      .populate("learningFlashcards");
+    if (!result) {
+      throw new NotFoundError("Set not found in the learning list.");
+    }
+    return result;
+  }
+  export async function getLearningSetById(learningSetId: string) {
+    const result = await learningSetModel
+      .findById(learningSetId)
+      .populate("setFlashcardId");
     if (!result) {
       throw new NotFoundError("Set not found in the learning list.");
     }

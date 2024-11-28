@@ -26,6 +26,8 @@ export interface ResultDoc extends mongoose.Document {
   numberOfCorrectAnswers: number;
   secondTime: number; // Thời gian (tính bằng giây)
   parts: number[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Định nghĩa interface cho model Result

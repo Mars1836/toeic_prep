@@ -7,5 +7,6 @@ import AiChatCtrl from "../../../controllers/aichat";
 const aiChatRouter = express.Router();
 aiChatRouter.post("/get-fc-infor", handleAsync(AiChatCtrl.getFlashcardInfor));
 aiChatRouter.post("/get-quizz", handleAsync(AiChatCtrl.getQuizz));
+aiChatRouter.post("/get-explanation", handleAsync(AiChatCtrl.explainQuestion));
 
 export default aiChatRouter;

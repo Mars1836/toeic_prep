@@ -12,5 +12,9 @@ namespace ResultItemRepo {
     const rs = await resultItemModel.insertMany(resultItems);
     return rs;
   }
+  export async function deleteMany(resultId: string) {
+    const rs = await resultItemModel.deleteMany({ resultId });
+    return rs;
+  }
 }
 export default ResultItemRepo;

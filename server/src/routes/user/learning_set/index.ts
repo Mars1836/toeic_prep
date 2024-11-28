@@ -8,4 +8,5 @@ learingSetRouter.post("/", handleAsync(LearningSetCtl.addSetToLearn));
 learingSetRouter.delete("/", handleAsync(LearningSetCtl.removeSetFromLearn));
 learingSetRouter.get("/user", handleAsync(LearningSetCtl.getLearningSetByUser));
 learingSetRouter.get("/set", handleAsync(LearningSetCtl.getLearningSetBySetId));
+learingSetRouter.get("/id", handleAsync(LearningSetCtl.getLearningSetById));
 export default learingSetRouter;

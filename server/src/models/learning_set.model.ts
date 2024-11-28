@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { LearningFlashcardAttr } from "./learning_flashcard";
 const { Schema } = mongoose;
 
 // Define interface for LearningSet attributes
@@ -15,6 +16,7 @@ export interface LearningSetDoc extends mongoose.Document {
   setFlashcardId: string;
   status: string;
   lastStudied?: Date;
+  learningFlashcards: LearningFlashcardAttr[];
 }
 
 // Define interface for LearningSet model
@@ -43,7 +45,11 @@ const learningSetSchema = new Schema(
   },
   {
     timestamps: true,
+    toObject: {
+      virtuals: true,
+    },
     toJSON: {
+      virtuals: true,
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
@@ -52,7 +58,11 @@ const learningSetSchema = new Schema(
     },
   }
 );
-
+learningSetSchema.virtual("learningFlashcards", {
+  ref: "LearningFlashcard",
+  localField: "_id",
+  foreignField: "learningSetId",
+});
 // Create model from schema
 export const learningSetModel = mongoose.model<
   LearningSetDoc,

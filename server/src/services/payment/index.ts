@@ -52,7 +52,6 @@ namespace PaymentSrv {
       return_message: "",
       data: {},
     };
-    console.log(data);
     let dataStr = data.data;
     let reqMac = data.mac;
 
@@ -66,10 +65,7 @@ namespace PaymentSrv {
       // thanh toán thành công
       // merchant cập nhật trạng thái cho đơn hàng ở đây
       let dataJson = JSON.parse(dataStr);
-      console.log(
-        "update order's status = success where app_trans_id =",
-        dataJson["app_trans_id"]
-      );
+
       result.return_code = 1;
       result.return_message = "success";
       result.data = dataJson;

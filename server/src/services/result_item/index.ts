@@ -22,7 +22,6 @@ namespace ResultItemSrv {
     if (!data.resultId) {
       throw new BadRequestError("resultId phải được cung cấp!");
     }
-    console.log(data.resultId);
     const rs = await resultItemModel.find({
       userId: data.userId,
       resultId: data.resultId,

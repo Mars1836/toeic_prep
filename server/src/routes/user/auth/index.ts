@@ -106,9 +106,14 @@ userAuthRouter.post(
     throw new BadRequestError("Username or password is wrong");
   })
 );
-userAuthRouter.get("/getinfor", function (req: Request, res: Response) {
-  res.json(req.user);
-});
+userAuthRouter.get(
+  "/getinfor",
+  handleAsync(requireAuth),
+  handleAsync(async (req: Request, res: Response) => {
+    const user = await userSrv.getById(req.user.id);
+    res.json(user);
+  })
+);
 userAuthRouter.post("/logout", function (req: Request, res: Response) {
   req.session = null;
   res.json("1");

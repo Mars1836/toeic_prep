@@ -26,7 +26,6 @@ namespace LearningFlashcardCtl {
   }
   export async function updateSessionScore(req: Request, res: Response) {
     const data = req.body;
-    console.log(data);
     const rs = await LearningFlashcardSrv.updateSessionScore(data);
     res.status(200).json(rs);
   }

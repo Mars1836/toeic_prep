@@ -45,12 +45,8 @@ namespace SetFlashcardSrv {
     if (!rs) {
       throw new NotFoundError("Không thể truy cập bộ flashcard này");
     }
-    const fls = await flashcardModel.find({
-      setFlashcardId: rs?._id,
-    });
 
-    const t = { ...rs, flashcards: fls };
-    return t;
+    return rs;
   }
   export async function remove(data: { id: string; userId: string }) {
     const rs = await setFlashcardModel.findByIdAndDelete({

@@ -3,7 +3,7 @@ export class MemoryRetention {
   C: number;
   /**
    * Khởi tạo lớp với các tham số cơ bản.
-   * @param {number} k - Hệ số suy giảm (mặc định: 0.1).
+   * @param {number} k - Hệ số suy giảm (mặc định: 0.2).
    * @param {number} C - Hệ số tăng cường học tập (mặc định: 0.2).
    */
   constructor(k = 0.2, C = 0.2) {

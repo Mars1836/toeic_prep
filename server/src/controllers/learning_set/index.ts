@@ -25,15 +25,15 @@ namespace LearningSetCtl {
     const rs = await LearningSetSrv.getLearningSetByUser(userId);
     res.status(200).json(rs);
   }
-  export async function getLearningSetById(req: Request, res: Response) {
-    //@ts-ignore
-    const userId = req.user!.id;
-    const rs = await LearningSetSrv.getLearningSetByUser(userId);
-    res.status(200).json(rs);
-  }
+
   export async function getLearningSetBySetId(req: Request, res: Response) {
     const { setFlashcardId } = req.query as { setFlashcardId: string };
     const rs = await LearningSetSrv.getLearningSetBySetId(setFlashcardId);
+    res.status(200).json(rs);
+  }
+  export async function getLearningSetById(req: Request, res: Response) {
+    const { id } = req.query as { id: string };
+    const rs = await LearningSetSrv.getLearningSetById(id);
     res.status(200).json(rs);
   }
 }

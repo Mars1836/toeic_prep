@@ -34,6 +34,7 @@ namespace ResultSrv {
     }).length;
     const newResult = await resultModel.create(data.rs); // result
     let rsItems;
+
     if (newResult) {
       rsItems = data.rsis.map((item) => {
         return {
@@ -45,7 +46,7 @@ namespace ResultSrv {
         };
       }) as ResultItemAttr[];
     }
-
+    console.log(rsItems);
     const newResults = await ResultItemRepo.createMany(rsItems!);
     await TestRepo.addAttempt(data.rs.testId, data.rs.userId);
     return newResult;
@@ -103,6 +104,20 @@ namespace ResultSrv {
       userId: data.userId,
       _id: data.id,
     });
+    return rs;
+  }
+  export async function deleteById(data: { userId: string; id?: string }) {
+    if (!data.id) {
+      throw new NotFoundError("Id phải được cung cấp");
+    }
+    if (!data.userId) {
+      throw new NotFoundError("UserId phải được cung cấp");
+    }
+    const rs = await resultModel.deleteOne({
+      userId: data.userId,
+      _id: data.id,
+    });
+    await ResultItemRepo.deleteMany(data.id);
     return rs;
   }
 }

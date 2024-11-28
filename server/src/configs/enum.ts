@@ -30,13 +30,3 @@ export enum Role {
   admin = "admin",
   user = "user",
 }
-export enum QuestionCategory {
-  detail = "detail",
-  inference = "inference",
-  vocabulary = "vocabulary",
-  real_situation = "real_situation",
-  main_idea = "main_idea",
-  connecting_ideas = "connecting_ideas",
-  tone_and_purpose = "tone_and_purpose",
-  text_com = "text_com",
-}

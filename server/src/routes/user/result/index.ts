@@ -7,4 +7,6 @@ userResultRouter.post("/", handleAsync(ResultCtrl.create));
 userResultRouter.get("/test", handleAsync(ResultCtrl.getByTest));
 userResultRouter.get("/user", handleAsync(ResultCtrl.getByUser));
 userResultRouter.get("/id", handleAsync(ResultCtrl.getById));
+userResultRouter.delete("/id", handleAsync(ResultCtrl.deleteById));
 export default userResultRouter;
+ 

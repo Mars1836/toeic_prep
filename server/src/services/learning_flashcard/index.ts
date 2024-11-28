@@ -14,8 +14,8 @@ namespace LearningFlashcardSrv {
       .find({
         learningSetId: learningSetId,
       })
-      .populate("flashcardId");
-
+      .populate("flashcardId")
+      .sort({ createdAt: -1 });
     if (!result) {
       throw new Error("Set not found in the learning list.");
     }
