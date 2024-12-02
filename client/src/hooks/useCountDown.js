@@ -11,8 +11,6 @@ const useCountdown = ({
   const [time, setTime] = useState(timeCD);
   const [loop, setLoop] = useState(0);
   useEffect(() => {
-    console.log(loop);
-    console.log(time);
     if (!loop) {
       return;
     }
@@ -33,9 +31,7 @@ const useCountdown = ({
     }, 1000);
     return () => clearInterval(id);
   }, [loop]);
-  useEffect(() => {
-    console.log(time);
-  }, [time]);
+
   function startCountdown() {
     setTime(timeCD);
     setLoop((pre) => pre + 1);

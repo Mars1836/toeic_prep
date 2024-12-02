@@ -13,7 +13,6 @@ export function ToeicPart1Questions({
   answerList,
   isCheck,
 }) {
-  console.log(question, answerList[question.id]);
   const [selectedOption, setSelectedOption] = useState(answerList[question.id]);
   const handleOptionChange = (value) => {
     if (isCheck) {
@@ -45,7 +44,6 @@ export function ToeicPart1Questions({
           height={500}
         />
       </div>
-      {console.log(selectedOption)}
       <RadioGroup
         value={selectedOption || ""}
         onValueChange={handleOptionChange}

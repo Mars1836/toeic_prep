@@ -68,8 +68,6 @@ function UploadWordExcel() {
     if (!checkValueTable()) {
       return false;
     }
-
-    console.log("thanh cong");
   };
   const handleAddError = ({ message }) => {
     const error = {
@@ -93,7 +91,6 @@ function UploadWordExcel() {
       data = data.map((row) =>
         row.map((cell) => (typeof cell === "string" ? cell.trim() : cell))
       );
-      console.log(data);
       setExcelData(data);
     }
   };

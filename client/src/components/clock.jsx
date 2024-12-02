@@ -17,7 +17,6 @@ function ClockCtrl({
     console.log("timeout");
   },
 }) {
-  console.log(limit);
   const [m, setM] = useState(Math.floor((limit % 3600) / 60) ?? 0);
   const [s, setS] = useState(Math.floor(limit % 60) ?? 0);
   const [h, setH] = useState(Math.floor(limit / 3600) ?? 0);

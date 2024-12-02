@@ -32,7 +32,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/exam_question/Question.jsx"  ],
+, "src/components/exam_question/Question.jsx", "src/app/(defaultlayout)/flashcards/set/[id]/study/result.jsx"  ],
   "exclude": [
     "node_modules"
   ]

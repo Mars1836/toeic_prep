@@ -9,6 +9,7 @@ import {
   Mail,
   Zap,
   Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +26,9 @@ import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { handleErrorWithToast } from "~helper";
+import { expiredDate, formatDate, handleErrorWithToast } from "~helper";
+import { Alert, AlertDescription, AlertTitle } from "~components/ui/alert";
+import { useSelector } from "react-redux";
 
 const features = [
   { name: "Làm bài thi TOEIC", free: true, pro: true, icon: Book },
@@ -60,6 +63,7 @@ function FeatureRow({ feature, isPro }) {
 
 export default function EnhancedPricingComparisonComponent() {
   const [paymentLoading, setPaymentloading] = useState(false);
+  const user = useSelector((state) => state.user.data);
   const router = useRouter();
   async function handleUpgrade() {
     try {
@@ -82,6 +86,77 @@ export default function EnhancedPricingComparisonComponent() {
         Nâng cao kỹ năng TOEIC của bạn với các tính năng độc đáo
       </p>
       <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {user.upgradeStatus === "UPGRADED" && (
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-2xl">
+                Gói hiện tại của bạn: Nâng cấp
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Thông báo</AlertTitle>
+                <AlertDescription>
+                  Gói Nâng cấp của bạn sẽ hết hạn vào ngày{" "}
+                  {formatDate(user.upgradeExpiredDate)}
+                </AlertDescription>
+              </Alert>
+            </CardContent>
+            <CardFooter>
+              <Button
+                className="w-full bg-[#15192c] hover:bg-[#15192c]/90"
+                onClick={handleUpgrade}
+              >
+                {paymentLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Đang xử lý...
+                  </>
+                ) : (
+                  "Gia hạn gói Nâng cấp"
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
+        {user.upgradeStatus === "EXPIRED" && (
+          <Card className="md:col-span-2 ">
+            <CardHeader>
+              <CardTitle className="text-2xl">Trạng thái gói dịch vụ</CardTitle>
+            </CardHeader>
+            <CardContent className="border-red-500 text-red-500">
+              <Alert
+                variant="destructive"
+                className="border-red-500 text-red-500"
+              >
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Thông báo</AlertTitle>
+                <AlertDescription>
+                  Gói Nâng cấp của bạn đã hết hạn vào ngày{" "}
+                  {expiredDate(user.upgradeExpiredDate)}. Vui lòng gia hạn để
+                  tiếp tục sử dụng các tính năng nâng cao.
+                </AlertDescription>
+              </Alert>
+            </CardContent>
+            <CardFooter>
+              <Button
+                className="w-full bg-[#15192c] hover:bg-[#15192c]/90"
+                onClick={handleUpgrade}
+              >
+                {paymentLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Đang xử lý...
+                  </>
+                ) : (
+                  "Gia hạn gói Nâng cấp"
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
+
         <Card className="border-gray-200 transition-all duration-300 hover:shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl">Gói Miễn phí</CardTitle>
@@ -97,7 +172,7 @@ export default function EnhancedPricingComparisonComponent() {
           </CardContent>
           <CardFooter>
             <Button className="w-full" variant="outline">
-              Đang sử dụng
+              {user.upgradeStatus === "UPGRADED" ? "Đang sử dụng" : "Miễn phí"}
             </Button>
           </CardFooter>
         </Card>
@@ -122,19 +197,37 @@ export default function EnhancedPricingComparisonComponent() {
             ))}
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-              onClick={handleUpgrade}
-            >
-              {paymentLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Đang xử lý...
-                </>
-              ) : (
-                "Nâng cấp ngay"
-              )}
-            </Button>
+            {user.upgradeStatus === "UPGRADED" && (
+              <Button
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                onClick={handleUpgrade}
+              >
+                {paymentLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Đang xử lý...
+                  </>
+                ) : (
+                  "Nâng cấp ngay"
+                )}
+              </Button>
+            )}
+            {user.upgradeStatus === "EXPIRED" && (
+              <Button
+                className="w-full"
+                variant="outline"
+                onClick={handleUpgrade}
+              >
+                {paymentLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Đang xử lý...
+                  </>
+                ) : (
+                  "Gia hạn thêm"
+                )}
+              </Button>
+            )}
           </CardFooter>
           <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/10 rounded-full"></div>
         </Card>

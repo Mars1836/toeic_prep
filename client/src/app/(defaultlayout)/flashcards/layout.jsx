@@ -5,17 +5,19 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ListIcon, BookOpenIcon, CompassIcon } from "lucide-react";
 import { useEffect } from "react";
-
+import { useRouter } from "next/navigation";
 const navItems = [
-  { name: "My List", href: "/flashcards", icon: ListIcon },
+  { name: "My List", href: "/flashcards/set", icon: ListIcon },
   { name: "Studying", href: "/flashcards/studying", icon: BookOpenIcon },
   { name: "Explore", href: "/flashcards/explore", icon: CompassIcon },
 ];
 
 export default function NavigationLayout({ children }) {
   const pathname = usePathname();
+  const router = useRouter();
   useEffect(() => {
-    console.log(pathname);
+    router.prefetch(`/flashcards/studying`);
+    router.prefetch(`/flashcards/set`);
   }, []);
   return (
     <div className="mt-4">

@@ -24,11 +24,24 @@
     --input: hsl(220, 13%, 91%);
     --ring: hsl(224, 71.4%, 4.1%);
     --radius: 0.5rem;
-    --chart-1: hsl(12, 76%, 61%);
-    --chart-2: hsl(173, 58%, 39%);
-    --chart-3: hsl(197, 37%, 24%);
-    --chart-4: hsl(43, 74%, 66%);
-    --chart-5: hsl(27, 87%, 67%);
+    --chart-1: hsl(12, 76%, 61%);  /* Đỏ cam */
+    --chart-2: hsl(173, 58%, 39%); /* Xanh lá đậm */
+    --chart-3: hsl(197, 37%, 24%); /* Xanh dương đậm */
+    --chart-4: hsl(43, 74%, 66%);  /* Vàng nhạt */
+    --chart-5: hsl(27, 87%, 67%);  /* Đỏ tươi */
+    --chart-6: hsl(60, 52%, 61%);  /* Vàng sáng */
+    --chart-7: hsl(107, 56%, 49%); /* Xanh lá vừa */
+    --chart-8: hsl(197, 81%, 54%); /* Xanh biển sáng */
+    --chart-9: hsl(205, 70%, 53%); /* Xanh dương vừa */
+    --chart-10: hsl(280, 65%, 55%); /* Tím đậm */
+    --chart-11: hsl(140, 80%, 50%); /* Xanh lá vừa sáng */
+    --chart-12: hsl(350, 100%, 60%); /* Đỏ hồng */
+    --chart-13: hsl(0, 0%, 80%);   /* Xám sáng */
+    --chart-14: hsl(0, 80%, 80%);  /* Hồng sáng */
+    --chart-15: hsl(120, 60%, 70%); /* Xanh lá sáng */
+    --chart-16: hsl(0, 75%, 75%);  /* Đỏ sáng */
+    --chart-17: hsl(240, 100%, 60%); /* Tím sáng */
+    --chart-18: hsl(180, 40%, 70%); /* Xanh nhạt */
   }
 
   .dark {
@@ -51,11 +64,24 @@
     --border: hsl(215, 27.9%, 16.9%);
     --input: hsl(215, 27.9%, 16.9%);
     --ring: hsl(216, 12.2%, 83.9%);
-    --chart-1: hsl(220, 70%, 50%);
-    --chart-2: hsl(160, 60%, 45%);
-    --chart-3: hsl(30, 80%, 55%);
-    --chart-4: hsl(280, 65%, 60%);
-    --chart-5: hsl(340, 75%, 55%);
+    --chart-1: hsl(220, 70%, 50%); /* Xanh dương */
+    --chart-2: hsl(160, 60%, 45%); /* Xanh lá */
+    --chart-3: hsl(30, 80%, 55%);  /* Cam */
+    --chart-4: hsl(280, 65%, 60%); /* Tím */
+    --chart-5: hsl(340, 75%, 55%); /* Đỏ */
+    --chart-6: hsl(50, 85%, 55%);  /* Vàng */
+    --chart-7: hsl(0, 0%, 50%);    /* Xám */
+    --chart-8: hsl(120, 80%, 40%); /* Xanh lá đậm */
+    --chart-9: hsl(180, 70%, 50%); /* Xanh nước biển */
+    --chart-10: hsl(60, 100%, 50%); /* Vàng tươi */
+    --chart-11: hsl(90, 100%, 40%); /* Xanh lá đậm */
+    --chart-12: hsl(10, 100%, 40%); /* Đỏ tươi */
+    --chart-13: hsl(200, 100%, 45%); /* Xanh dương sáng */
+    --chart-14: hsl(330, 70%, 60%); /* Đỏ hồng */
+    --chart-15: hsl(270, 60%, 50%); /* Tím đậm */
+    --chart-16: hsl(180, 50%, 55%); /* Xanh nhạt */
+    --chart-17: hsl(360, 80%, 50%); /* Đỏ tươi */
+    
   }
 }
 body[data-scroll-locked] {

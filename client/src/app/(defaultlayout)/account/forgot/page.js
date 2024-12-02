@@ -21,9 +21,7 @@ function ForgetPage() {
     url: endpoint.auth.sendResetPwEmail,
     method: "post",
     body: { email: email.value },
-    onSuccess: () => {
-      console.log("asd");
-    },
+    onSuccess: () => {},
     onFailed: () => {},
   });
   const { time, startCountdown } = useCountdown({

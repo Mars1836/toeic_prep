@@ -14,12 +14,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Loader2, PlusIcon } from "lucide-react";
+import { Loader2, Lock, PlusIcon } from "lucide-react";
 import useInput from "@/hooks/useInput";
 import { toast } from "react-toastify";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
 import useFetch from "~hooks/useFetch";
+import { useSelector } from "react-redux";
 const AICompletion = async (word) => {
   // Trong thực tế, đây sẽ là một cuộc gọi API đến dịch vụ AI
   const { data } = await instance.post(endpoint.aichat.getFlashcardInfor, {
@@ -38,7 +39,11 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
   const inputNote = useInput("");
   const inputPartOfSpeech = useInput("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const isUpgraded = useSelector((state) => state.user.data.isUpgraded);
+  const goToUpgrade = () => {
+    setOpen(false);
+    router.push("/upgrade");
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const flashcard = {
@@ -57,7 +62,6 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
         : "", // Tách các loại từ bằng dấu phẩy
       pronunciation: inputPronunciation.value || "", // Phiên âm, nếu không rỗng
     };
-    // return console.log(flashcard);
     const { data } = await instance.post(
       endpoint.flashcardItem.create,
       flashcard
@@ -99,9 +103,7 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
       setIsLoading(false);
     }
   };
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
+  useEffect(() => {}, [isLoading]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -212,20 +214,39 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
             </div>
           </div>
           <DialogFooter>
-            <Button
-              onClick={handleAutoComplete}
-              disabled={isLoading}
-              className=""
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Đang tự động điền...
-                </>
-              ) : (
-                "Tự động điền bằng AI"
-              )}
-            </Button>
+            {isUpgraded ? (
+              <Button
+                onClick={handleAutoComplete}
+                disabled={isLoading}
+                className=""
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Đang tự động điền...
+                  </>
+                ) : (
+                  "Tự động điền bằng AI"
+                )}
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="link"
+                  className="text-blue-500"
+                  onClick={goToUpgrade}
+                >
+                  Upgrade to use
+                </Button>
+                <Button
+                  className=" bg-gray-200 text-gray-500 cursor-not-allowed"
+                  disabled
+                >
+                  <Lock className="mr-2 h-4 w-4" />
+                  Tự động điền bằng AI
+                </Button>
+              </>
+            )}
             <Button type="submit" variant="">
               Save
             </Button>

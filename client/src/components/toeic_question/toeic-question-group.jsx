@@ -92,7 +92,6 @@ function ToeicQuestionGroup({
   isCheck,
 }) {
   const question = questions[0];
-  console.log(questions);
   if (questions[0].type === "part3") {
     return (
       <div>

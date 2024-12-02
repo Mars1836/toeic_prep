@@ -11,7 +11,6 @@ export function handleErrorPromiseToast(
 ) {
   //(mes1 - ưu tiên sau cùng, mes2 - ưu tiên đầu)
   return function render(data) {
-    console.log(data);
     if (message2) {
       return message2;
     }

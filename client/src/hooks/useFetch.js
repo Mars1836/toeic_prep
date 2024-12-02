@@ -17,9 +17,7 @@ const useFetch = ({ url, method, body, onSuccess, onFailed }) => {
     try {
       let res;
       // id = toast.loading("Please wait...");
-      // console.log(id);
       if ("method" === "get") {
-        console.log(111);
         res = await instance[method](url);
       } else {
         res = await instance[method](url, body);
@@ -36,12 +34,6 @@ const useFetch = ({ url, method, body, onSuccess, onFailed }) => {
           return onFailed(error);
         }
         error.response.data.errors.map((err) => {
-          // console.log(id);
-          // toast.update(id, {
-          //   render: err.message,
-          //   type: "error",
-          //   isLoading: false,
-          // });
           toast.error(err.message);
         });
       } else {

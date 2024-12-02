@@ -44,7 +44,6 @@ export function Question({
           height={500}
         />
       </div>
-      {console.log(selectedOption)}
       <RadioGroup
         value={selectedOption || ""}
         onValueChange={handleOptionChange}

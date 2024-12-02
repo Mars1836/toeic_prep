@@ -5,19 +5,35 @@ import { useEffect } from "react";
 import { setUserState } from "@/lib/redux/userSlice";
 import useFetch from "@/hooks/useFetch";
 import { endpoint } from "@/consts";
+import instance from "~configs/axios.instance";
+function setUpgradeStatus(upgradeExpiredDate) {
+  if (!upgradeExpiredDate) return "FREE";
+  return new Date() < new Date(upgradeExpiredDate) ? "UPGRADED" : "EXPIRED";
+}
+function formatUser(user) {
+  console.log(new Date(user.upgradeExpiredDate));
+  return {
+    ...user,
+    upgradeStatus: setUpgradeStatus(user.upgradeExpiredDate),
+    isUpgraded: new Date() < new Date(user.upgradeExpiredDate),
+  };
+}
 
 function RootLayout({ children }) {
   const dispatch = useDispatch();
-  const { sendRequest, errors } = useFetch({
-    url: endpoint.auth.currentUser,
-    method: "get",
-    onSuccess: (data) => {
-      console.log(data);
-      dispatch(setUserState(data));
-    },
-  });
+
   useEffect(() => {
-    sendRequest();
+    const fetchData = async () => {
+      try {
+        const { data } = await instance.get(endpoint.auth.currentUser);
+        if (!data) return;
+        dispatch(setUserState(formatUser(data)));
+      } catch (error) {
+        dispatch(setUserState(null));
+      }
+    };
+
+    fetchData();
   }, []);
   return <div>{children}</div>;
 }

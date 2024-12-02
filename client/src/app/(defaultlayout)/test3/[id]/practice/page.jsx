@@ -52,18 +52,21 @@ function TestPage({ params }) {
   const [questionMap, setQuestionMap] = useState({});
   const router = useRouter();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-
   const idTest = params.id;
   const searchParams = useSearchParams();
   const parts = searchParams.get("parts")?.split(",").map(Number) || [];
   const time = Number(searchParams.get("time")) * 60;
-
+  const containerParts = [];
+  const handleCounterParts = (part) => {
+    if (!containerParts.includes(part)) {
+      containerParts.push(part);
+    }
+  };
   const handleFileUpload = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      console.log(getExcel(testData.fileName, testData.code));
       const response = await fetch(getExcel(testData.fileName, testData.code));
       const arrayBuffer = await response.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer, { type: "array" });
@@ -93,6 +96,7 @@ function TestPage({ params }) {
         part: questionMap[key].part,
         questionNum: questionMap[key].number,
         timeSecond: Math.round(value.timeSecond / 1000),
+        questionCategory: questionMap[key].category,
       };
     }
     const dataFetch = {
@@ -104,7 +108,6 @@ function TestPage({ params }) {
       },
       rsis: Object.values(_resultItems),
     };
-
     const d = await instance.post(endpoint.result.storeResult, dataFetch);
     if (d?.data) {
       router.push(`/test3/${idTest}/result/${d.data.id}`);
@@ -145,7 +148,6 @@ function TestPage({ params }) {
       for (let i = 1; i < data.length; i++) {
         const arr = data[i];
         if (!parts.includes(arr[10])) {
-          console.log(arr);
           continue;
         }
         const questionItem = {
@@ -180,7 +182,6 @@ function TestPage({ params }) {
         list.push(questionItem);
         _questionMap[arr[0]] = questionItem;
       }
-      console.log(_questionMap);
       setQuestionMap(_questionMap);
     }
   }, [data]);
@@ -221,209 +222,218 @@ function TestPage({ params }) {
     fetchTestData();
   }, []);
   return (
-    <div className="container mx-auto px-2 py-8 lg:px-20">
-      <div className="flex flex-col gap-6 md:flex-row">
-        <div className="flex-grow">
-          {Object.values(questionMap).map((question, index) => {
-            return (
-              <div key={question.id}>
-                {(index == 0 ||
-                  questionMap[index]?.part !== question?.part) && (
-                  <h3 className="text-center text-2xl font-semibold mb-10">
-                    Part {question.part}
-                  </h3>
-                )}
-                <div className="max-w-full" key={question.id}>
-                  <p className="font-semibold" id={question.number}>
-                    Câu {question.number}
-                  </p>
-                  {question.paragraph && (
-                    <div className="my-4 rounded border bg-blue-100 p-4">
-                      <pre
-                        style={{
-                          overflowWrap: "break-word",
-                          whiteSpace: "pre-wrap",
-                        }}
-                      >
-                        {question.paragraph}
-                      </pre>
-                    </div>
-                  )}
-
-                  {question.audio && (
-                    <div className="m-4">
-                      <audio
-                        controls
-                        className="custom-audio w-full"
-                        src="/temp.mp3"
-                        id={"audio" + question.id}
-                        onPlay={() => {
-                          handleAudioStart(question.id, question.audio);
-                        }}
-                      ></audio>
-                    </div>
-                  )}
-                  {question.image && (
-                    <div className="aspect-w-16 aspect-h-9 relative flex justify-center">
-                      <Image
-                        src={getImage(question.image, testData.code)}
-                        alt={`TOEIC Part 1 Question ${question.id} Image`}
-                        className="rounded-lg"
-                        width={600}
-                        height={500}
-                      />
-                    </div>
-                  )}
-                  <ChooseOption
-                    question={question}
-                    handleChooseOption={handleChooseOption(question.id)}
-                    isCheck={isCheck}
-                  ></ChooseOption>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* pc version */}
-        <div className="hidden w-full min-w-72 md:w-64 lg:block "></div>
-        <Card className="fixed top-20 right-20 bottom-20 hidden w-full min-w-72 md:w-72 lg:block overflow-y-auto">
-          {/* <ClockCtrl isRun={!isCheck} limit={100}></ClockCtrl> */}
-          <ClockCtrl
-            isRun={!isCheck}
-            limit={time}
-            onTimeOut={handleCheckList}
-          ></ClockCtrl>
-          {/* <CardHeader>
-            <CardTitle>Question List</CardTitle>
-          </CardHeader> */}
-          <CardContent className="p-0">
-            <div>
-              {parts.map((item, index1) => {
+    <>
+      {questionMap && Object.values(questionMap).length > 0 && (
+        <div className="container mx-auto px-2 py-8 lg:px-20">
+          <div className="flex flex-col gap-6 md:flex-row">
+            <div className="flex-grow">
+              {Object.values(questionMap).map((question, index) => {
                 return (
-                  <div key={index1}>
-                    <p className="font-semibold text-sm mx-5">Part {item}</p>
-                    <div className="scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent grid max-h-[500px] grid-cols-5 gap-1 overflow-y-scroll p-4">
-                      {Object.values(questionMap).map((question, index) => {
-                        if (question.part !== item) {
-                          return;
-                        }
-                        return (
-                          <Button
-                            key={question.id}
-                            variant={
-                              "selectedQuestion.id" === question.id
-                                ? "default"
-                                : "outline"
-                            }
-                            size="sm"
-                            onClick={() => {
-                              handleSelectQuestion(question);
+                  <div key={question.id}>
+                    {!containerParts.includes(question.part) && (
+                      <h3 className="text-center text-2xl font-semibold mb-10">
+                        Part {question.part}
+                        {handleCounterParts(question.part)}
+                      </h3>
+                    )}
+
+                    <div className="max-w-full" key={question.id}>
+                      <p className="font-semibold" id={question.number}>
+                        Câu {question.number}
+                      </p>
+                      {question.paragraph && (
+                        <div className="my-4 rounded border bg-blue-100 p-4">
+                          <pre
+                            style={{
+                              overflowWrap: "break-word",
+                              whiteSpace: "pre-wrap",
                             }}
-                            className={`w-full transition-all duration-200 ${
-                              answerList[question.id]?.value
-                                ? "bg-yellow-500 text-white hover:bg-yellow-300"
-                                : ""
-                            } ${
-                              "selectedQuestion.id" === question.id
-                                ? "ring-primary ring-offset-gray-90 ring-2 ring-offset-2"
-                                : ""
-                            } ${
-                              resultItems[question.id]
-                                ? resultItems[question.id].isCorrect
-                                  ? "bg-green-500 text-white hover:bg-green-600"
-                                  : "bg-red-500 text-white hover:bg-red-600"
-                                : ""
-                            } `}
                           >
-                            {question.number}
-                            <p className="bg-red-200">{}</p>
-                          </Button>
-                        );
-                      })}
+                            {question.paragraph}
+                          </pre>
+                        </div>
+                      )}
+
+                      {question.audio && (
+                        <div className="m-4">
+                          <audio
+                            controls
+                            className="custom-audio w-full"
+                            src="/temp.mp3"
+                            id={"audio" + question.id}
+                            onPlay={() => {
+                              handleAudioStart(question.id, question.audio);
+                            }}
+                          ></audio>
+                        </div>
+                      )}
+                      {question.image && (
+                        <div className="aspect-w-16 aspect-h-9 relative flex justify-center">
+                          <Image
+                            src={getImage(question.image, testData.code)}
+                            alt={`TOEIC Part 1 Question ${question.id} Image`}
+                            className="rounded-lg"
+                            width={600}
+                            height={500}
+                          />
+                        </div>
+                      )}
+                      <ChooseOption
+                        question={question}
+                        handleChooseOption={handleChooseOption(question.id)}
+                        isCheck={isCheck}
+                      ></ChooseOption>
                     </div>
                   </div>
                 );
               })}
             </div>
-          </CardContent>
-          <div className="mx-auto p-4">
-            <Button asChild onClick={handleSubmitAnswer}>
-              <Link href="/start-test">Submit</Link>
-            </Button>
-          </div>
-        </Card>
-        {/* mobile version */}
-        <nav className="fixed bottom-0 left-0 right-0 z-10 bg-white shadow-sm lg:hidden">
-          <div className="mx-auto max-w-7xl px-4">
-            <div className="flex h-16 justify-around">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="flex flex-col items-center justify-center"
-              >
-                <ClockCtrl className="h-5 w-5" />
-                <span className="text-xs">05:22</span>
-              </Button>
 
-              <Sheet>
-                <SheetTrigger asChild>
+            {/* pc version */}
+            <div className="hidden w-full min-w-72 md:w-64 lg:block "></div>
+            <Card className="fixed top-20 right-20 bottom-20 hidden w-full min-w-72 md:w-72 lg:block overflow-y-auto">
+              {/* <ClockCtrl isRun={!isCheck} limit={100}></ClockCtrl> */}
+              <ClockCtrl
+                isRun={!isCheck}
+                limit={time}
+                onTimeOut={handleCheckList}
+              ></ClockCtrl>
+              {/* <CardHeader>
+            <CardTitle>Question List</CardTitle>
+          </CardHeader> */}
+              <CardContent className="p-0">
+                <div>
+                  {parts.map((item, index1) => {
+                    console.log(item);
+                    return (
+                      <div key={index1}>
+                        <p className="font-semibold text-sm mx-5">
+                          Part {item}
+                        </p>
+                        <div className="scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent grid max-h-[500px] grid-cols-5 gap-1 overflow-y-scroll p-4">
+                          {Object.values(questionMap).map((question, index) => {
+                            if (question.part !== item) {
+                              return;
+                            }
+                            return (
+                              <Button
+                                key={question.id}
+                                variant={
+                                  "selectedQuestion.id" === question.id
+                                    ? "default"
+                                    : "outline"
+                                }
+                                size="sm"
+                                onClick={() => {
+                                  handleSelectQuestion(question);
+                                }}
+                                className={`w-full transition-all duration-200 ${
+                                  answerList[question.id]?.value
+                                    ? "bg-yellow-500 text-white hover:bg-yellow-300"
+                                    : ""
+                                } ${
+                                  "selectedQuestion.id" === question.id
+                                    ? "ring-primary ring-offset-gray-90 ring-2 ring-offset-2"
+                                    : ""
+                                } ${
+                                  resultItems[question.id]
+                                    ? resultItems[question.id].isCorrect
+                                      ? "bg-green-500 text-white hover:bg-green-600"
+                                      : "bg-red-500 text-white hover:bg-red-600"
+                                    : ""
+                                } `}
+                              >
+                                {question.number}
+                                <p className="bg-red-200">{}</p>
+                              </Button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+              <div className="mx-auto p-4">
+                <Button asChild onClick={handleSubmitAnswer}>
+                  <Link href="/start-test">Submit</Link>
+                </Button>
+              </div>
+            </Card>
+            {/* mobile version */}
+            <nav className="fixed bottom-0 left-0 right-0 z-10 bg-white shadow-sm lg:hidden">
+              <div className="mx-auto max-w-7xl px-4">
+                <div className="flex h-16 justify-around">
                   <Button
                     variant="ghost"
                     size="icon"
                     className="flex flex-col items-center justify-center"
                   >
-                    <Grid className="h-5 w-5" />
-                    <span className="text-xs">Questions</span>
+                    <ClockCtrl className="h-5 w-5" />
+                    <span className="text-xs">05:22</span>
                   </Button>
-                </SheetTrigger>
-                <SheetContent side="bottom" className="h-[80vh]">
-                  <div className="p-4">
-                    <h3 className="mb-4 text-lg font-semibold">
-                      Question Navigator
-                    </h3>
-                    <ScrollArea className="h-[calc(80vh-8rem)]">
-                      <div className="grid grid-cols-5 gap-2">
-                        {Array.from({ length: 100 }, (_, i) => i + 1).map(
-                          (num) => (
-                            <Button
-                              key={num}
-                              variant="outline"
-                              size="sm"
-                              className="h-10 w-10"
-                            >
-                              {num}
-                            </Button>
-                          )
-                        )}
+
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="flex flex-col items-center justify-center"
+                      >
+                        <Grid className="h-5 w-5" />
+                        <span className="text-xs">Questions</span>
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="h-[80vh]">
+                      <div className="p-4">
+                        <h3 className="mb-4 text-lg font-semibold">
+                          Question Navigator
+                        </h3>
+                        <ScrollArea className="h-[calc(80vh-8rem)]">
+                          <div className="grid grid-cols-5 gap-2">
+                            {Array.from({ length: 100 }, (_, i) => i + 1).map(
+                              (num) => (
+                                <Button
+                                  key={num}
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-10 w-10"
+                                >
+                                  {num}
+                                </Button>
+                              )
+                            )}
+                          </div>
+                        </ScrollArea>
                       </div>
-                    </ScrollArea>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+              </div>
+            </nav>
           </div>
-        </nav>
-      </div>
-      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Bạn có chắc chắn muốn nộp bài không
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Hành động này sẽ lại trả lại kết quả và lưu vào dữ liệu của bạn.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Hủy</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmSubmit}>
-              Xác nhận nộp
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+          <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Bạn có chắc chắn muốn nộp bài không
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  Hành động này sẽ lại trả lại kết quả và lưu vào dữ liệu của
+                  bạn.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Hủy</AlertDialogCancel>
+                <AlertDialogAction onClick={confirmSubmit}>
+                  Xác nhận nộp
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      )}
+    </>
   );
 }
 export default withAuth(TestPage);

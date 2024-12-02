@@ -61,3 +61,40 @@ export function formatDate(dateString) {
     console.log("dataString is not valid");
   }
 }
+export function calculateDecay(s, t) {
+  // Tính toán giá trị R theo công thức R = R0 * e^(-kt)
+  // R0 = 1 vì đây là giá trị ban đầu
+  return 1 * Math.exp(-t / s);
+}
+export function formatTimeAgo(date) {
+  try {
+    //data: Date
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return "vừa xong";
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `${diffInMinutes} phút trước`;
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours} giờ trước`;
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 30) return `${diffInDays} ngày trước`;
+
+    const diffInMonths = Math.floor(diffInDays / 30);
+    if (diffInMonths < 12) return `${diffInMonths} tháng trước`;
+
+    const diffInYears = Math.floor(diffInMonths / 12);
+    return `${diffInYears} năm trước`;
+  } catch (error) {
+    console.log("date is not valid");
+  }
+}
+export function expiredDate(date) {
+  const now = new Date();
+  if (!date) return "";
+  if (new Date(date) < now) return formatDate(date);
+  return "";
+}

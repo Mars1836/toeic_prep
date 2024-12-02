@@ -44,7 +44,6 @@ export default function Component({ params }) {
       const { data } = await instance.get(endpoint.result.getResultById, {
         params: { id: rsId },
       });
-      console.log(data);
       setResultData(data);
       const { data: itemDatas } = await instance.get(
         endpoint.resultItem.getResultItemByResult,
@@ -56,7 +55,11 @@ export default function Component({ params }) {
     }
     fetchResultData();
   }, []);
-
+  useEffect(() => {
+    if (resultData) {
+      router.prefetch(rsId + "/detail");
+    }
+  }, [resultData]);
   return (
     resultData && (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white  p-4 md:p-8">

@@ -17,10 +17,12 @@ import {
   Layers,
   CheckCircle,
   Repeat1,
+  History,
 } from "lucide-react";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
 import { useRouter } from "next/navigation";
+import { formatTimeAgo } from "~helper";
 
 export function ExamCard({ card, isTaken }) {
   const router = useRouter();
@@ -32,13 +34,17 @@ export function ExamCard({ card, isTaken }) {
       return 0;
     }
     return card.attempts.reduce((acc, curr) => {
-      console.log(curr);
       return acc + curr.times;
     }, 0);
   };
+  useEffect(() => {
+    if (card) {
+      router.prefetch(`/test3/${card.id}/practice-set`);
+    }
+  }, [card]);
   return (
     <Card className="relative flex h-full flex-col bg-white">
-      {isTaken && (
+      {card?.userAttempt && (
         <div
           className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-green-500"
           aria-label="Completed"
@@ -76,16 +82,37 @@ export function ExamCard({ card, isTaken }) {
         <div className="flex flex-wrap gap-2">
           <p className="p-2 font-semibold text-sm">#{card.type}</p>
         </div>
+        <div className="mt-4 space-y-2">
+          {card?.userAttempt ? (
+            <div className="text-sm font-medium bg-green-200 text-green-800 p-2 rounded-md flex items-center justify-between">
+              <span>Đã nộp {card.userAttempt?.timeSubmit} lần</span>
+              <div className="flex items-center text-green-700">
+                <History className="w-4 h-4 mr-1" />
+                <span>
+                  {formatTimeAgo(new Date(card.userAttempt?.lastSubmit))}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="text-sm font-medium bg-gray-200 text-gray-800 p-2 rounded-md flex items-center justify-between">
+              <span>Manage your time effectively !</span>
+            </div>
+          )}
+        </div>
       </CardContent>
       <CardFooter>
         <Button
-          className="w-full"
-          variant={isTaken ? "outline" : "default"}
+          className={
+            card?.userAttempt
+              ? "w-full bg-green-500 border text-white"
+              : "w-full"
+          }
+          // variant={}
           onClick={() => {
             goToPracticeTest();
           }}
         >
-          {isTaken ? "View Results" : "Take Test"}
+          {card?.userAttempt ? "Retake Test" : "Take Test"}
         </Button>
       </CardFooter>
     </Card>
@@ -120,11 +147,7 @@ export default function TestCardList() {
       </h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {testData.map((card) => (
-          <ExamCard
-            key={card.id}
-            card={card}
-            isTaken={takenTests.has(card.id)}
-          />
+          <ExamCard key={card.id} card={card} />
         ))}
       </div>
     </div>

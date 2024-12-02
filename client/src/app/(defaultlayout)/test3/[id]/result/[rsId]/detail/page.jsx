@@ -17,9 +17,13 @@ import ClockCtrl from "@/components/clock";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
 const link = "http://localhost:4000/uploads";
-const excelName = "exam.3.mini-test3.xlsx";
-const idTest = 1;
-let _part = 0;
+
+const containerParts = [];
+const handleCounterParts = (part) => {
+  if (!containerParts.includes(part)) {
+    containerParts.push(part);
+  }
+};
 function getAudio(name, code) {
   return link + `/audios/${code}/${name}.mp3`;
 }
@@ -210,10 +214,10 @@ export default function TestPage({ params }) {
             {Object.values(questionMap).map((question, index) => {
               return (
                 <div key={question.id} className="max-w-full">
-                  {(index == 0 ||
-                    questionMap[index]?.part !== question?.part) && (
+                  {!containerParts.includes(question.part) && (
                     <h3 className="text-center text-2xl font-semibold mb-10">
                       Part {question.part}
+                      {handleCounterParts(question.part)}
                     </h3>
                   )}
                   <div className="max-w-full">
@@ -272,7 +276,6 @@ export default function TestPage({ params }) {
                     )}
                     <ChooseOption
                       question={question}
-                      //   handleChooseOption={handleChooseOption(question.id)}
                       value={resultItemMap[question.id]?.useranswer}
                       isCheck={isCheck}
                     ></ChooseOption>

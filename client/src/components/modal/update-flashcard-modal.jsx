@@ -56,7 +56,6 @@ export function UpdateFlashcardModal({
         : "", // Tách các loại từ bằng dấu phẩy
       pronunciation: inputPronunciation.value || "", // Phiên âm, nếu không rỗng
     };
-    // return console.log(flashcard);
     const { data } = await instance.patch(
       endpoint.flashcardItem.update,
       nflashcard
@@ -75,9 +74,7 @@ export function UpdateFlashcardModal({
     }
   };
 
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
+  useEffect(() => {}, [isLoading]);
   return (
     <Dialog open={isUpdateDialogOpen} onOpenChange={setIsUpdateDialogOpen}>
       {/* <DialogTrigger asChild>

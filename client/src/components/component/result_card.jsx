@@ -17,6 +17,12 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 function ExamResultCard({ result, onViewDetails }) {
+  const router = useRouter();
+  useEffect(() => {
+    if (result) {
+      router.prefetch(`/test3/${result.testId.id}/result/${result.id}`);
+    }
+  }, [result]);
   return (
     <Card className="w-full bg-white">
       <CardHeader>
@@ -74,15 +80,19 @@ export default function ResultCardList() {
       return;
     }
     async function fetchResultData() {
-      const { data } = await instance.get(endpoint.result.getResultByUser);
-      setUserResults(data);
+      try {
+        const { data } = await instance.get(endpoint.result.getResultByUser);
+        setUserResults(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchResultData();
   }, [user]);
   const handleViewDetails = (idTest, idResult) => {
-    console.log(idTest);
     router.push(`/test3/${idTest}/result/${idResult}`);
   };
+
   return (
     userResults && (
       <div className="container mx-auto px-4 py-8">

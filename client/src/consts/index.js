@@ -13,7 +13,7 @@ const auth = {
   requestVerifyEmail: originUrlUser + "/auth/request/verify-email",
 };
 const test = {
-  getByQuery: originUrlPub + "/test",
+  getByQuery: originUrlUser + "/test",
   getById: originUrlPub + "/test/id",
 };
 const result = {
@@ -30,6 +30,7 @@ const setFlashcard = {
   create: originUrlUser + "/set-flashcard",
   delete: originUrlUser + "/set-flashcard",
   update: originUrlUser + "/set-flashcard",
+  getById: originUrlUser + "/set-flashcard/id",
 };
 const flashcardItem = {
   getBySet: originUrlUser + "/flashcard/set",
@@ -41,12 +42,14 @@ const flashcardItem = {
 const aichat = {
   getFlashcardInfor: originUrlUser + "/ai-chat/get-fc-infor",
   getQuizData: originUrlUser + "/ai-chat/get-quizz",
+  getExplanation: originUrlUser + "/ai-chat/get-explanation",
 };
 const learningSet = {
   addSetToLearn: originUrlUser + "/learning-set",
   removeSetFromLearn: originUrlUser + "/learning-set",
   getByUser: originUrlUser + "/learning-set/user",
   getBySet: originUrlUser + "/learning-set/set",
+  getById: originUrlUser + "/learning-set/id",
 };
 const payment = {
   createPayment: originUrlUser + "/payment",
@@ -55,6 +58,15 @@ const learningFlashcard = {
   getBySet: originUrlUser + "/learning-flashcard/set",
   updateShortTermScore:
     originUrlUser + "/learning-flashcard/update-short-term-score",
+  updateLearningSession:
+    originUrlUser + "/learning-flashcard/update-session-score",
+};
+const word = {
+  get4RandomWords: originUrlPub + "/word/4-random",
+};
+const profile = {
+  updateProfile: originUrlUser + "/profile/update",
+  getAnalysis: originUrlUser + "/profile/analysis",
 };
 export const endpoint = {
   auth,
@@ -67,4 +79,7 @@ export const endpoint = {
   learningSet,
   payment,
   learningFlashcard,
+  word,
+  profile,
 };
+export const RATE_LIMIT = 0.2;

@@ -2,21 +2,32 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import withAuth from "~HOC/withAuth";
 import {
+  BookOpenIcon,
   CalendarDays,
+  CalendarIcon,
   CircleAlertIcon,
   CircleCheckIcon,
+  PlayIcon,
   PlusIcon,
   RefreshCw,
   Trash2,
   Trash2Icon,
+  TrashIcon,
   User2,
 } from "lucide-react";
 import { CreateFlashcardSetModal } from "@/components/modal/create-flashcard-set-modal";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { endpoint, RATE_LIMIT } from "~consts";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,14 +42,14 @@ import { formatDate, handleErrorWithToast } from "~helper";
 import { FlashcardSetSelectorComponent } from "@/components/modal/flashcard-set-selector";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-function FlashcartsPage() {
+import { Badge } from "~components/ui/badge";
+function StudyingPage() {
   const [setData, setSetData] = useState();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [learningSetIdFocused, setLearningSetIdFocused] = useState();
   const router = useRouter();
-
-  function goToView(id) {
-    router.push(`/flashcards/set/${id}`);
+  function goToTrackingSet(id) {
+    router.push(`/flashcards/studying/${id}/tracking`);
   }
   function handleRemoveLearningSet(id) {
     setLearningSetIdFocused(id);
@@ -75,6 +86,13 @@ function FlashcartsPage() {
     }
     fetchSetData();
   }, []);
+  useEffect(() => {
+    if (setData && setData.length > 0) {
+      setData.forEach((item) => {
+        router.prefetch(`/flashcards/studying/${item.id}`);
+      });
+    }
+  }, [setData]);
   return (
     setData && (
       <div>
@@ -117,19 +135,19 @@ function FlashcartsPage() {
                   </Card>
                 </div>
               </section>
-              <section>
+              {/* <section>
                 <CreateFlashcardSetModal
                   setFC={setData}
                   setSetFC={setSetData}
                 ></CreateFlashcardSetModal>
                 <FlashcardSetSelectorComponent />
-              </section>
+              </section> */}
 
               <section>
                 <h2 className="mb-4 text-2xl font-bold">
                   Flashcard Categories
                 </h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {setData.map((item) => {
                     return (
                       <Card className="flex flex-col gap-2 p-4" key={item.id}>
@@ -169,12 +187,84 @@ function FlashcartsPage() {
                             variant="outline"
                             size="sm"
                             onClick={() => {
-                              goToView(item.setFlashcardId.id);
+                              goToTrackingSet(item.id);
                             }}
                           >
                             View
                           </Button>
                         </div>
+                      </Card>
+                    );
+                  })}
+                </div> */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {setData.map((item) => {
+                    return (
+                      <Card
+                        key={item.id}
+                        className="flex flex-col hover:shadow-lg transition-shadow"
+                      >
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <CardTitle className="text-xl font-semibold">
+                                {item.setFlashcardId.title}
+                              </CardTitle>
+                              <CardDescription className="text-sm text-muted-foreground mt-1">
+                                {item.setFlashcardId.description}
+                              </CardDescription>
+                            </div>
+                            {item.learningFlashcards.filter((x) => {
+                              return x < RATE_LIMIT && x !== RATE_LIMIT;
+                            }).length > 0 && (
+                              <Badge
+                                variant="destructive"
+                                className="text-sm font-medium bg-red-500 text-white"
+                              >
+                                {
+                                  item.learningFlashcards.filter((x) => {
+                                    return x < RATE_LIMIT && x !== RATE_LIMIT;
+                                  }).length
+                                }{" "}
+                                to review
+                              </Badge>
+                            )}
+                          </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                          <div className="space-y-2">
+                            <div className="flex items-center text-sm">
+                              <BookOpenIcon className="mr-2 h-4 w-4 text-muted-foreground " />
+                              <span>
+                                {item.setFlashcardId.numberOfFlashcards}{" "}
+                                flashcards
+                              </span>
+                            </div>
+                            <div className="flex items-center text-sm">
+                              <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                              <span>
+                                Created on {formatDate(item.createdAt)}
+                              </span>
+                            </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-between pt-4 border-t">
+                          <Button
+                            onClick={() => goToTrackingSet(item.id)}
+                            className="flex-1 mr-2 bg-green-500 hover:bg-green-600 text-white"
+                          >
+                            <PlayIcon className="mr-2 h-4 w-4" />
+                            Tracking
+                          </Button>
+                          <Button
+                            onClick={() => handleRemoveLearningSet(item.id)}
+                            variant="outline"
+                            className="flex-1 ml-2 border-red-500 text-red-500 hover:bg-red-50"
+                          >
+                            <TrashIcon className="mr-2 h-4 w-4" />
+                            Remove
+                          </Button>
+                        </CardFooter>
                       </Card>
                     );
                   })}
@@ -211,4 +301,4 @@ function FlashcartsPage() {
   );
 }
 
-export default withAuth(FlashcartsPage);
+export default withAuth(StudyingPage);

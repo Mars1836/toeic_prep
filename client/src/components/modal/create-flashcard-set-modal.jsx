@@ -38,7 +38,6 @@ export function CreateFlashcardSetModal({ setFC, setSetFC }) {
         return [data, ...pre];
       });
     } catch (error) {
-      console.log(error);
       handleErrorWithToast(error);
     }
 

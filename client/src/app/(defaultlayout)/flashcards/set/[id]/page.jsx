@@ -30,7 +30,16 @@ function FCDetailPage({ params }) {
           setFlashcardId: id,
         },
       });
+      const { data: setData } = await instance.get(
+        endpoint.setFlashcard.getById,
+        {
+          params: {
+            id: id,
+          },
+        }
+      );
       setFlashcards(data);
+      setSetCard(setData);
     }
     fetchFlashcards();
   }, []);
@@ -42,63 +51,64 @@ function FCDetailPage({ params }) {
       if (!data) {
         return;
       }
-      router.push(`${id}/study`);
+      router.push(`/flashcards/studying/${data.id}/quiz`);
     } catch (error) {
       handleErrorWithToast(error);
     }
   };
   return (
-    <div className="flex min-h-[100dvh] flex-col">
-      <div className="mx-auto px-2 py-8 md:px-2 md:w-[700px] lg:w-[900px]">
-        <div className="my-4">
-          <h1 className="mb-4 text-2xl font-bold">
-            {console.log(setCard)}
-            Flashcards: {setCard.title}
-          </h1>
-          <div className="mb-10 flex gap-2">
-            <Button>Chỉnh sửa</Button>
-            <CreateFlashcardModal setId={id} setFlashcards={setFlashcards} />
-            <ExcelUploader
-              setId={id}
-              setFlashcards={setFlashcards}
-            ></ExcelUploader>
-            {/* <ExcelUploaderTest></ExcelUploaderTest> */}
+    setCard && (
+      <div className="flex min-h-[100dvh] flex-col">
+        <div className="mx-auto px-2 py-8 md:px-2 md:w-[700px] lg:w-[900px]">
+          <div className="my-4">
+            <h1 className="mb-4 text-2xl font-bold">
+              Flashcards: {setCard.title}
+            </h1>
+            <div className="mb-10 flex gap-2">
+              <Button>Chỉnh sửa</Button>
+              <CreateFlashcardModal setId={id} setFlashcards={setFlashcards} />
+              <ExcelUploader
+                setId={id}
+                setFlashcards={setFlashcards}
+              ></ExcelUploader>
+              {/* <ExcelUploaderTest></ExcelUploaderTest> */}
+            </div>
+          </div>
+          <div className="my-4 w-full">
+            <Button className="w-full" variant="outline" onClick={handleStudy}>
+              Luyện tập flashcard
+            </Button>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Link href={`${id}/random`} className="w-full">
+              <Button variant="outline" className="w-full">
+                <Shuffle className="mr-2 h-4 w-4" />
+                Xem ngẫu nhiên
+              </Button>
+            </Link>
+
+            <Button variant="outline">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Dừng học bộ này
+            </Button>
+          </div>
+          <p className="text-muted-foreground mb-4 font-medium">
+            Bộ này có {flashcards.length} từ
+          </p>
+          <div className="flex flex-col gap-4 w-full">
+            {flashcards.map((fc, index) => {
+              return (
+                <WordCard
+                  flashcard={fc}
+                  key={fc.id}
+                  setFlashcards={setFlashcards}
+                ></WordCard>
+              );
+            })}
           </div>
         </div>
-        <div className="my-4 w-full">
-          <Button className="w-full" variant="outline" onClick={handleStudy}>
-            Luyện tập flashcard
-          </Button>
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <Link href={`${id}/random`} className="w-full">
-            <Button variant="outline" className="w-full">
-              <Shuffle className="mr-2 h-4 w-4" />
-              Xem ngẫu nhiên
-            </Button>
-          </Link>
-
-          <Button variant="outline">
-            <Trash2 className="mr-2 h-4 w-4" />
-            Dừng học bộ này
-          </Button>
-        </div>
-        <p className="text-muted-foreground mb-4 font-medium">
-          Bộ này có {flashcards.length} từ
-        </p>
-        <div className="flex flex-col gap-4 w-full">
-          {flashcards.map((fc, index) => {
-            return (
-              <WordCard
-                flashcard={fc}
-                key={fc.id}
-                setFlashcards={setFlashcards}
-              ></WordCard>
-            );
-          })}
-        </div>
       </div>
-    </div>
+    )
   );
 }
 

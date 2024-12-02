@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import withAuth from "../../../HOC/withAuth";
+import withAuth from "../../../../HOC/withAuth";
 import {
   CalendarDays,
   CircleAlertIcon,
@@ -79,6 +79,13 @@ function FlashcartsPage() {
     }
     fetchSetData();
   }, []);
+  useEffect(() => {
+    if (setData && setData.length > 0) {
+      setData.forEach((item) => {
+        router.prefetch(`/flashcards/set/${item.id}`);
+      });
+    }
+  }, [setData]);
   return (
     setData && (
       <div>

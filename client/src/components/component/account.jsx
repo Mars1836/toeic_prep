@@ -104,10 +104,22 @@ export function SignIn({ setShowSignUp }) {
     body: { email: email.value, password: password.value },
     onSuccess: (data) => {
       toast.success("Login successfull");
-      dispatch(setUserState(data));
+      dispatch(setUserState(formatUser(data)));
       router.push(redirect ? redirect : "/");
     },
   });
+  function setUpgradeStatus(upgradeExpiredDate) {
+    if (!upgradeExpiredDate) return "FREE";
+    return new Date() < new Date(upgradeExpiredDate) ? "UPGRADED" : "EXPIRED";
+  }
+  function formatUser(user) {
+    console.log(new Date(user.upgradeExpiredDate));
+    return {
+      ...user,
+      upgradeStatus: setUpgradeStatus(user.upgradeExpiredDate),
+      isUpgraded: new Date() < new Date(user.upgradeExpiredDate),
+    };
+  }
   function login() {
     sendRequest();
   }

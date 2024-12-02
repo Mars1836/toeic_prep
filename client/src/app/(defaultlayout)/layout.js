@@ -8,17 +8,6 @@ import useFetch from "../../hooks/useFetch";
 import { endpoint } from "@/consts";
 
 function DefaultLayout({ children }) {
-  const dispatch = useDispatch();
-  const { sendRequest, errors } = useFetch({
-    url: endpoint.auth.currentUser,
-    method: "get",
-    onSuccess: (data) => {
-      dispatch(setUserState(data));
-    },
-  });
-  useEffect(() => {
-    sendRequest();
-  }, []);
   return (
     <div className="max-h-screen">
       <Header></Header>

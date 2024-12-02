@@ -57,17 +57,10 @@ function Component({ params }) {
       return 0;
     }
     return test.attempts.reduce((acc, curr) => {
-      console.log(curr);
       return acc + curr.times;
     }, 0);
   };
   const startPractice = () => {
-    console.log(
-      "Starting practice with parts:",
-      selectedParts,
-      "Time limit:",
-      timeLimit
-    );
     const sortPart = selectedParts.sort((a, b) => a - b);
     const query = new URLSearchParams({
       parts: sortPart.join(","), // Nối các phần của danh sách thành chuỗi
