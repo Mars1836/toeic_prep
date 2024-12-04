@@ -10,7 +10,7 @@ function promptText(word: string) {
 namespace AiChatSrv {
   export async function getFlashcardInfor(prompt: string) {
     if (!prompt) {
-      return new BadRequestError("prompt is required");
+      throw new BadRequestError("prompt is required");
     }
     const promptHandled = promptText(prompt);
     const result = await modelAI.generateContent(promptHandled);
@@ -30,6 +30,18 @@ namespace AiChatSrv {
     )}`;
     const result = await explainAIModel.generateContent(prompt);
     return result.response.text();
+  }
+  export async function explainQuestionJson(question: Object) {
+    const text = await explainQuestion(question);
+    return JSON.parse(text);
+  }
+  export async function getQuizzJson(flashcards: FlashcardAttr[]) {
+    const text = await getQuizz(flashcards);
+    return JSON.parse(text);
+  }
+  export async function getFlashcardInforJson(prompt: string) {
+    const text = await getFlashcardInfor(prompt);
+    return JSON.parse(text);
   }
 }
 

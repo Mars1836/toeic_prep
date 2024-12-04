@@ -49,7 +49,6 @@ const SetFlashcardSchema = new Schema(
     },
   },
   {
-    // collection: "SetFlashcard_collection",
     timestamps: true,
     toJSON: {
       transform(doc, ret) {

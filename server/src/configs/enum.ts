@@ -30,3 +30,11 @@ export enum Role {
   admin = "admin",
   user = "user",
 }
+export enum TransactionType {
+  upgrade_account = "upgrade_account",
+}
+export enum TransactionStatus {
+  pending = "pending",
+  success = "success",
+  failed = "failed",
+}

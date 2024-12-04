@@ -20,5 +20,20 @@ namespace AiChatCtrl {
     const rs = await AiChatSrv.explainQuestion(prompt);
     res.status(200).json(rs);
   }
+  export async function explainQuestionJson(req: Request, res: Response) {
+    const { prompt } = req.body;
+    const rs = await AiChatSrv.explainQuestionJson(prompt);
+    res.status(200).json(rs);
+  }
+  export async function getQuizzJson(req: Request, res: Response) {
+    const { prompt } = req.body;
+    const rs = await AiChatSrv.getQuizzJson(prompt);
+    res.status(200).json(rs);
+  }
+  export async function getFlashcardInforJson(req: Request, res: Response) {
+    const { prompt } = req.body;
+    const rs = await AiChatSrv.getFlashcardInforJson(prompt);
+    res.status(200).json(rs);
+  }
 }
 export default AiChatCtrl;

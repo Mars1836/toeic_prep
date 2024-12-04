@@ -5,6 +5,8 @@ import moment from "moment";
 import qs from "qs";
 import { BadRequestError } from "../../errors/bad_request_error";
 import UserRepo from "../user/repos";
+import { TransactionSrv } from "../transaction";
+import { TransactionStatus, TransactionType } from "../../configs/enum";
 
 namespace PaymentSrv {
   export async function create(userId: string) {
@@ -23,7 +25,15 @@ namespace PaymentSrv {
       bank_code: "",
       mac: "",
     };
-
+    const newTransaction = await TransactionSrv.create({
+      userId: userId,
+      type: TransactionType.upgrade_account,
+      amount: order.amount,
+      currency: "VND",
+      description: `Toeic - Payment for the upgrade account #${transID}`,
+      providerId: order.app_trans_id,
+      status: TransactionStatus.pending,
+    });
     const data =
       configZalo.app_id +
       "|" +
@@ -70,6 +80,9 @@ namespace PaymentSrv {
       result.return_message = "success";
       result.data = dataJson;
       await UserRepo.upgrade(dataJson.app_user);
+      await TransactionSrv.updateByProviderId(dataJson.app_trans_id, {
+        status: TransactionStatus.success,
+      });
       return result;
     }
   }

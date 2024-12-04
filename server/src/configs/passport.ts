@@ -126,10 +126,14 @@ passportA.use(
   "local",
   new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
-    function (email: string, password: string, done) {
+    async function (email: string, password: string, done) {
       // Xử lý logic xác thực cho client
-      const user = { email, password, id: "admin" };
-      return done(null, user);
+      try {
+        const user = await adminLocalLogin({ email, password });
+        return done(null, user);
+      } catch (error) {
+        return done(error, false);
+      }
     }
   )
 );
