@@ -1,7 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 import { UserType } from "../../configs/interface";
 import adminAuthRouter from "./auth";
-
+import adminTransactionRouter from "./transaction";
+import adminBlogRouter from "./blog";
 const routerA = express.Router();
 routerA.use("/auth", adminAuthRouter);
+routerA.use("/transaction", adminTransactionRouter);
+routerA.use("/blog", adminBlogRouter);
 export default routerA;

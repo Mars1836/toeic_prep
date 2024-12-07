@@ -10,7 +10,7 @@ namespace ProfileCtrl {
     console.log(n);
     // @ts-ignore
     const userId = req.user!.id;
-    const rs = await ProfileService.getAnalyst(userId, n);
+    const rs = await ProfileService.getAnalyst(userId);
     res.status(200).json(rs);
   }
 }

@@ -8,7 +8,7 @@ export async function adminLocalCreate(data: {
   email: string;
   password: string;
   name: string;
-  role: string;
+  role?: string;
 }) {
   const checkEmail = await userModel.findOne({
     email: data.email,
@@ -28,7 +28,6 @@ export async function adminLocalCreate(data: {
 
   return user;
 }
-
 export async function adminLocalLogin(data: {
   email: string;
   password: string;

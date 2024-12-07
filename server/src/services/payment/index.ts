@@ -5,7 +5,7 @@ import moment from "moment";
 import qs from "qs";
 import { BadRequestError } from "../../errors/bad_request_error";
 import UserRepo from "../user/repos";
-import { TransactionSrv } from "../transaction";
+import TransactionSrv from "../transaction";
 import { TransactionStatus, TransactionType } from "../../configs/enum";
 
 namespace PaymentSrv {

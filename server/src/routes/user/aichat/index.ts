@@ -17,5 +17,8 @@ aiChatRouter.post(
 aiChatRouter.post("/get-fc-infor", handleAsync(AiChatCtrl.getFlashcardInfor));
 aiChatRouter.post("/get-quizz", handleAsync(AiChatCtrl.getQuizz));
 aiChatRouter.post("/get-explanation", handleAsync(AiChatCtrl.explainQuestion));
-
+aiChatRouter.post(
+  "/suggest-for-study",
+  handleAsync(AiChatCtrl.suggestForStudy)
+);
 export default aiChatRouter;

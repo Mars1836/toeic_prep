@@ -6,12 +6,10 @@ import { calculateAccuracyByPart } from "../../utils/analyst/part_accuracy";
 import { getScoreByAccuracy } from "../../utils/analyst/score";
 import { timeSecondRecommend } from "../../const/toeic";
 namespace ProfileService {
-  export const getAnalyst = async (userId: string, n: number) => {
-    const { from, to } = getTimeLastNDays(n);
+  export const getAnalyst = async (userId: string) => {
     const rs = await resultItemModel
       .find({
         userId: userId,
-        createdAt: { $gte: from, $lte: to },
       })
       .lean();
     const accuracyByPart = calculateAccuracyByPart(rs);

@@ -16,6 +16,7 @@ import { userModel } from "../models/user.model";
 import { UserType } from "./interface";
 import { constEnv } from "./const";
 import { userSrv } from "../services/user";
+import { adminLocalLogin } from "../services/admin";
 export const passportU = new Passport();
 export const passportA = new Passport();
 passportU.use(

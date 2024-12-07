@@ -35,5 +35,11 @@ namespace AiChatCtrl {
     const rs = await AiChatSrv.getFlashcardInforJson(prompt);
     res.status(200).json(rs);
   }
+  export async function suggestForStudy(req: Request, res: Response) {
+    //@ts-ignore
+    const userId = req.user.id;
+    const rs = await AiChatSrv.suggestForStudy({ userId });
+    res.status(200).json(rs);
+  }
 }
 export default AiChatCtrl;

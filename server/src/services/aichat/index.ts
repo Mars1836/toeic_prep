@@ -1,9 +1,12 @@
+import { recommendPrompt } from "./../../configs/aichat/recommend";
+import { readScore } from "./../../const/toeic";
 import { explainAIModel } from "../../configs/aichat/explainQues";
 import { modelAI } from "../../configs/aichat/fillField";
 import { modelAIQuizz } from "../../configs/aichat/renderQuizz";
 import { BadRequestError } from "../../errors/bad_request_error";
 import { FlashcardAttr } from "../../models/flashcard.model";
-
+import ProfileService from "../profile";
+import { modelAIRecommend } from "../../configs/aichat/recommend";
 function promptText(word: string) {
   return `Provide structured details for the word "${word}" following the specified schema.`;
 }
@@ -30,6 +33,12 @@ namespace AiChatSrv {
     )}`;
     const result = await explainAIModel.generateContent(prompt);
     return result.response.text();
+  }
+  export async function suggestForStudy({ userId }: { userId: string }) {
+    const analyst = await ProfileService.getAnalyst(userId);
+    const prompt = await recommendPrompt(analyst);
+    const text = await modelAIRecommend.generateContent(prompt);
+    return text.response.text();
   }
   export async function explainQuestionJson(question: Object) {
     const text = await explainQuestion(question);
