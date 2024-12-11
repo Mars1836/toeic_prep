@@ -7,6 +7,7 @@ import { BadRequestError } from "../../errors/bad_request_error";
 import { FlashcardAttr } from "../../models/flashcard.model";
 import ProfileService from "../profile";
 import { modelAIRecommend } from "../../configs/aichat/recommend";
+import { userModel } from "../../models/user.model";
 function promptText(word: string) {
   return `Provide structured details for the word "${word}" following the specified schema.`;
 }
@@ -36,7 +37,13 @@ namespace AiChatSrv {
   }
   export async function suggestForStudy({ userId }: { userId: string }) {
     const analyst = await ProfileService.getAnalyst(userId);
-    const prompt = await recommendPrompt(analyst);
+    const user = await userModel.findById(userId);
+    if (!user) {
+      throw new BadRequestError("User not found");
+    }
+    const targetScore = user.targetScore;
+
+    const prompt = await recommendPrompt(analyst, targetScore!);
     const text = await modelAIRecommend.generateContent(prompt);
     return text.response.text();
   }

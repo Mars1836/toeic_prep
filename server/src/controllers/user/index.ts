@@ -25,7 +25,19 @@ async function logout(req: Request, res: Response) {
   req.session = null;
   res.status(200).json({});
 }
+async function updateProfile(req: Request, res: Response) {
+  // @ts-ignore
+  const userId = req.user?.id!;
+  const { name, bio } = req.body;
+  const updatedUser = await userSrv.updateProfile(userId, {
+    name,
+    bio,
+  });
+  res.status(200).json(updatedUser);
+}
+
 export const userCtrl = {
   logout,
   getCurrentUser,
+  updateProfile,
 };

@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import { AccountType, Role, UserStatus } from "../configs/enum";
 const { Schema } = mongoose;
+export interface UserTargetScore {
+  reading: number;
+  listening: number;
+}
 export interface UserAttr {
   email?: string;
   password?: string;
@@ -8,7 +12,11 @@ export interface UserAttr {
   facebookId?: string;
   googleId?: string;
   role?: Role;
+  bio?: string;
+  status?: UserStatus;
   upgradeExpiredDate?: Date;
+  avatar?: string;
+  targetScore?: UserTargetScore;
 }
 export interface UserDoc extends mongoose.Document {
   email?: string;
@@ -17,7 +25,11 @@ export interface UserDoc extends mongoose.Document {
   facebookId?: string;
   googleId?: string;
   role?: Role;
+  bio?: string;
+  status?: UserStatus;
   upgradeExpiredDate?: Date;
+  avatar?: string;
+  targetScore?: UserTargetScore;
 }
 export interface UserModel extends mongoose.Model<UserDoc> {}
 const userSchema = new Schema(
@@ -57,6 +69,18 @@ const userSchema = new Schema(
     },
     upgradeExpiredDate: {
       type: Date,
+      default: null,
+    },
+    bio: {
+      type: String,
+      default: "",
+    },
+    avatar: {
+      type: String,
+      default: "",
+    },
+    targetScore: {
+      type: Object,
       default: null,
     },
   },

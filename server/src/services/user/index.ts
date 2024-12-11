@@ -50,6 +50,14 @@ async function localLogin(data: { email: string; password: string }) {
 
   return user;
 }
+async function updateAvatar(id: string, avatar: string) {
+  const user = await userModel.findByIdAndUpdate(id, { avatar }, { new: true });
+  return user;
+}
+async function updateProfile(id: string, data: { name: string; bio: string }) {
+  const user = await userModel.findByIdAndUpdate(id, data, { new: true });
+  return user;
+}
 export async function getById(id: string) {
   const user = await userModel.findById(id).select("-password");
   return user;
@@ -60,6 +68,8 @@ export const userSrv = {
   googleCreate,
   facebookCreate,
   getById,
+  updateProfile,
+  updateAvatar,
 };
 export async function hashPassword(password: string) {
   return await bcrypt.hash(password, parseInt(constEnv.passwordSalt!));

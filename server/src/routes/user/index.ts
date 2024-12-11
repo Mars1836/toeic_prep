@@ -13,7 +13,7 @@ import aiChatRouter from "./aichat";
 import learingSetRouter from "./learning_set";
 import learingFlashcardRouter from "./learning_flashcard";
 import userProfileRouter from "./profile";
-
+import providerRouter from "./provider";
 const routerU = express.Router();
 routerU.use("/auth", userAuthRouter);
 routerU.use("/flashcard", handleAsync(requireAuth), userFlashcardRouter);
@@ -30,5 +30,5 @@ routerU.use(
   learingFlashcardRouter
 );
 routerU.use("/profile", handleAsync(requireAuth), userProfileRouter);
-
+routerU.use("/provider", handleAsync(requireAuth), providerRouter);
 export default routerU;
