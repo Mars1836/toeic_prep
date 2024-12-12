@@ -7,7 +7,9 @@ import { BadRequestError } from "../../errors/bad_request_error";
 import { FlashcardAttr } from "../../models/flashcard.model";
 import ProfileService from "../profile";
 import { modelAIRecommend } from "../../configs/aichat/recommend";
-import { userModel } from "../../models/user.model";
+import { userModel, UserTargetScore } from "../../models/user.model";
+import { recommendModel } from "../../models/recommend";
+import { createRecommend } from "../recommend";
 function promptText(word: string) {
   return `Provide structured details for the word "${word}" following the specified schema.`;
 }
@@ -18,7 +20,6 @@ namespace AiChatSrv {
     }
     const promptHandled = promptText(prompt);
     const result = await modelAI.generateContent(promptHandled);
-    // const json = JSON.parse(result.response.text());
     return result.response.text();
   }
   export async function getQuizz(flashcards: FlashcardAttr[]) {
@@ -42,10 +43,15 @@ namespace AiChatSrv {
       throw new BadRequestError("User not found");
     }
     const targetScore = user.targetScore;
-
     const prompt = await recommendPrompt(analyst, targetScore!);
     const text = await modelAIRecommend.generateContent(prompt);
-    return text.response.text();
+    const rs = text.response.text();
+    const recommend = await createRecommend({
+      userId,
+      targetScore: targetScore as UserTargetScore,
+      content: rs,
+    });
+    return rs;
   }
   export async function explainQuestionJson(question: Object) {
     const text = await explainQuestion(question);
@@ -57,6 +63,10 @@ namespace AiChatSrv {
   }
   export async function getFlashcardInforJson(prompt: string) {
     const text = await getFlashcardInfor(prompt);
+    return JSON.parse(text);
+  }
+  export async function getSuggestForStudyJson(userId: string) {
+    const text = await suggestForStudy({ userId });
     return JSON.parse(text);
   }
 }

@@ -5,6 +5,7 @@ import { calculateCategoryAccuracy } from "../../utils/analyst/category_accuracy
 import { calculateAccuracyByPart } from "../../utils/analyst/part_accuracy";
 import { getScoreByAccuracy } from "../../utils/analyst/score";
 import { timeSecondRecommend } from "../../const/toeic";
+import { getLastRecommend } from "../recommend";
 namespace ProfileService {
   export const getAnalyst = async (userId: string) => {
     const rs = await resultItemModel
@@ -26,6 +27,10 @@ namespace ProfileService {
       score,
       timeSecondRecommend,
     };
+  };
+  export const getSuggestForStudy = async (userId: string) => {
+    const lastRecommend = await getLastRecommend(userId);
+    return lastRecommend;
   };
 }
 export default ProfileService;

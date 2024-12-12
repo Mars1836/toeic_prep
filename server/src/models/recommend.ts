@@ -6,13 +6,15 @@ const { Schema } = mongoose;
 // Định nghĩa interface cho flashcard
 export interface RecommendAttr {
   content: string;
-  target: UserTargetScore;
+  targetScore: UserTargetScore;
+  userId: string;
 }
 
 // Định nghĩa interface cho tài liệu flashcard (Document)
 export interface RecommendDoc extends mongoose.Document {
   content: string;
-  target: UserTargetScore;
+  targetScore: UserTargetScore;
+  userId: string;
 }
 
 // Định nghĩa interface cho model flashcard
@@ -25,8 +27,12 @@ const recommendSchema = new Schema(
       type: String,
       required: true,
     },
-    target: {
+    targetScore: {
       type: Object,
+      required: true,
+    },
+    userId: {
+      type: String,
       required: true,
     },
   },

@@ -6,6 +6,7 @@ import { connectRedis } from "./connect/redis";
 // import { testSendMail } from "./configs/nodemailer";
 connectMongo();
 connectRedis();
+
 declare global {
   namespace Express {
     interface User {

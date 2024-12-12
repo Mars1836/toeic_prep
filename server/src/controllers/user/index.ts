@@ -35,9 +35,19 @@ async function updateProfile(req: Request, res: Response) {
   });
   res.status(200).json(updatedUser);
 }
-
+async function updateTargetScore(req: Request, res: Response) {
+  // @ts-ignore
+  const userId = req.user?.id!;
+  const { reading, listening } = req.body;
+  const updatedUser = await userSrv.updateTargetScore(userId, {
+    reading,
+    listening,
+  });
+  res.status(200).json(updatedUser);
+}
 export const userCtrl = {
   logout,
   getCurrentUser,
   updateProfile,
+  updateTargetScore,
 };

@@ -13,5 +13,11 @@ namespace ProfileCtrl {
     const rs = await ProfileService.getAnalyst(userId);
     res.status(200).json(rs);
   }
+  export async function getSuggestForStudy(req: Request, res: Response) {
+    // @ts-ignore
+    const userId = req.user!.id;
+    const rs = await ProfileService.getSuggestForStudy(userId);
+    res.status(200).json(rs);
+  }
 }
 export default ProfileCtrl;

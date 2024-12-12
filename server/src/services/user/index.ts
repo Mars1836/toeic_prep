@@ -1,4 +1,4 @@
-import { UserAttr, userModel } from "../../models/user.model";
+import { UserAttr, userModel, UserTargetScore } from "../../models/user.model";
 import bcrypt from "bcrypt";
 import * as _ from "lodash";
 import jwt from "jsonwebtoken";
@@ -62,6 +62,24 @@ export async function getById(id: string) {
   const user = await userModel.findById(id).select("-password");
   return user;
 }
+export async function updateTargetScore(
+  id: string,
+  { reading, listening }: { reading: number; listening: number }
+) {
+  const targetScore = {
+    reading,
+    listening,
+  };
+  const user = await userModel.findByIdAndUpdate(
+    id,
+    { targetScore },
+    {
+      new: true,
+    }
+  );
+  return user;
+}
+
 export const userSrv = {
   localCreate,
   localLogin,
@@ -70,6 +88,7 @@ export const userSrv = {
   getById,
   updateProfile,
   updateAvatar,
+  updateTargetScore,
 };
 export async function hashPassword(password: string) {
   return await bcrypt.hash(password, parseInt(constEnv.passwordSalt!));

@@ -45,4 +45,12 @@ userProfileRouter.post(
 );
 userProfileRouter.post("/update-profile", handleAsync(userCtrl.updateProfile));
 userProfileRouter.get("/analysis", handleAsync(ProfileCtrl.getAnalyst));
+userProfileRouter.post(
+  "/update-target-score",
+  handleAsync(userCtrl.updateTargetScore)
+);
+userProfileRouter.get(
+  "/recommend",
+  handleAsync(ProfileCtrl.getSuggestForStudy)
+);
 export default userProfileRouter;
