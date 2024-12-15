@@ -79,7 +79,26 @@ export async function updateTargetScore(
   );
   return user;
 }
-
+export async function getAllUsers() {
+  const users = await userModel.find({}).select("-password");
+  const data = users.map((user) => {
+    return {
+      ...user.toObject(),
+      isUpgrade:
+        user.upgradeExpiredDate &&
+        new Date(user.upgradeExpiredDate) > new Date()
+          ? true
+          : false,
+    };
+  });
+  return data;
+}
+export async function getUpgradeUsers() {
+  const users = await userModel.find({
+    upgradeExpiredDate: { $gt: new Date() },
+  });
+  return users;
+}
 export const userSrv = {
   localCreate,
   localLogin,
@@ -89,6 +108,8 @@ export const userSrv = {
   updateProfile,
   updateAvatar,
   updateTargetScore,
+  getAllUsers,
+  getUpgradeUsers,
 };
 export async function hashPassword(password: string) {
   return await bcrypt.hash(password, parseInt(constEnv.passwordSalt!));

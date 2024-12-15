@@ -17,6 +17,7 @@ export interface UserAttr {
   upgradeExpiredDate?: Date;
   avatar?: string;
   targetScore?: UserTargetScore;
+  createdAt?: Date;
 }
 export interface UserDoc extends mongoose.Document {
   email?: string;
@@ -30,6 +31,7 @@ export interface UserDoc extends mongoose.Document {
   upgradeExpiredDate?: Date;
   avatar?: string;
   targetScore?: UserTargetScore;
+  createdAt?: Date;
 }
 export interface UserModel extends mongoose.Model<UserDoc> {}
 const userSchema = new Schema(

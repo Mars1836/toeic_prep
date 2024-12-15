@@ -4,9 +4,10 @@ import app from "./app";
 import { connectMongo } from "./connect/mongo";
 import { connectRedis } from "./connect/redis";
 // import { testSendMail } from "./configs/nodemailer";
+import { main } from "./configs/aichat/chatbot/main";
 connectMongo();
 connectRedis();
-
+// main();
 declare global {
   namespace Express {
     interface User {

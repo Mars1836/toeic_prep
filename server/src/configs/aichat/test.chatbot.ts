@@ -5,6 +5,7 @@ import { genAI } from "./instance";
 class SmartResponseSystem {
   constructor(apiKey) {
     this.genAI = genAI;
+    this.model = "gemini-1.5-flash";
     this.knowledgeBase = [];
   }
 
@@ -13,7 +14,7 @@ class SmartResponseSystem {
     try {
       // Tạo embedding cho nội dung
       const model = this.genAI.getGenerativeModel({
-        model: "text-bison",
+        model: this.model,
       });
       const result = await model.embedContent(content);
 
@@ -52,7 +53,7 @@ class SmartResponseSystem {
     try {
       // Tạo embedding cho câu hỏi
       const model = this.genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: this.model,
       });
       const queryEmbedding = await model.embedContent(query);
 
@@ -68,7 +69,7 @@ class SmartResponseSystem {
 
       // Tổng hợp và trả lời
       const aiModel = this.genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: this.model,
       });
       const contextText = relevantContents
         .map((item) => item.originalText)

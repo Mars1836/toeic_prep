@@ -45,9 +45,20 @@ async function updateTargetScore(req: Request, res: Response) {
   });
   res.status(200).json(updatedUser);
 }
+async function getAllUsers(req: Request, res: Response) {
+  const users = await userSrv.getAllUsers();
+
+  res.status(200).json(users);
+}
+async function getUpgradeUsers(req: Request, res: Response) {
+  const users = await userSrv.getUpgradeUsers();
+  res.status(200).json(users);
+}
 export const userCtrl = {
   logout,
   getCurrentUser,
   updateProfile,
   updateTargetScore,
+  getAllUsers,
+  getUpgradeUsers,
 };
