@@ -16,8 +16,11 @@ import instance from "~configs/axios.instance";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-function ExamResultCard({ result, onViewDetails }) {
+export function ExamResultCard({ result }) {
   const router = useRouter();
+  const handleViewDetails = (idTest, idResult) => {
+    router.push(`/test3/${idTest}/result/${idResult}`);
+  };
   useEffect(() => {
     if (result) {
       router.prefetch(`/test3/${result.testId.id}/result/${result.id}`);
@@ -60,7 +63,7 @@ function ExamResultCard({ result, onViewDetails }) {
           </div>
         </div>
         <Button
-          onClick={() => onViewDetails(result.testId.id, result.id)}
+          onClick={() => handleViewDetails(result.testId.id, result.id)}
           className="w-full"
         >
           View Details
@@ -81,7 +84,11 @@ export default function ResultCardList() {
     }
     async function fetchResultData() {
       try {
-        const { data } = await instance.get(endpoint.result.getResultByUser);
+        const { data } = await instance.get(endpoint.result.getResultByUser, {
+          params: {
+            limit: 4,
+          },
+        });
         setUserResults(data);
       } catch (error) {
         console.log(error);
@@ -89,9 +96,6 @@ export default function ResultCardList() {
     }
     fetchResultData();
   }, [user]);
-  const handleViewDetails = (idTest, idResult) => {
-    router.push(`/test3/${idTest}/result/${idResult}`);
-  };
 
   return (
     userResults && (
@@ -99,13 +103,9 @@ export default function ResultCardList() {
         <h1 className="mb-6 text-center text-3xl font-bold">
           Your Exam Results
         </h1>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {userResults.map((result) => (
-            <ExamResultCard
-              key={result.id}
-              result={result}
-              onViewDetails={handleViewDetails}
-            />
+            <ExamResultCard key={result.id} result={result} />
           ))}
         </div>
       </div>

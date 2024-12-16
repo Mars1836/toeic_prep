@@ -14,13 +14,15 @@ export function makeid(length) {
 }
 export function handleErrorWithToast(error) {
   const { response } = error;
-  if (response?.data) {
-    const { errors } = response.data;
-    return toast.error(errors[0].message);
-  }
   if (error.message) {
     return toast.error(error.message);
   }
+  if (response?.data) {
+    const { errors } = response.data;
+    if (!errors) return toast.error("Uops! Something wrong!");
+    return toast.error(errors[0].message);
+  }
+
   return toast.error("Uops! Something wrong!");
 }
 export function filterObject(obj, allowedFields) {

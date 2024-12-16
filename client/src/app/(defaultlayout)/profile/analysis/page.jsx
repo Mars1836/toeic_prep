@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import instance from "~configs/axios.instance";
 import { handleErrorWithToast } from "~helper";
 import { CategoryAccuracyChart } from "@/components/component/profile_category_accuracy";
+import { RefreshCw } from "lucide-react";
 //type TimeRange = 'week' | 'month' | 'year'
 
 export default function Dashboard() {
@@ -24,14 +25,30 @@ export default function Dashboard() {
   const [score, setScore] = useState(0);
   const [readScore, setReadScore] = useState(0);
   const [listenScore, setListenScore] = useState(0);
+  const [recommend, setRecommend] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
   // const handleRangeChange = (range) => {
   //   setTimeRange(range);
   //   // Ở đây bạn sẽ cần gọi API hoặc cập nhật state để lấy dữ liệu mới cho khoảng thời gian đã chọn
   // };
+  const handleGenerateNewSuggestions = async () => {
+    setIsGenerating(true);
+    try {
+      const { data } = await instance.post(endpoint.aichat.getRecommend);
+      setRecommend(data);
+    } catch (error) {
+      handleErrorWithToast(error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
   useEffect(() => {
     const fetchDataAnalysis = async () => {
       try {
         const { data } = await instance.get(endpoint.profile.getAnalysis);
+        const { data: recommendData } = await instance.get(
+          endpoint.profile.getRecommend
+        );
         if (!data) return;
         setAccuracyByPart(data.accuracyByPart);
         setAverageTimeByPart(data.averageTimeByPart);
@@ -40,6 +57,7 @@ export default function Dashboard() {
         setListenScore(data.listenScore);
         setScore(data.score);
         setTimeSecondRecommend(data.timeSecondRecommend);
+        setRecommend(recommendData.content);
       } catch (error) {
         handleErrorWithToast(error);
       }
@@ -51,28 +69,7 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold text-gray-900 mb-6">
         TOEIC Performance Dashboard
       </h1>
-      {/* <Card>
-        <CardContent className="flex justify-center space-x-2 p-4">
-          <Button
-            variant={timeRange === "week" ? "default" : "outline"}
-            onClick={() => handleRangeChange("week")}
-          >
-            Tuần
-          </Button>
-          <Button
-            variant={timeRange === "month" ? "default" : "outline"}
-            onClick={() => handleRangeChange("month")}
-          >
-            Tháng
-          </Button>
-          <Button
-            variant={timeRange === "year" ? "default" : "outline"}
-            onClick={() => handleRangeChange("year")}
-          >
-            Năm
-          </Button>
-        </CardContent>
-      </Card> */}
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-6">
         <ScoreAnalysis
           // timeRange={timeRange}
@@ -93,7 +90,18 @@ export default function Dashboard() {
           />
         </div>
         <div className="col-span-3">
-          <CustomRecommendations />
+          <Button
+            onClick={handleGenerateNewSuggestions}
+            disabled={isGenerating}
+            variant="outline"
+            className="mb-4"
+          >
+            <RefreshCw
+              className={`w-4 h-4 ${isGenerating ? "animate-spin" : ""}`}
+            />
+            {isGenerating ? "Đang tạo..." : "Tạo đề xuất mới"}
+          </Button>
+          <CustomRecommendations recommend={recommend} />
         </div>
       </div>
     </div>

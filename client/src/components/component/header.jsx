@@ -68,7 +68,7 @@ function Header() {
       </Link>
       <nav className="hidden items-center gap-6 md:flex">
         <Link
-          href="#"
+          href="/introduce"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
@@ -94,6 +94,13 @@ function Header() {
           prefetch={false}
         >
           Blog
+        </Link>
+        <Link
+          href="/transcript-test"
+          className="text-sm font-medium hover:underline"
+          prefetch={false}
+        >
+          Nghe chép
         </Link>
         <Link
           href="/upgrade"

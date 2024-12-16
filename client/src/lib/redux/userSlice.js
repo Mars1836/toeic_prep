@@ -14,6 +14,25 @@ export const userSlice = createSlice({
     setUserState(state, action) {
       state.data = action.payload;
     },
+    updateAvatar(state, action) {
+      state.data.avatar = action.payload;
+    },
+    updateProfile(state, action) {
+      state.data = { ...state.data, ...action.payload };
+    },
+    updateTargetScore(state, action) {
+      state.data.targetScore = {
+        reading: action.payload.reading,
+        listening: action.payload.listening,
+      };
+    },
   },
 });
-export const { login, logoutUserState, setUserState } = userSlice.actions;
+export const {
+  login,
+  logoutUserState,
+  setUserState,
+  updateAvatar,
+  updateProfile,
+  updateTargetScore,
+} = userSlice.actions;

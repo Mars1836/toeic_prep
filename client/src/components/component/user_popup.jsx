@@ -11,6 +11,7 @@ import { User, LogOut, Settings, AlertTriangle } from "lucide-react";
 import { expiredDate, formatDate } from "~helper";
 import { Alert, AlertDescription, AlertTitle } from "~components/ui/alert";
 import { useRouter } from "next/navigation";
+import { originUrl } from "~consts";
 export function UserPopup({ user, onProfileClick, handleLogout }) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -22,7 +23,7 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
       <PopoverTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8  font-bold text-primary">
-            <AvatarImage src={user.avatarUrl} alt={user.name} />
+            <AvatarImage src={originUrl + user.avatar} alt={user.name} />
             <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
@@ -31,7 +32,7 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
         <div className="flex flex-col space-y-4">
           <div className="flex items-center space-x-4">
             <Avatar className="h-16 w-16 text-2xl font-bold text-primary">
-              <AvatarImage src={user.avatarUrl} alt={user.name} />
+              <AvatarImage src={originUrl + user.avatar} alt={user.name} />
               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">

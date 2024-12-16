@@ -14,40 +14,8 @@ import {
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center">
-        <Link className="flex items-center justify-center" href="#">
-          <BookOpen className="h-6 w-6" />
-          <span className="ml-2 text-lg font-bold">TOEIC Prep</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Trang chủ
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Tính năng
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Giá cả
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Liên hệ
-          </Link>
-        </nav>
-      </header>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+        <section className="w-full py-12 md:py-16 lg:py-24 xl:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -59,14 +27,10 @@ export default function Home() {
                   dàng chuẩn bị cho kỳ thi TOEIC một cách toàn diện.
                 </p>
               </div>
-              <div className="space-x-4">
-                <Button>Bắt đầu ngay</Button>
-                <Button variant="outline">Tìm hiểu thêm</Button>
-              </div>
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 ">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
               Vì sao nên chọn TOEIC Prep?
@@ -161,89 +125,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
-              Nâng cấp tài khoản để sở hữu đầy đủ tính năng
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Gói Cơ bản</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Truy cập không giới hạn bài thi thử
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Flashcard từ vựng cơ bản
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Phân tích kết quả cơ bản
-                    </li>
-                  </ul>
-                  <Button className="w-full mt-4">Đăng ký miễn phí</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Gói Nâng cao</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Tất cả tính năng của Gói Cơ bản
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      AI giải thích đáp án chi tiết
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Lộ trình học tập cá nhân hóa
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Flashcard từ vựng nâng cao
-                    </li>
-                  </ul>
-                  <Button className="w-full mt-4">Nâng cấp ngay</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Gói Premium</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Tất cả tính năng của Gói Nâng cao
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Hỗ trợ 1-1 với giáo viên TOEIC
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Phân tích kết quả chuyên sâu với AI
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                      Bài tập độc quyền cập nhật hàng tuần
-                    </li>
-                  </ul>
-                  <Button className="w-full mt-4">Trải nghiệm Premium</Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
+
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">

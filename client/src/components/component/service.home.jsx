@@ -36,7 +36,7 @@ export default function TOEICServices() {
   ];
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 ">
       <h2 className="text-3xl font-bold text-center mb-8">
         Our TOEIC Preparation Services
       </h2>
@@ -44,10 +44,10 @@ export default function TOEICServices() {
         {services.map((service, index) => (
           <Card
             key={index}
-            className="hover:shadow-lg transition-shadow duration-300"
+            className="hover:shadow-lg transition-shadow duration-300 bg-white"
           >
             <CardHeader>
-              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4 ">
                 <service.icon className="w-6 h-6 text-primary-foreground" />
               </div>
               <CardTitle>{service.title}</CardTitle>

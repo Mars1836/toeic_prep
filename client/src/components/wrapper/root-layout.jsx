@@ -11,7 +11,6 @@ function setUpgradeStatus(upgradeExpiredDate) {
   return new Date() < new Date(upgradeExpiredDate) ? "UPGRADED" : "EXPIRED";
 }
 function formatUser(user) {
-  console.log(new Date(user.upgradeExpiredDate));
   return {
     ...user,
     upgradeStatus: setUpgradeStatus(user.upgradeExpiredDate),

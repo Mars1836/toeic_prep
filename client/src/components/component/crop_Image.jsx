@@ -163,25 +163,6 @@ export default function CropImage({ setImagePreviewRef, imgSrc }) {
               }}
             />
           </div>
-          <div>
-            <button onClick={onDownloadCropClick}>Download Crop</button>
-            <div style={{ fontSize: 12, color: "#666" }}>
-              If you get a security error when downloading try opening the
-              Preview in a new tab (icon near top right).
-            </div>
-            <a
-              href="#hidden"
-              ref={hiddenAnchorRef}
-              download
-              style={{
-                position: "absolute",
-                top: "-200vh",
-                visibility: "hidden",
-              }}
-            >
-              Hidden download
-            </a>
-          </div>
         </>
       )}
     </div>

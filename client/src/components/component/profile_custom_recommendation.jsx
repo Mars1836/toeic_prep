@@ -1,47 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import ReactMarkdown from "react-markdown";
 
-export default function CustomRecommendations({ timeRange }) {
+const text =
+  "## Phân tích điểm TOEIC và Kế hoạch Học Tập Chi Tiết\n\n**1. Phân tích điểm số:**\n\n* **Listening (95/495):** Điểm hiện tại rất thấp, cần cải thiện đáng kể để đạt mục tiêu 400 điểm.  Khoảng cách cần bù là 305 điểm, đây là một khoảng cách rất lớn.\n* **Reading (70/495):** Điểm hiện tại cũng thấp, cần cải thiện để đạt mục tiêu 400 điểm. Khoảng cách cần bù là 330 điểm, cũng là một khoảng cách rất lớn.\n\n**Tổng điểm:** 165/990. Cần cải thiện tổng thể rất nhiều.\n\n**2. Phân tích chi tiết từng phần:**\n\n**Phần Nghe (Listening):**\n\n* **Part 1 (Pictures):**  Accuracy: 12.5%. Điểm yếu nghiêm trọng. Cần tập trung vào việc mô tả hình ảnh và từ vựng liên quan đến các hành động, vị trí, môi trường.\n* **Part 2 (Questions and Responses):** Accuracy: 25.81%. Điểm yếu. Cần luyện nghe hiểu câu hỏi và đáp án nhanh chóng, tập trung vào từ khóa và ngữ điệu.  Đặc biệt là Wh-Question (0%) cần được tập trung cải thiện ngay.\n* **Part 3 (Conversations):** Accuracy: 26.79%. Điểm yếu.  Cần luyện tập kỹ năng nắm bắt thông tin chính, mục đích của cuộc hội thoại, quan hệ giữa người nói, và chi tiết cụ thể.  Các mục nhỏ như Conversation Purpose (0%) và Outcome Prediction (0%) cần được ưu tiên luyện tập.\n* **Part 4 (Talks):** Accuracy: 20.69%. Điểm yếu.  Tập trung vào việc xác định chủ đề chính, chi tiết quan trọng, thông tin ngầm hiểu. Main Topic Identification (0%) là một điểm yếu cần khắc phục ngay.\n\n**Phần Đọc (Reading):**\n\n* **Part 5 (Incomplete Sentences):** Accuracy: 28.13%. Điểm yếu.  Cần củng cố ngữ pháp, từ vựng, và khả năng nhận diện cấu trúc câu.  Đặc biệt là Tense Usage (0%) và Vocabulary Insertion (0%).\n* **Part 6 (Text Completion):** Accuracy: 27.78%. Điểm yếu.  Cần luyện tập khả năng hiểu mạch văn, lựa chọn từ ngữ phù hợp với ngữ cảnh và logic của bài đọc.  Logical Completion (50%) khá tốt, nhưng các phần khác cần cải thiện nhiều.\n* **Part 7 (Reading Comprehension):** Accuracy: 28.57%. Điểm yếu.  Cần luyện tập kỹ năng đọc nhanh, hiểu ý chính, chi tiết, và quan hệ giữa các thông tin trong bài đọc.  Information Relationship (0%) cần cải thiện đáng kể.\n\n\n**3. Đề xuất cụ thể cho từng loại câu hỏi:**\n\n* **Part 1:** Xem hình ảnh và luyện tập mô tả bằng tiếng Anh, tập trung vào động từ, trạng từ, tính từ miêu tả hành động, vị trí, môi trường. Sử dụng flashcards với hình ảnh và câu mô tả.\n* **Part 2:** Luyện nghe các câu hỏi và đáp án với tốc độ khác nhau, tập trung vào từ khóa, ngữ điệu. Thực hành trả lời câu hỏi bằng tiếng Anh.\n* **Part 3 & 4:** Nghe nhiều đoạn hội thoại và bài thuyết trình, tập trung ghi chép các thông tin chính, mục đích, quan hệ giữa người nói.  Luyện tập dự đoán kết quả và ý nghĩa ngầm.\n* **Part 5:** Học ngữ pháp, từ vựng, tập trung vào các lỗi ngữ pháp thường gặp.  Làm nhiều bài tập trắc nghiệm về việc lựa chọn từ vựng, thì, giới từ phù hợp.\n* **Part 6:** Đọc nhiều đoạn văn, tập trung vào việc hiểu mạch văn và lựa chọn từ ngữ phù hợp.  Thực hành viết lại câu, đoạn văn bằng cách thay thế từ vựng.\n* **Part 7:** Luyện đọc nhanh, skimming và scanning.  Tập trung vào việc xác định ý chính, chi tiết, quan hệ giữa các thông tin. Thực hành tìm kiếm thông tin cụ thể trong bài đọc.\n\n\n**4. Kế hoạch học tập chi tiết (12 tuần):**\n\n**(Mỗi tuần dành 15-20 giờ học)**\n\n**Tuần 1-4 (Nền tảng):**\n\n* **Tài liệu:** Sách TOEIC cơ bản (Oxford, Barron's...),  ứng dụng luyện nghe như VOA Learning English, BBC Learning English.\n* **Thời gian:** Nghe 7 giờ/tuần, Đọc 8 giờ/tuần.\n* **Phương pháp:**  Tập trung vào ngữ pháp, từ vựng cơ bản. Luyện nghe hiểu các câu đơn giản, đọc hiểu các bài văn ngắn.  Làm bài tập theo từng Part.\n\n**Tuần 5-8 (Củng cố):**\n\n* **Tài liệu:**  Đề thi TOEIC thực hành (các bộ đề khác nhau),  website luyện thi TOEIC online (ETS, Magoosh...).\n* **Thời gian:** Nghe 8 giờ/tuần, Đọc 7 giờ/tuần.\n* **Phương pháp:**  Làm đề thi thực hành, tập trung vào các Part yếu.  Phân tích lỗi sai, tìm hiểu nguyên nhân.  Luyện tập chiến lược làm bài thi.\n\n\n**Tuần 9-12 (Ôn luyện và Luyện đề):**\n\n* **Tài liệu:**  Đề thi TOEIC thực hành (nhiều bộ đề),  tài liệu tổng hợp ngữ pháp và từ vựng.\n* **Thời gian:** Nghe 9 giờ/tuần, Đọc 6 giờ/tuần.\n* **Phương pháp:**  Làm nhiều đề thi thực hành,  tập trung vào tốc độ và độ chính xác.  Review lại các kiến thức đã học,  điều chỉnh chiến lược làm bài thi.\n\n\n**Thời gian dành cho từng phần (ví dụ):**\n\n* Part 1: 1 giờ/tuần\n* Part 2: 2 giờ/tuần\n* Part 3: 3 giờ/tuần\n* Part 4: 2 giờ/tuần\n* Part 5: 3 giờ/tuần\n* Part 6: 2 giờ/tuần\n* Part 7: 3 giờ/tuần\n\n\n**5. Chiến lược tổng thể:**\n\n* **Quản lý thời gian:** Lập kế hoạch học tập cụ thể, phân bổ thời gian hợp lý cho từng phần.  Thực hiện theo đúng kế hoạch.\n* **Duy trì động lực:**  Đặt mục tiêu nhỏ,  thưởng cho bản thân khi đạt được mục tiêu.  Tìm người cùng học để tạo động lực.\n* **Mẹo làm bài thi:** Quản lý thời gian chặt chẽ,  đọc kỹ hướng dẫn,  tập trung vào các câu hỏi dễ trước,  không dành quá nhiều thời gian cho một câu hỏi khó.  Kiểm tra lại đáp án trước khi nộp bài.\n\n\n**Lưu ý:**  Kế hoạch trên chỉ là gợi ý, bạn cần điều chỉnh cho phù hợp với tình hình thực tế của mình.  Quan trọng nhất là sự kiên trì và nỗ lực của bạn.  Hãy tập trung vào các điểm yếu của mình và luyện tập thường xuyên.  Chúc bạn thành công!\n";
+export default function CustomRecommendations({ recommend }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          Đề xuất
-          {/* (
-          {timeRange === "week"
-            ? "Tuần"
-            : timeRange === "month"
-            ? "Tháng"
-            : "Năm"}
-          ) */}
-        </CardTitle>
+        <CardTitle>Đề xuất</CardTitle>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-2">
-          <li>Focus on improving your performance in Part 6 and Part 7.</li>
-          <li>Practice more on questions related to Tone and Purpose.</li>
-          <li>Work on time management for Part 3 questions.</li>
-        </ul>
-        <div className="mt-4">
-          <h4 className="font-semibold mb-2">Recommended Resources:</h4>
-          <ul className="space-y-2">
-            <li>
-              <Button variant="link" className="p-0">
-                TOEIC Official Guide
-              </Button>
-            </li>
-            <li>
-              <Button variant="link" className="p-0">
-                Grammar for TOEIC
-              </Button>
-            </li>
-            <li>
-              <Button variant="link" className="p-0">
-                TOEIC Practice Tests
-              </Button>
-            </li>
-          </ul>
-        </div>
+        <ReactMarkdown>{recommend}</ReactMarkdown>
       </CardContent>
     </Card>
   );
