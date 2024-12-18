@@ -51,7 +51,9 @@ export function calculateCategoryAccuracy(questions: ResultItemAttr[]) {
     // @ts-ignore
     categoryAccuracy[category].part = ToeicQuestionCategories[category].part;
     // @ts-ignore
-    categoryAccuracy[category].title = ToeicQuestionCategories[category].title;
+    categoryAccuracy[category].title =
+      //@ts-ignore
+      ToeicQuestionCategories[category].vietnameseTitle;
     categoryAccuracy[category].accuracy = ((correct / total) * 100).toFixed(2);
   });
 

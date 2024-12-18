@@ -73,7 +73,7 @@ export const changePwMailTemp = (otp: string, email: string) => {
 </head>
 <body>
   <div class="email-container">
-    <h1>Toeic Prep</h1>
+    <h1>Toeic Journey</h1>
     <p>We received a request to reset the password for your account. If you didn't make this request, you can safely ignore this email.</p>
     <p>To change your password, click the button below:</p>
     
@@ -85,7 +85,7 @@ export const changePwMailTemp = (otp: string, email: string) => {
     <p class="fallback-link"><a href="${constEnv.clientOrigin}/mail/reset-password?otp=${otp}&email=${email}">${constEnv.clientOrigin}/mail/reset-password?otp=${otp}&email=${email}</a></p>
     
     <div class="footer">
-      <p>This email was sent by Toeic Prep<br>123 Company Street, City, Country</p>
+      <p>This email was sent by Toeic Journey<br>123 Company Street, City, Country</p>
       <p><a href="#">Unsubscribe</a> | <a href="#">Privacy Policy</a></p>
     </div>
   </div>

@@ -16,7 +16,7 @@ export async function sendMailChangePW(data: { to: string; otp: string }) {
     const info = await transport.sendMail({
       from: "hauhpll1231@gmail.com", // sender address
       to: data.to, // list of receivers
-      subject: "Toeic Prep - Change your password", // Subject line
+      subject: "Toeic Journey - Change your password", // Subject line
       html: changePwMailTemp(data.otp, data.to), // html body
     });
 
@@ -32,7 +32,7 @@ export async function sendMailVerifyEmail(data: { to: string; otp: string }) {
     const info = await transport.sendMail({
       from: "hauhpll1231@gmail.com", // sender address
       to: data.to, // list of receivers
-      subject: "Toeic Prep - Verify your email", // Subject line
+      subject: "Toeic Journey - Verify your email", // Subject line
       html: verifyMailTemp(data.otp, data.to), // html body
     });
 

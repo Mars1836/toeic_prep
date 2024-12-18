@@ -72,7 +72,7 @@ export const verifyMailTemp = (otp: string, email: string) => {
 </head>
 <body>
   <div class="email-container">
-    <h1>Toeic Prep</h1>
+    <h1>Toeic Journey</h1>
     <p>Thank you for registering with us! To complete your registration and verify your email, please click the button below.</p>
     
     <div class="button-container">
@@ -83,7 +83,7 @@ export const verifyMailTemp = (otp: string, email: string) => {
     <p class="fallback-link"><a href="${constEnv.clientOrigin}/mail/verify/handle?otp=${otp}&email=${email}">${constEnv.clientOrigin}/mail/verify/handle?otp=${otp}&email=${email}</a></p>
     
     <div class="footer">
-      <p>This email was sent by Toeic Prep<br>123 Company Street, City, Country</p>
+      <p>This email was sent by Toeic Journey<br>123 Company Street, City, Country</p>
       <p><a href="#">Unsubscribe</a> | <a href="#">Privacy Policy</a></p>
     </div>
   </div>
