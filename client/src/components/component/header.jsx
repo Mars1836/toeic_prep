@@ -64,7 +64,7 @@ function Header() {
     <header className="header bg-primary text-primary-foreground fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-12 py-4">
       <Link href="/" className="flex items-center gap-2" prefetch={false}>
         <BookIcon className="h-7 w-7" />
-        <span className="text-xl font-semibold">TOEIC Prep</span>
+        <span className="text-xl font-semibold">Toeic Journey</span>
       </Link>
       <nav className="hidden items-center gap-6 md:flex">
         <Link
@@ -75,7 +75,7 @@ function Header() {
           Giới thiệu
         </Link>
         <Link
-          href="/test3"
+          href="/test"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >

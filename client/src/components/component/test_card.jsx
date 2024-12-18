@@ -27,7 +27,7 @@ import { formatTimeAgo } from "~helper";
 export function ExamCard({ card, isTaken }) {
   const router = useRouter();
   function goToPracticeTest() {
-    router.push(`/test3/${card.id}/practice-set`);
+    router.push(`/test/${card.id}/practice-set`);
   }
   const getAttempts = () => {
     if (!card?.attempts?.length) {
@@ -39,7 +39,7 @@ export function ExamCard({ card, isTaken }) {
   };
   useEffect(() => {
     if (card) {
-      router.prefetch(`/test3/${card.id}/practice-set`);
+      router.prefetch(`/test/${card.id}/practice-set`);
     }
   }, [card]);
   return (
@@ -64,16 +64,13 @@ export function ExamCard({ card, isTaken }) {
           </Badge>
           <Badge variant="primary" className="text-xs">
             <BookOpen className="mr-1 h-3 w-3" />
-            {card.numberOfQuestions} questions
+            {card.numberOfQuestions} câu hỏi
           </Badge>
           <Badge variant="primary" className="text-xs">
             <CheckCircle className="mr-1 h-3 w-3" />
-            {getAttempts()} attempts
+            {getAttempts()} lượt làm
           </Badge>
-          <Badge variant="primary" className="text-xs">
-            <MessageSquare className="mr-1 h-3 w-3" />
-            {card.comments ?? 0} comments
-          </Badge>
+
           <Badge variant="primary" className="text-xs">
             <Layers className="mr-1 h-3 w-3" />
             {card.numberOfParts} parts
@@ -95,7 +92,7 @@ export function ExamCard({ card, isTaken }) {
             </div>
           ) : (
             <div className="text-sm font-medium bg-gray-200 text-gray-800 p-2 rounded-md flex items-center justify-between">
-              <span>Manage your time effectively !</span>
+              <span>Quản lý thời gian hiệu quả!</span>
             </div>
           )}
         </div>
@@ -112,7 +109,7 @@ export function ExamCard({ card, isTaken }) {
             goToPracticeTest();
           }}
         >
-          {card?.userAttempt ? "Retake Test" : "Take Test"}
+          {card?.userAttempt ? "Làm lại bài thi" : "Làm bài thi"}
         </Button>
       </CardFooter>
     </Card>
@@ -142,9 +139,7 @@ export default function TestCardList() {
   }, []);
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-6 text-center text-3xl font-bold">
-        TOEIC Exam Sections
-      </h1>
+      <h1 className="mb-6 text-center text-3xl font-bold">Bài thi TOEIC</h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {testData.map((card) => (
           <ExamCard key={card.id} card={card} />

@@ -162,9 +162,9 @@ const AudioTranscription = ({
     <Card className="w-full max-w-3xl mx-auto" key={question.id}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Audio Transcription Practice</span>
+          <span>Thực hành nghe chép</span>
           <span className="text-sm text-muted-foreground">
-            Question {indexQuestion + 1} of {totalQuestion}
+            Câu {indexQuestion + 1} / {totalQuestion}
           </span>
         </CardTitle>
       </CardHeader>
@@ -181,23 +181,23 @@ const AudioTranscription = ({
             type="text"
             value={userInput}
             onChange={handleInputChange}
-            placeholder="Type what you hear..."
+            placeholder="Nhập nội dung bạn nghe được..."
             className="w-full"
           />
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={checkTranscription}>Check Transcription</Button>
+          <Button onClick={checkTranscription}> Kiểm tra </Button>
           <div>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" className="w-full">
                   <Mic className="w-4 h-4 mr-2" />
-                  Practice Pronunciation
+                  Thực hành phát âm
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Pronunciation Practice</DialogTitle>
+                  <DialogTitle>Thực hành phát âm</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <PronunciationChecker question={question} />
@@ -205,13 +205,11 @@ const AudioTranscription = ({
               </DialogContent>
             </Dialog>
           </div>
-          {isCorrect && (
-            <p className="text-green-600 font-semibold">Correct!</p>
-          )}
+          {isCorrect && <p className="text-green-600 font-semibold">Đúng!</p>}
         </div>
         {isChecked && (
           <div className="p-4 bg-gray-100 rounded-md">
-            <p className="font-semibold">Your input:</p>
+            <p className="font-semibold">Nội dung bạn nhập:</p>
             <p>
               {userInput.split(" ").map((word, index) => (
                 <span
@@ -226,7 +224,7 @@ const AudioTranscription = ({
         )}
         {isChecked && checkResult.length > 0 && (
           <div className="p-4 bg-gray-100 rounded-md">
-            <p className="font-semibold">Result:</p>
+            <p className="font-semibold">Kết quả:</p>
             <p>
               {checkResult.map((result, index) => (
                 <span
@@ -255,14 +253,15 @@ const AudioTranscription = ({
           disabled={indexQuestion === 0}
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
-          Previous
+          Trước
         </Button>
+
         <Button
           variant="outline"
           onClick={handleNext}
           disabled={indexQuestion === totalQuestion - 1}
         >
-          Next
+          Sau
           <ChevronRight className="w-4 h-4 ml-2" />
         </Button>
       </CardFooter>

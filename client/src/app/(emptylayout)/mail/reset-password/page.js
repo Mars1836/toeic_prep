@@ -46,40 +46,40 @@ function PasswordChangePage() {
             className="px-4 py-2 text-lg transition-colors duration-200 ease-in-out hover:bg-gray-200"
           >
             <ArrowLeftIcon className="mr-2 h-5 w-5" />
-            Go back
+            Trở lại
           </Button>
         </Link>
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold">Change Password</h1>
+          <h1 className="text-3xl font-bold">Đổi mật khẩu</h1>
           <p className="text-muted-foreground">
-            Enter your new password below to reset your account password.
+            Nhập mật khẩu mới của bạn bên dưới để đổi mật khẩu của bạn.
           </p>
         </div>
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="password">New Password</Label>
+            <Label htmlFor="password">Mật khẩu mới</Label>
             <Input
               id="password"
               type="password"
-              placeholder="Enter your new password"
+              placeholder="Nhập mật khẩu mới của bạn"
               required
               value={password.value}
               onChange={password.onChange}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
             <Input
               id="confirmPassword"
               type="password"
-              placeholder="Confirm your new password"
+              placeholder="Xác nhận mật khẩu mới của bạn"
               required
               value={cfPassword.value}
               onChange={cfPassword.onChange}
             />
           </div>
           <Button type="submit" className="w-full" onClick={handleClick}>
-            Reset Password
+            Đổi mật khẩu
           </Button>
         </div>
       </div>

@@ -5,8 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 import RootLayout from "@/components/wrapper/root-layout";
 export const metadata = {
-  title: "Toeic Prep",
-  description: "Toeic Prep",
+  title: "Toeic Journey",
+  description: "Toeic Journey",
 };
 function LayoutWrapper({ children }) {
   return (

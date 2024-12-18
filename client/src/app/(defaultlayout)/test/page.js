@@ -110,9 +110,11 @@ function TestPage() {
     }
   };
 
-  return (
+  return currentResults.length > 0 ? (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Your Exam Results</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Kết quả thi của bạn
+      </h1>
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-[180px]">
@@ -166,6 +168,12 @@ function TestPage() {
       <div className="mt-6 text-center">
         Page {currentPage} of {totalPages}
       </div>
+    </div>
+  ) : (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Không có kết quả thi nào
+      </h1>
     </div>
   );
 }

@@ -8,7 +8,7 @@ export function TranscriptTestCart({ transcriptTest }) {
     router.push(`/transcript-test/${transcriptTest.id}/listen-and-write`);
   };
   return (
-    <div className="bg-card rounded-xl overflow-hidden shadow-lg">
+    <div className="bg-card rounded-xl overflow-hidden shadow-lg flex flex-col ">
       <div className="relative">
         <div className="aspect-[4/3] relative">
           <Image
@@ -19,10 +19,10 @@ export function TranscriptTestCart({ transcriptTest }) {
           />
         </div>
       </div>
-      <div className="p-4 space-y-4">
+      <div className="p-4 space-y-4  flex-1 flex flex-col justify-between">
         <h3 className="text-lg font-semibold">{transcriptTest.title}</h3>
         <Button
-          className="w-full bg-blue-600 hover:bg-blue-700"
+          className="w-full bg-primary hover:bg-primary/80"
           onClick={handleClick}
         >
           Làm bài

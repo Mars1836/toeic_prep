@@ -110,7 +110,7 @@ function TestPage({ params }) {
     };
     const d = await instance.post(endpoint.result.storeResult, dataFetch);
     if (d?.data) {
-      router.push(`/test3/${idTest}/result/${d.data.id}`);
+      router.push(`/test/${idTest}/result/${d.data.id}`);
     }
     setResultItems(_resultItems);
   }

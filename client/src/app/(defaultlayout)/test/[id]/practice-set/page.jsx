@@ -66,7 +66,7 @@ function Component({ params }) {
       parts: sortPart.join(","), // Nối các phần của danh sách thành chuỗi
       time: timeLimit.toString(), // Thêm thời gian
     });
-    router.push(`/test3/${id}/practice?${query.toString()}`);
+    router.push(`/test/${id}/practice?${query.toString()}`);
   };
 
   const startRealTest = () => {
@@ -75,7 +75,7 @@ function Component({ params }) {
       parts: sortPart.join(","), // Nối các phần của danh sách thành chuỗi
       time: testData.duration.toString(), // Thêm thời gian
     });
-    router.push(`/test3/${id}/practice?${query.toString()}`);
+    router.push(`/test/${id}/practice?${query.toString()}`);
   };
   React.useEffect(() => {
     async function fetchTesttData() {
@@ -89,23 +89,18 @@ function Component({ params }) {
   }, []);
   return (
     testData && (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background lg:px-12 md:px-6 px-4">
         <main className="container mx-auto px-4 py-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-3">
               <div className="mb-6">
-                <h1 className="text-2xl font-bold mb-4">
-                  Practice Set 2023 TOEIC Test 9
-                </h1>
+                <h1 className="text-2xl font-bold mb-4">{testData.title}</h1>
                 <div className="flex gap-4 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Users className="h-4 w-4" />
                     {getAttempts(testData)} lượt làm
                   </span>
-                  <span className="flex items-center gap-1">
-                    <MessageCircle className="h-4 w-4" />
-                    56 bình luận
-                  </span>
+
                   <span className="flex items-center gap-1">
                     <Calendar className="h-4 w-4" />
                     Cập nhật {formatDate(testData.createdAt)}
@@ -128,7 +123,7 @@ function Component({ params }) {
                         {toeicParts.map((part) => (
                           <div
                             key={part.id}
-                            className="flex items-center space-x-2"
+                            className="flex items-center space-x-2 mb-2"
                           >
                             <Checkbox
                               id={`part-${part.id}`}
@@ -140,9 +135,6 @@ function Component({ params }) {
                               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                               Part {part.id}: {part.name}
-                              <Badge variant="primary" className="ml-2">
-                                {part.questions} câu hỏi
-                              </Badge>
                             </label>
                           </div>
                         ))}

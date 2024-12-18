@@ -16,7 +16,7 @@ function DefaultLayout({ children }) {
       <footer className="bg-primary text-primary-foreground px-4 py-6 md:px-6">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <p className="text-sm">
-            &copy; 2024 TOEIC Prep. All rights reserved.
+            &copy; 2024 Toeic Journey. All rights reserved.
           </p>
           <nav className="mt-4 flex items-center gap-4 md:mt-0">
             <Link href="#" className="text" prefetch={false} />

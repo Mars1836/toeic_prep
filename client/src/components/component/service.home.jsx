@@ -11,34 +11,33 @@ export default function TOEICServices() {
   const services = [
     {
       title: "AI Render",
-      description:
-        "Advanced AI-powered tools to enhance your TOEIC preparation experience.",
+      description: "Công nghệ AI để tăng cường trải nghiệm Toeic của bạn.",
       icon: Brain,
     },
     {
       title: "Flashcards",
       description:
-        "Interactive flashcards to boost your vocabulary and language skills efficiently.",
+        "Flashcards tương tác để tăng cường vốn từ vựng và kỹ năng ngôn ngữ.",
       icon: Square,
     },
     {
       title: "Practice Exams",
       description:
-        "Realistic TOEIC practice exams to assess and improve your test-taking abilities.",
+        "Bài thi thực tế TOEIC để đánh giá và cải thiện kỹ năng làm bài thi.",
       icon: FileSpreadsheet,
     },
     {
       title: "Result Analysis",
       description:
-        "Detailed analysis of your exam performance to identify strengths and areas for improvement.",
+        "Phân tích chi tiết kết quả thi của bạn để xác định những mặt mạnh và những điểm cần cải thiện.",
       icon: BarChart2,
     },
   ];
 
   return (
-    <div className="container mx-auto px-4 ">
+    <div className="container mx-auto px-12 ">
       <h2 className="text-3xl font-bold text-center mb-8">
-        Our TOEIC Preparation Services
+        Dịch vụ của chúng tôi
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {services.map((service, index) => (

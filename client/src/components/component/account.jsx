@@ -78,14 +78,14 @@ export function SignUp({ setShowSignUp }) {
       </Button>
       <div className="flex items-center justify-between">
         <Button variant="link" onClick={() => setShowSignUp(false)}>
-          Already have an account? Login
+          Đã có tài khoản? Đăng nhập
         </Button>
         <Link
           href="/account/forgot"
           className="text-sm underline"
           prefetch={false}
         >
-          Forgot password?
+          Quên mật khẩu?
         </Link>
       </div>
     </div>
@@ -176,14 +176,14 @@ export function SignIn({ setShowSignUp }) {
       </div>
       <div className="flex items-center justify-between">
         <Button variant="link" onClick={() => setShowSignUp(true)}>
-          Don't have an account? Sign up
+          Không có tài khoản? Đăng ký
         </Button>
         <Link
           href="/account/forgot"
           className="text-sm underline"
           prefetch={false}
         >
-          Forgot password?
+          Quên mật khẩu?
         </Link>
       </div>
     </div>
@@ -194,9 +194,12 @@ export function Account() {
   return (
     <div className="mx-auto max-w-2xl space-y-6 py-12 md:px-0 px-4">
       <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold">Welcome to TOEIC Prep</h1>
+        <h1 className="text-3xl font-bold text-primary">
+          Welcome to Toeic Journey
+        </h1>
         <p className="text-muted-foreground">
-          Login to access our comprehensive TOEIC preparation resources.
+          Đăng nhập để truy cập vào nguồn tài nguyên luyện thi TOEIC toàn diện
+          của chúng tôi.
         </p>
       </div>
       {showSignUp ? (

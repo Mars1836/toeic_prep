@@ -53,14 +53,14 @@ function VerifyMail() {
               <div className="text-center mb-4">
                 <CircleCheckIcon className="mx-auto mb-4 h-12 w-12 text-green-500" />
                 <p className="text-lg font-medium">
-                  Your email has been verified!
+                  Email của bạn đã được xác thực!
                 </p>
                 <p className="text-muted-foreground">
-                  You can now access all the features of our app.
+                  Bạn có thể truy cập tất cả các tính năng của ứng dụng.
                 </p>
               </div>
               <Link href="/" className="w-full" prefetch={false}>
-                <Button>Go to Home</Button>
+                <Button>Trở về trang chủ</Button>
               </Link>
             </CardContent>
           </Card>
@@ -70,17 +70,17 @@ function VerifyMail() {
           <Card className="w-full max-w-md p-6 sm:p-8">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-center">
-                Email Verification Waiting
+                Xác thực email
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
                 <MailIcon className="mx-auto mb-4 h-12 w-12 text-primary" />
-                <p className="text-lg font-medium">Verifying your email...</p>
+                <p className="text-lg font-medium">Xác thực email...</p>
                 <p className="text-muted-foreground">
-                  Please check your inbox for the verification email. Once you
-                  confirm your email, you'll be able to access all the features
-                  of our app.
+                  Vui lòng kiểm tra hộp thư của bạn để xác thực email. Sau khi
+                  xác thực email, bạn sẽ có thể truy cập tất cả các tính năng of
+                  our app.
                 </p>
               </div>
               <Button
@@ -90,10 +90,10 @@ function VerifyMail() {
                 onClick={handleClick}
               >
                 {firstSend
-                  ? "Send Verification Email"
+                  ? "Gửi email xác thực"
                   : time
-                  ? `Resend Verification Email After ${time}s`
-                  : `Resend Verification Email`}
+                  ? `Gửi email xác thực sau ${time}s`
+                  : `Gửi email xác thực`}
               </Button>
             </CardContent>
           </Card>

@@ -50,7 +50,7 @@ function ForgetPage() {
         }}
       >
         <ArrowLeftIcon className="w-5 h-5 mr-2" />
-        Go back
+        Trở lại
       </Button>
       <p>
         Hãy điền email của bạn. Bạn sẽ nhận được một đường dẫn để tạo mật khẩu
