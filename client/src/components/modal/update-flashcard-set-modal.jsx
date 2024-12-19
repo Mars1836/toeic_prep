@@ -45,12 +45,14 @@ export function UpdateFlashcardSetModal({
       if (!data) {
         return;
       }
-      setSetFC((pre) => {
-        const a = pre.map((item) => {
-          return item.id === setFCFocused.id ? data : item;
+      if (setSetFC && typeof setSetFC === "function") {
+        setSetFC((pre) => {
+          const a = pre.map((item) => {
+            return item.id === setFCFocused.id ? data : item;
+          });
+          return a;
         });
-        return a;
-      });
+      }
       toast.success("Cập nhật thành công");
     } catch (error) {
       handleErrorWithToast(error);

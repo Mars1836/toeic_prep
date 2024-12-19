@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import ScoreAnalysis from "@/components/component/profile_score_analysis";
 import PartAccuracy from "@/components/component/profile_part_accuracy";
 import CategoryPerformance from "@/components/component/profile_category_performance";
@@ -9,14 +10,14 @@ import CustomRecommendations from "@/components/component/profile_custom_recomme
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { endpoint } from "@/consts";
-import { useEffect } from "react";
 import instance from "~configs/axios.instance";
 import { handleErrorWithToast } from "~helper";
 import { CategoryAccuracyChart } from "@/components/component/profile_category_accuracy";
-import { RefreshCw } from "lucide-react";
-//type TimeRange = 'week' | 'month' | 'year'
+import { RefreshCw, Lock } from "lucide-react";
+import withAuth from "~HOC/withAuth";
+import { useRouter } from "next/navigation";
 
-export default function Dashboard() {
+export function Dashboard() {
   const [timeRange, setTimeRange] = useState("week");
   const [accuracyByPart, setAccuracyByPart] = useState([]);
   const [averageTimeByPart, setAverageTimeByPart] = useState([]);
@@ -27,10 +28,8 @@ export default function Dashboard() {
   const [listenScore, setListenScore] = useState(0);
   const [recommend, setRecommend] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  // const handleRangeChange = (range) => {
-  //   setTimeRange(range);
-  //   // Ở đây bạn sẽ cần gọi API hoặc cập nhật state để lấy dữ liệu mới cho khoảng thời gian đã chọn
-  // };
+  const isUpgraded = useSelector((state) => state.user.data.isUpgraded);
+  const router = useRouter();
   const handleGenerateNewSuggestions = async () => {
     setIsGenerating(true);
     try {
@@ -42,6 +41,11 @@ export default function Dashboard() {
       setIsGenerating(false);
     }
   };
+
+  const goToUpgrade = () => {
+    router.push("/upgrade");
+  };
+
   useEffect(() => {
     const fetchDataAnalysis = async () => {
       try {
@@ -49,6 +53,7 @@ export default function Dashboard() {
         const { data: recommendData } = await instance.get(
           endpoint.profile.getRecommend
         );
+
         if (!data) return;
         setAccuracyByPart(data.accuracyByPart);
         setAverageTimeByPart(data.averageTimeByPart);
@@ -57,53 +62,80 @@ export default function Dashboard() {
         setListenScore(data.listenScore);
         setScore(data.score);
         setTimeSecondRecommend(data.timeSecondRecommend);
-        setRecommend(recommendData.content);
+
+        if (recommendData?.content) {
+          setRecommend(recommendData.content);
+        }
       } catch (error) {
         handleErrorWithToast(error);
       }
     };
+
     fetchDataAnalysis();
   }, []);
+
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">
         TOEIC Performance Dashboard
       </h1>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-6">
-        <ScoreAnalysis
-          // timeRange={timeRange}
-          score={score}
-          readScore={readScore}
-          listenScore={listenScore}
-        />
-        <PartAccuracy timeRange={timeRange} accuracyByPart={accuracyByPart} />
-        <TimeAnalysis
-          // timeRange={timeRange}
-          timeSecondRecommend={timeSecondRecommend}
-          averageTimeByPart={averageTimeByPart}
-        />
-        <div className="col-span-3">
-          <CategoryAccuracyChart
-            categoryAccuracy={categoryAccuracy}
-            // timeRange={timeRange}
+      <div className="grid grid-cols-1 gap-6  md:grid-cols-2 lg:grid-cols-3 mt-6">
+        <div className=" lg:col-span-1  sm:col-span-3 col-span-3">
+          <ScoreAnalysis
+            score={score}
+            readScore={readScore}
+            listenScore={listenScore}
+          />
+        </div>
+        <div className="lg:col-span-1 md:col-span-2 sm:col-span-3 col-span-3">
+          <PartAccuracy timeRange={timeRange} accuracyByPart={accuracyByPart} />
+        </div>
+        <div className="lg:col-span-1 md:col-span-2 sm:col-span-3 col-span-3">
+          <TimeAnalysis
+            timeSecondRecommend={timeSecondRecommend}
+            averageTimeByPart={averageTimeByPart}
           />
         </div>
         <div className="col-span-3">
-          <Button
-            onClick={handleGenerateNewSuggestions}
-            disabled={isGenerating}
-            variant="outline"
-            className="mb-4"
-          >
-            <RefreshCw
-              className={`w-4 h-4 ${isGenerating ? "animate-spin" : ""}`}
-            />
-            {isGenerating ? "Đang tạo..." : "Tạo đề xuất mới"}
-          </Button>
-          <CustomRecommendations recommend={recommend} />
+          <CategoryAccuracyChart categoryAccuracy={categoryAccuracy} />
+        </div>
+        <div className="col-span-3">
+          {isUpgraded ? (
+            <Button
+              onClick={handleGenerateNewSuggestions}
+              disabled={isGenerating}
+              variant="outline"
+              className="my-4"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${isGenerating ? "animate-spin" : ""}`}
+              />
+              {isGenerating ? "Đang tạo..." : "Tạo đề xuất mới"}
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="link"
+                className="text-blue-500 my-4"
+                onClick={goToUpgrade}
+              >
+                Nâng cấp để sử dụng
+              </Button>
+              <Button
+                className="bg-gray-200 text-gray-500 cursor-not-allowed"
+                disabled
+              >
+                <Lock className="mr-2 h-4 w-4" />
+                Tạo lời giải bằng AI
+              </Button>
+            </>
+          )}
         </div>
       </div>
+      <CustomRecommendations recommend={recommend} />
     </div>
   );
 }
+
+export default withAuth(Dashboard);

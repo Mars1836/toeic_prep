@@ -17,7 +17,8 @@ import { useState, useEffect } from "react";
 import instance from "~configs/axios.instance";
 import { endpoint, originUrl } from "~consts";
 import ProfileTargetScore from "@/components/component/profile_target_score";
-export default function Profile() {
+import withAuth from "~HOC/withAuth";
+function Profile() {
   const router = useRouter();
   const user = useSelector((state) => state.user.data);
   const [readScore, setReadScore] = useState(0);
@@ -71,32 +72,24 @@ export default function Profile() {
               </h3>
               <p>{user.upgradeStatus === "UPGRADED" ? "Premium" : "Free"}</p>
             </div>
-            <div>
-              <h3 className="font-semibold text-sm text-muted-foreground">
-                Tests Taken
-              </h3>
-              <p>15</p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-sm text-muted-foreground">
-                Average Score
-              </h3>
-              <p>750</p>
-            </div>
           </div>
           <div>
             <ProfileTargetScore
               currentScores={{ reading: readScore, listening: listenScore }}
-              targetScores={{
-                reading: user.targetScore.reading || 495,
-                listening: user.targetScore.listening || 495,
-              }}
+              targetScores={
+                user?.targetScore
+                  ? {
+                      reading: user?.targetScore?.reading,
+                      listening: user?.targetScore?.listening,
+                    }
+                  : null
+              }
             />
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button variant="outline" onClick={goToEditProfilePage}>
-            <PencilIcon className="mr-2 h-4 w-4" /> Edit Profile
+            <PencilIcon className="mr-2 h-4 w-4" /> Cập nhật profile
           </Button>
           <div className="flex gap-2">
             <Button onClick={goToHistoryPage}>
@@ -111,3 +104,4 @@ export default function Profile() {
     </div>
   );
 }
+export default withAuth(Profile);

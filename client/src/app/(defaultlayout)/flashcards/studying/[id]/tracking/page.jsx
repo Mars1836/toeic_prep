@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { listOfSetFlashCard } from "@/dbTest/flashcard";
 import TrackingWordCard from "@/components/flashcard/tracking_word_card";
 import { Button } from "@/components/ui/button";
 import { Shuffle, Trash2 } from "lucide-react";
@@ -125,6 +124,9 @@ function TrackingFlashcardPage({ params }) {
             <h1 className="mb-4 text-2xl font-bold">
               Flashcards: {learningSetData.setFlashcardId?.title}
             </h1>
+            <p className="text-muted-foreground mb-4 font-medium">
+              {learningSetData.setFlashcardId?.description}
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-2 mb-4">

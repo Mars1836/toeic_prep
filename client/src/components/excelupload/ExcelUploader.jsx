@@ -21,7 +21,7 @@ import {
 import { Upload, Table as TableIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { endpoint, originUrlUpload } from "~consts";
 
 export default function ExcelUploader({ setId, setFlashcards }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +42,15 @@ export default function ExcelUploader({ setId, setFlashcards }) {
     "pronunciation",
   ];
   const fillCols = [0, 1];
+  const clearData = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
+    setData([]);
+    setDataHandled(null);
+    setError(null);
+    setIsLoading(false);
+  };
   const checkValueTable = () => {
     const check = data.every((item, index) => {
       const check2 = fillCols.every((col) => {
@@ -102,9 +111,7 @@ export default function ExcelUploader({ setId, setFlashcards }) {
         setFlashcards((pre) => {
           return [...rs, ...pre];
         });
-        if (fileInputRef.current) {
-          fileInputRef.current.value = null;
-        }
+        clearData();
         setIsOpen(false);
       }
     } catch (error) {
@@ -135,6 +142,10 @@ export default function ExcelUploader({ setId, setFlashcards }) {
       setIsLoading(false);
     }
   };
+  function handleDownloadTemplate() {
+    const url = originUrlUpload + "/template/file-mau-set-flashcard.xlsx";
+    window.open(url, "_blank");
+  }
   function handleData() {
     if (!data || data?.length === 0) {
       return;
@@ -175,6 +186,7 @@ export default function ExcelUploader({ setId, setFlashcards }) {
       setError(null);
     }
   }, [error]);
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -188,7 +200,14 @@ export default function ExcelUploader({ setId, setFlashcards }) {
           <DialogTitle>Tạo hàng loạt với file excel</DialogTitle>
         </DialogHeader>
         <div className="flex-grow overflow-hidden">
-          <div className="mb-4 mt-2">
+          <div className="mb-4 mt-2 flex gap-2">
+            <Button
+              variant="outline"
+              className=""
+              onClick={handleDownloadTemplate}
+            >
+              Tải file mẫu
+            </Button>
             <input
               type="file"
               accept=".xlsx, .xls"

@@ -24,12 +24,9 @@ export default function Component({ params }) {
   const [showAlert, setShowAlert] = useState(true);
   const [resultData, setResultData] = useState();
   const [resultItems, setResultItems] = useState();
+  const [testData, setTestData] = useState("");
   const rsId = params.rsId;
   const router = useRouter();
-  // const progressPercentage = resultData
-  //   ? 0
-  //   : (resultData?.numberOfUserAnswers / resultData?.numberOfQuestions) * 100;
-
   const renderParts = () => {
     if (resultData.parts.length === 1) return `Part ${resultData.parts[0]}`;
     if (resultData.parts.length === 2)
@@ -44,7 +41,13 @@ export default function Component({ params }) {
       const { data } = await instance.get(endpoint.result.getResultById, {
         params: { id: rsId },
       });
+      const { data: testData } = await instance.get(endpoint.test.getById, {
+        params: { id: data.testId },
+      });
+      console.log(testData);
+      console.log(data);
       setResultData(data);
+      setTestData(testData);
       const { data: itemDatas } = await instance.get(
         endpoint.resultItem.getResultItemByResult,
         {
@@ -64,38 +67,10 @@ export default function Component({ params }) {
     resultData && (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white  p-4 md:p-8">
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* {showAlert && (
-            <Alert className="bg-green-100 border-green-400 text-green-800   animate-fade-in-down">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription className="flex items-center justify-between w-full">
-                <span>
-                  Bạn có thể tạo flashcards từ các điểm đã highlight trong phần
-                  kết quả chi tiết.{" "}
-                  <Link
-                    href="#"
-                    className="font-medium underline underline-offset-4 hover:text-green-600  transition-colors"
-                  >
-                    Xem hướng dẫn
-                  </Link>
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowAlert(false)}
-                  className="text-green-800  hover:text-green-600 "
-                >
-                  &times;
-                </Button>
-              </AlertDescription>
-            </Alert>
-          )} */}
-
           <div className="text-center space-y-4">
-            <h1 className="text-3xl font-bold text-gray-800 ">
-              Kết quả Practice Set 2023
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-800 ">Kết quả</h1>
             <h2 className="text-xl font-semibold text-blue-600 ">
-              TOEIC Test 9 - {renderParts()}
+              {testData?.title} - {renderParts()}
             </h2>
           </div>
 

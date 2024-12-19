@@ -38,57 +38,80 @@ export default function ProfileTargetScore({ targetScores, currentScores }) {
               onUpdate={handleUpdateTargets}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Reading Target / Reading Current
-              </p>
-              <div className="flex items-end gap-2">
-                <p className="text-2xl font-bold">{currentScores.reading}</p>
-                <p className="text-sm text-muted-foreground mb-1">
-                  /{targetScores.reading}
+          {targetScores ? (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Reading Target / Reading Current
                 </p>
+                <div className="flex items-end gap-2">
+                  <p className="text-2xl font-bold">{currentScores.reading}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    /{targetScores.reading}
+                  </p>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all"
+                    style={{
+                      width: `${
+                        targetScores.reading
+                          ? (currentScores.reading / targetScores.reading) * 100
+                          : 0
+                      }%`,
+                      maxWidth: "100%",
+                    }}
+                  />
+                </div>
               </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary transition-all"
-                  style={{
-                    width: `${
-                      targetScores.reading
-                        ? (currentScores.reading / targetScores.reading) * 100
-                        : 0
-                    }%`,
-                    maxWidth: "100%",
-                  }}
-                />
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Listening Target / Listening Current
+                </p>
+                <div className="flex items-end gap-2">
+                  <p className="text-2xl font-bold">
+                    {currentScores.listening}
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    /{targetScores.listening}
+                  </p>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all"
+                    style={{
+                      width: `${
+                        targetScores.listening
+                          ? (currentScores.listening / targetScores.listening) *
+                            100
+                          : 0
+                      }%`,
+                      maxWidth: "100%",
+                    }}
+                  />
+                </div>
               </div>
             </div>
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Listening Target / Listening Current
-              </p>
-              <div className="flex items-end gap-2">
-                <p className="text-2xl font-bold">{currentScores.listening}</p>
-                <p className="text-sm text-muted-foreground mb-1">
-                  /{targetScores.listening}
-                </p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">Reading Current</p>
+                <div className="flex items-end gap-2">
+                  <p className="text-2xl font-bold">{currentScores.reading}</p>
+                </div>
               </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary transition-all"
-                  style={{
-                    width: `${
-                      targetScores.listening
-                        ? (currentScores.listening / targetScores.listening) *
-                          100
-                        : 0
-                    }%`,
-                    maxWidth: "100%",
-                  }}
-                />
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Listening Current
+                </p>
+                <div className="flex items-end gap-2">
+                  <p className="text-2xl font-bold">
+                    {currentScores.listening}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

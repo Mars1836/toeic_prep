@@ -49,7 +49,7 @@ function Header() {
     method: "post",
     onSuccess: () => {
       dispatch(logoutUserState());
-      window.location.reload();
+      window.location.href = "/";
     },
   });
 
@@ -67,13 +67,13 @@ function Header() {
         <span className="text-xl font-semibold">Toeic Journey</span>
       </Link>
       <nav className="hidden items-center gap-6 md:flex">
-        <Link
+        {/* <Link
           href="/introduce"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
           Giới thiệu
-        </Link>
+        </Link> */}
         <Link
           href="/test"
           className="text-sm font-medium hover:underline"

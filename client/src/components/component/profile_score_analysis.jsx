@@ -12,7 +12,7 @@ export default function ScoreAnalysis({
   // This would typically come from an API or state management
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>
           Phân tích Điểm số

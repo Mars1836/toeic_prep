@@ -16,8 +16,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ClockCtrl from "@/components/clock";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
-const link = "http://localhost:4000/uploads";
-
+import { originUrlUpload } from "~consts";
 const containerParts = [];
 const handleCounterParts = (part) => {
   if (!containerParts.includes(part)) {
@@ -25,15 +24,24 @@ const handleCounterParts = (part) => {
   }
 };
 function getAudio(name, code) {
-  return link + `/audios/${code}/${name}.mp3`;
+  return originUrlUpload + `/audios/${code}/${name}.mp3`;
 }
 function getExcel(name, code) {
-  return link + `/excels/${code}/` + name;
+  return originUrlUpload + `/excels/${code}/` + name;
 }
 function getImage(name, code) {
-  return link + `/images/${code}/${name}.jpg`;
+  return originUrlUpload + `/images/${code}/${name}.jpg`;
 }
-
+function getParagraph(question, paragraphData) {
+  if ([6, 7].includes(question.part)) {
+    for (let i = paragraphData.length - 1; i >= 0; i--) {
+      if (question.number >= paragraphData[i].number) {
+        return paragraphData[i].paragraph;
+      }
+    }
+  }
+  return "";
+}
 export default function TestPage({ params }) {
   const [resultData, setResultData] = useState();
   const [resultItems, setResultItems] = useState();
@@ -45,6 +53,7 @@ export default function TestPage({ params }) {
   const [answerList, setAnswerList] = useState({});
   const [isCheck, setIsCheck] = useState(true);
   const [questionMap, setQuestionMap] = useState({});
+  const [paragraphData, setParagraphData] = useState([]);
   const router = useRouter();
   const idTest = params.id;
   const rsId = params.rsId;
@@ -93,6 +102,7 @@ export default function TestPage({ params }) {
       const header = data[0];
       const list = [];
       const _questionMap = {};
+      const _paragraphData = [];
       for (let i = 1; i < data.length; i++) {
         const arr = data[i];
         if (!resultData?.parts.includes(arr[10])) {
@@ -112,6 +122,7 @@ export default function TestPage({ params }) {
           [header[9]]: arr[9],
           [header[10]]: arr[10], //part
           [header[11]]: arr[11].split(","), //category
+          [header[12]]: arr[12], //transcript
         };
 
         const options = [arr[5], arr[6], arr[7], arr[8]];
@@ -128,8 +139,18 @@ export default function TestPage({ params }) {
           })
           .filter((option) => option !== null);
         list.push(questionItem);
+        if (questionItem.part === 6 || questionItem.part === 7) {
+          if (questionItem.paragraph) {
+            _paragraphData.push({
+              number: questionItem.number,
+              paragraph: questionItem.paragraph,
+            });
+          }
+        }
         _questionMap[arr[0]] = questionItem;
       }
+      console.log(_paragraphData);
+      setParagraphData(_paragraphData);
       setQuestionMap(_questionMap);
     }
   }, [data]);
@@ -278,6 +299,7 @@ export default function TestPage({ params }) {
                       question={question}
                       value={resultItemMap[question.id]?.useranswer}
                       isCheck={isCheck}
+                      paragraph={getParagraph(question, paragraphData)}
                     ></ChooseOption>
                   </div>
                 </div>
@@ -287,7 +309,7 @@ export default function TestPage({ params }) {
 
           {/* pc version */}
           <div className="hidden w-full min-w-72 md:w-64 lg:block "></div>
-          <Card className="fixed top-20 right-20 bottom-0 hidden w-full min-w-72 md:w-72 lg:block overflow-y-auto">
+          <Card className="fixed top-20 right-20 bottom-20 hidden w-full min-w-72 md:w-72 lg:block overflow-y-auto">
             <ClockCtrl
               isRun={!isCheck}
               limit={resultData.secondTime}

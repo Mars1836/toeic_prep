@@ -1,28 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { listOfSetFlashCard } from "@/dbTest/flashcard";
 import WordCard from "@/components/flashcard/word_card";
 import { Button } from "@/components/ui/button";
 import { Shuffle, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { CreateFlashcardModal } from "@/components/modal/create-flashcard-modal";
 import ExcelUploader from "../../../../../components/excelupload/ExcelUploader";
-import ExcelUploaderTest from "../../../../../components/excelupload/ExcelUploaderTest";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
 import { handleErrorWithToast } from "~helper";
 import { useRouter } from "next/navigation";
-function loadFlashcardSet(id) {
-  return listOfSetFlashCard.find((item) => {
-    return item.id === id;
-  });
-}
+import { UpdateFlashcardSetModal } from "@/components/modal/update-flashcard-set-modal";
 function FCDetailPage({ params }) {
   //id of set flashcard
   const id = params.id;
   const [flashcards, setFlashcards] = useState([]);
   const [setCard, setSetCard] = useState({});
   const router = useRouter();
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   useEffect(() => {
     async function fetchFlashcards() {
       const { data } = await instance.get(endpoint.flashcardItem.getBySet, {
@@ -64,14 +59,18 @@ function FCDetailPage({ params }) {
             <h1 className="mb-4 text-2xl font-bold">
               Flashcards: {setCard.title}
             </h1>
+            <p className="text-muted-foreground mb-4 font-medium">
+              {setCard.description}
+            </p>
             <div className="mb-10 flex gap-2">
-              <Button>Chỉnh sửa</Button>
+              <Button onClick={() => setIsUpdateDialogOpen(true)}>
+                Chỉnh sửa
+              </Button>
               <CreateFlashcardModal setId={id} setFlashcards={setFlashcards} />
               <ExcelUploader
                 setId={id}
                 setFlashcards={setFlashcards}
               ></ExcelUploader>
-              {/* <ExcelUploaderTest></ExcelUploaderTest> */}
             </div>
           </div>
           <div className="my-4 w-full">
@@ -107,6 +106,11 @@ function FCDetailPage({ params }) {
             })}
           </div>
         </div>
+        <UpdateFlashcardSetModal
+          setFCFocused={setCard}
+          open={isUpdateDialogOpen}
+          setOpen={setIsUpdateDialogOpen}
+        ></UpdateFlashcardSetModal>
       </div>
     )
   );

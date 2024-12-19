@@ -172,7 +172,7 @@ export default function EnhancedPricingComparisonComponent() {
           </CardContent>
           <CardFooter>
             <Button className="w-full" variant="outline">
-              {user.upgradeStatus === "UPGRADED" ? "Đang sử dụng" : "Miễn phí"}
+              {user.upgradeStatus !== "UPGRADED" ? "Đang sử dụng" : "Miễn phí"}
             </Button>
           </CardFooter>
         </Card>
@@ -197,21 +197,20 @@ export default function EnhancedPricingComparisonComponent() {
             ))}
           </CardContent>
           <CardFooter>
-            {user.upgradeStatus === "UPGRADED" && (
-              <Button
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                onClick={handleUpgrade}
-              >
-                {paymentLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Đang xử lý...
-                  </>
-                ) : (
-                  "Nâng cấp ngay"
-                )}
-              </Button>
-            )}
+            <Button
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+              onClick={handleUpgrade}
+            >
+              {paymentLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Đang xử lý...
+                </>
+              ) : (
+                "Nâng cấp ngay"
+              )}
+            </Button>
+
             {user.upgradeStatus === "EXPIRED" && (
               <Button
                 className="w-full"

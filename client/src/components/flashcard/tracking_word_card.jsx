@@ -164,8 +164,9 @@ export default function TrackingWordCard({ learningFlashcard }) {
               variant="outline"
               className="text-primary text-sm px-3 py-1 border-gray-600"
             >
-              Review in: {getDiffDays(learningFlashcard.optimalTime)} days
-              (Initial interval: {learningFlashcard.interval} days)
+              Thời gian học lại:{" "}
+              {getDiffDays(learningFlashcard.optimalTime) + " "}
+              ngày ( Thời gian ban đầu: {learningFlashcard.interval} ngày)
             </Badge>
             <div className="flex gap-2">
               {/* <Badge
@@ -180,7 +181,7 @@ export default function TrackingWordCard({ learningFlashcard }) {
                   learningFlashcard.retentionScore.toFixed(2)
                 )} text-white text-sm px-3 py-1`}
               >
-                Retention: {learningFlashcard.retentionScore.toFixed(2)}
+                Điểm ghi nhớ: {learningFlashcard.retentionScore.toFixed(2)}
               </Badge>
             </div>
           </CardFooter>

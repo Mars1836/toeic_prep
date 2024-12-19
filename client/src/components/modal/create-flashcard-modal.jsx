@@ -236,7 +236,7 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
                   className="text-blue-500"
                   onClick={goToUpgrade}
                 >
-                  Upgrade to use
+                  Nâng cấp để sử dụng
                 </Button>
                 <Button
                   className=" bg-gray-200 text-gray-500 cursor-not-allowed"

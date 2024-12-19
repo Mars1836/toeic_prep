@@ -262,7 +262,7 @@ export function CategoryAccuracyChart({ categoryAccuracy, timeRange }) {
               },
             ])
           )}
-          className="h-[600px] translate-x-[-96px]"
+          className="h-[600px] translate-x-[-300px] sm:translate-x-[-300px]  md:translate-x-[-250px] lg:translate-x-[-96px]"
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -283,13 +283,10 @@ export function CategoryAccuracyChart({ categoryAccuracy, timeRange }) {
               />
               <Bar dataKey="accuracy" name="Accuracy">
                 {sortedData.map((entry) => (
-                  <>
-                    <>{console.log(entry)}</>
-                    <Cell
-                      key={entry.key}
-                      fill={partColors[`${entry.part}`]} // Gán màu cho từng thanh từ partColors
-                    />
-                  </>
+                  <Cell
+                    key={entry.key}
+                    fill={partColors[`${entry.part}`]} // Gán màu cho từng thanh từ partColors
+                  />
                 ))}
               </Bar>
             </BarChart>

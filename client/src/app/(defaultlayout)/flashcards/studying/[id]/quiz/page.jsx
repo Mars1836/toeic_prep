@@ -553,6 +553,7 @@ export default function FlashcardLearning({ params }) {
         endpoint.learningFlashcard.updateLearningSession,
         dataUpdate
       );
+      console.log(dataUpdate);
       setResults(dataUpdate);
     } catch (error) {
       handleErrorWithToast(error);
