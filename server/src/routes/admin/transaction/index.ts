@@ -1,19 +1,27 @@
 import express from "express";
-import TransactionCtr from "../../../controllers/transaction";
 import { handleAsync } from "../../../middlewares/handle_async";
+import TransactionCtrl from "../../../controllers/transaction";
 
 const adminTransactionRouter = express.Router();
 adminTransactionRouter.get(
   "/last-7-months",
-  handleAsync(TransactionCtr.getTransactionsLast7Months)
+  handleAsync(TransactionCtrl.getTransactionsLast7Months)
 );
 adminTransactionRouter.get(
   "/last-7-days",
-  handleAsync(TransactionCtr.getTransactionsLast7Days)
+  handleAsync(TransactionCtrl.getTransactionsLast7Days)
 );
 adminTransactionRouter.get(
   "/last-7-years",
-  handleAsync(TransactionCtr.getTransactionsLast7Years)
+  handleAsync(TransactionCtrl.getTransactionsLast7Years)
 );
-adminTransactionRouter.get("/", handleAsync(TransactionCtr.getTransactions));
+adminTransactionRouter.get(
+  "/analyst/new",
+  handleAsync(TransactionCtrl.getNewTransactionAnalyst)
+);
+adminTransactionRouter.get(
+  "/analyst/progress",
+  handleAsync(TransactionCtrl.getProgressTransaction)
+);
+adminTransactionRouter.get("/", handleAsync(TransactionCtrl.getTransactions));
 export default adminTransactionRouter;

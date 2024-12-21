@@ -54,7 +54,8 @@ adminTestRouter.post(
   ]),
   handleAsync(async (req: Request, res: Response) => {
     // Kiểm tra và gán dữ liệu từ `req.body`
-    let { title, type, parts, numberOfQuestions } = req.body;
+    let { title, type, parts, numberOfQuestions, isPublished, difficulty } =
+      req.body;
 
     if (!title || !type || !parts || !numberOfQuestions) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -74,6 +75,8 @@ adminTestRouter.post(
       code: req.randomId, // Mã randomId
       numberOfParts: parts.length,
       numberOfQuestions: Number.parseInt(numberOfQuestions),
+      isPublished: isPublished,
+      difficulty: difficulty,
     };
 
     try {

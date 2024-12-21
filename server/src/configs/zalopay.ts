@@ -1,4 +1,5 @@
-const publishOrigin = "https://faad-42-118-128-48.ngrok-free.app";
+const publishOrigin =
+  "https://33a6-2401-d800-9221-27e-64f3-204c-fa45-6cb5.ngrok-free.app";
 export const configZalo = {
   app_id: "2553",
   key1: "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL",

@@ -4,6 +4,7 @@ import { FlashcardAttr, FlashcardModel } from "../../models/flashcard.model";
 import { ResultAttr, resultModel } from "../../models/result.model";
 import { ResultItemAttr } from "../../models/result_item.model";
 import { testModel } from "../../models/test.model";
+import { formatDate, getStartOfPeriod } from "../../utils";
 import ResultItemRepo from "../result_item/repos";
 import SetFlashcardUtil from "../set_flashcard/repos";
 import TestSrv from "../test";
@@ -119,6 +120,104 @@ namespace ResultSrv {
     });
     await ResultItemRepo.deleteMany(data.id);
     return rs;
+  }
+  export async function getNewResultAnalyst(step: number, num: number) {
+    // Lấy ngày hiện tại
+    const currentDate = new Date();
+
+    // Tính ngày bắt đầu
+    const startDate = new Date(currentDate);
+    startDate.setDate(currentDate.getDate() - step * num);
+    const periodStart = getStartOfPeriod(startDate, step);
+
+    const result = await resultModel.aggregate([
+      {
+        // Lọc các transaction từ startDate
+        $match: {
+          createdAt: { $gte: periodStart },
+        },
+      },
+      {
+        // Thêm trường period để nhóm
+        $addFields: {
+          periodStart: {
+            $subtract: [
+              { $toDate: "$createdAt" },
+              {
+                $mod: [
+                  { $subtract: [{ $toDate: "$createdAt" }, periodStart] },
+                  step * 24 * 60 * 60 * 1000,
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        // Nhóm theo period và tính tổng amount
+        $group: {
+          _id: "$periodStart",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        // Sắp xếp theo thời gian
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    // Format lại kết quả và tính growth rate
+    const formattedResult = [];
+    let currentPeriod = new Date(periodStart);
+    let previousAmount = null;
+
+    for (let i = 0; i < num; i++) {
+      const periodEnd = new Date(currentPeriod);
+      periodEnd.setDate(periodEnd.getDate() + step - 1);
+
+      // Tìm data tương ứng trong result
+      const periodData = result.find(
+        (item) => item._id.getTime() === currentPeriod.getTime()
+      );
+
+      const currentCount = periodData ? periodData.count : 0;
+
+      // Tính growth rate
+      let growthRate = null;
+      if (previousAmount !== null && previousAmount !== 0) {
+        growthRate = ((currentCount - previousAmount) / previousAmount) * 100;
+      } else if (previousAmount === 0 && currentCount !== 0) {
+        growthRate = 100;
+      } else if (previousAmount === 0 && currentCount === 0) {
+        growthRate = 0;
+      }
+
+      formattedResult.push({
+        period: `${formatDate(currentPeriod)} - ${formatDate(periodEnd)}`,
+        startDate: currentPeriod.toISOString(),
+        endDate: periodEnd.toISOString(),
+        totalAmount: currentCount,
+        count: periodData ? periodData.count : 0,
+        growthRate: growthRate !== null ? Number(growthRate.toFixed(2)) : null, // Làm tròn đến 2 chữ số thập phân
+        previousAmount: previousAmount, // Optional, có thể bỏ nếu không cần
+      });
+
+      // Lưu lại amount hiện tại để tính growth rate cho period tiếp theo
+      previousAmount = currentCount;
+
+      // Chuyển sang period tiếp theo
+      currentPeriod.setDate(currentPeriod.getDate() + step);
+    }
+
+    return formattedResult;
+  }
+  export async function getUserProgressAnalyst(step: number, num: number) {
+    const totalResult = await resultModel.countDocuments();
+    return {
+      totalResult,
+    };
   }
 }
 export default ResultSrv;

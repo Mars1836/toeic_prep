@@ -16,6 +16,8 @@ export interface TestAttr {
   duration: number;
   fileName: string;
   parts: number[];
+  isPublished: boolean;
+  difficulty: string;
 }
 
 export interface TestDoc extends mongoose.Document {
@@ -29,6 +31,8 @@ export interface TestDoc extends mongoose.Document {
   duration: number;
   fileName: string;
   parts: number[];
+  isPublished: boolean;
+  difficulty: string;
 }
 export interface TestModel extends mongoose.Model<TestDoc> {}
 const testSchema = new Schema(
@@ -73,6 +77,14 @@ const testSchema = new Schema(
     fileName: {
       type: String,
       require: true,
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
+    difficulty: {
+      type: String,
+      default: "intermediate",
     },
   },
   {

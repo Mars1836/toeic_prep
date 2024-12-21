@@ -54,6 +54,21 @@ async function getUpgradeUsers(req: Request, res: Response) {
   const users = await userSrv.getUpgradeUsers();
   res.status(200).json(users);
 }
+
+async function getNewUserAnalyst(req: Request, res: Response) {
+  const { step, num } = req.query;
+  const data = await userSrv.getNewUserAnalyst(Number(step), Number(num));
+  res.status(200).json(data);
+}
+async function getUpgradeUserAnalyst(req: Request, res: Response) {
+  const { step, num } = req.query;
+  const data = await userSrv.getUpgradeUserAnalyst(Number(step), Number(num));
+  res.status(200).json(data);
+}
+async function getUserProgressAnalyst(req: Request, res: Response) {
+  const data = await userSrv.getUserProgressAnalyst();
+  res.status(200).json(data);
+}
 export const userCtrl = {
   logout,
   getCurrentUser,
@@ -61,4 +76,7 @@ export const userCtrl = {
   updateTargetScore,
   getAllUsers,
   getUpgradeUsers,
+  getNewUserAnalyst,
+  getUpgradeUserAnalyst,
+  getUserProgressAnalyst,
 };

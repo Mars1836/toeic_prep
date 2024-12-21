@@ -44,3 +44,11 @@ export function getTimeLastNDays(n: number) {
 export function cleanNullFieldObject(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== null));
 }
+export function getStartOfPeriod(date: Date, step: number) {
+  const newDate = new Date(date);
+  newDate.setHours(0, 0, 0, 0);
+  return newDate;
+}
+export function formatDate(date: Date) {
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+}

@@ -1,6 +1,6 @@
 import TransactionSrv from "../../services/transaction";
 import { Request, Response } from "express";
-namespace TransactionCtr {
+namespace TransactionCtrl {
   export async function getTransactionsLast7Months(
     req: Request,
     res: Response
@@ -20,5 +20,17 @@ namespace TransactionCtr {
     const transactions = await TransactionSrv.getTransactions(req.query);
     res.status(200).json(transactions);
   }
+  export async function getNewTransactionAnalyst(req: Request, res: Response) {
+    const { step, num } = req.query;
+    const stats = await TransactionSrv.getNewTransactionAnalyst(
+      Number(step),
+      Number(num)
+    );
+    res.status(200).json(stats);
+  }
+  export async function getProgressTransaction(req: Request, res: Response) {
+    const stats = await TransactionSrv.getProgressTransactionAnalyst();
+    res.status(200).json(stats);
+  }
 }
-export default TransactionCtr;
+export default TransactionCtrl;

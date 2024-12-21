@@ -5,6 +5,7 @@ import { resultModel } from "../../models/result.model";
 import * as XLSX from "xlsx";
 import { cleanNullFieldObject } from "../../utils";
 import { ORIGIN } from "../../configs";
+import { userModel } from "../../models/user.model";
 function getImage(name: string, code: string) {
   if (!name || name === "") {
     return null;
@@ -78,6 +79,93 @@ namespace TestSrv {
     const rs = await testModel.findById(id);
     return rs;
   }
+  // export async function getByQuery(
+  //   query: {
+  //     id?: string;
+  //     limit: number;
+  //     skip: number;
+  //   },
+  //   userId?: string
+  // ) {
+  //   let { skip = 0, limit = 3, ...filters } = query;
+  //   skip = Number(skip);
+  //   limit = Number(limit);
+  //   let isGetPublished = true;
+  //   if (userId) {
+  //     const admin = await userModel.findOne({
+  //       id: userId,
+  //       role: "admin",
+  //     });
+  //     if (admin) {
+  //       isGetPublished = false;
+  //     }
+  //   }
+  //   const pipeline: any[] = [
+  //     // 1. Match điều kiện lọc
+  //     {
+  //       $match: {
+  //         ...(filters.id
+  //           ? { _id: new mongoose.Types.ObjectId(filters.id) }
+  //           : {}),
+  //         ...(isGetPublished ? { isPublished: true } : {}),
+  //       },
+  //     },
+  //     // 2. Sort giảm dần theo `createdAt`
+  //     {
+  //       $sort: { createdAt: -1 },
+  //     },
+  //     // 3. Skip và Limit cho phân trang
+  //     {
+  //       $skip: skip,
+  //     },
+  //     {
+  //       $limit: limit,
+  //     },
+  //     // 4. Thêm trường `isAttempted` dựa trên userId (nếu có)
+  //     ...(userId
+  //       ? [
+  //           {
+  //             $addFields: {
+  //               isAttempted: {
+  //                 $anyElementTrue: {
+  //                   $map: {
+  //                     input: "$attempts",
+  //                     as: "attempt",
+  //                     in: { $eq: ["$$attempt.userId", userId] },
+  //                   },
+  //                 },
+  //               },
+  //             },
+  //           },
+  //         ]
+  //       : []),
+  //     // 5. Chuyển `_id` thành `id` và loại bỏ các trường không cần thiết
+  //     {
+  //       $project: {
+  //         id: "$_id",
+  //         _id: 0,
+  //         title: 1,
+  //         url: 1,
+  //         type: 1,
+  //         attempts: 1,
+  //         code: 1,
+  //         numberOfParts: 1,
+  //         numberOfQuestions: 1,
+  //         duration: 1,
+  //         fileName: 1,
+  //         parts: 1,
+  //         createdAt: 1,
+  //         isAttempted: 1, // Nếu userId không tồn tại, trường này sẽ không được thêm
+  //         isPublished: 1,
+  //         difficulty: 1,
+  //       },
+  //     },
+  //   ];
+
+  //   // Thực thi pipeline
+  //   const result = await testModel.aggregate(pipeline);
+  //   return result;
+  // }
   export async function getByQuery(
     query: {
       id?: string;
@@ -90,71 +178,92 @@ namespace TestSrv {
     skip = Number(skip);
     limit = Number(limit);
     const pipeline: any[] = [
-      // 1. Match điều kiện lọc
+      // Stage 1: Lookup để join với collection results
       {
-        $match: {
-          ...(filters.id
-            ? { _id: new mongoose.Types.ObjectId(filters.id) }
-            : {}),
+        $lookup: {
+          from: "results",
+          localField: "_id",
+          foreignField: "testId",
+          as: "results",
         },
       },
-      // 2. Sort giảm dần theo `createdAt`
+
+      // Stage 2: Thêm trường attemptCount và userAttempt
       {
-        $sort: { createdAt: -1 },
-      },
-      // 3. Skip và Limit cho phân trang
-      {
-        $skip: skip,
-      },
-      {
-        $limit: limit,
-      },
-      // 4. Thêm trường `isAttempted` dựa trên userId (nếu có)
-      ...(userId
-        ? [
-            {
-              $addFields: {
-                isAttempted: {
-                  $anyElementTrue: {
-                    $map: {
-                      input: "$attempts",
-                      as: "attempt",
-                      in: { $eq: ["$$attempt.userId", userId] },
+        $addFields: {
+          attemptCount: { $size: "$results" },
+          userAttempt: {
+            $let: {
+              vars: {
+                userResults: {
+                  $filter: {
+                    input: "$results",
+                    as: "result",
+                    cond: {
+                      $eq: [
+                        "$$result.userId",
+                        userId ? new mongoose.Types.ObjectId(userId) : null,
+                      ],
                     },
                   },
                 },
               },
+              in: {
+                count: { $size: "$$userResults" },
+                lastTime: {
+                  $max: "$$userResults.createdAt",
+                },
+              },
             },
-          ]
-        : []),
-      // 5. Chuyển `_id` thành `id` và loại bỏ các trường không cần thiết
+          },
+        },
+      },
+
+      // Stage 3: Project để chọn các trường cần thiết và format
       {
         $project: {
-          id: "$_id",
           _id: 0,
+          id: "$_id",
           title: 1,
-          url: 1,
           type: 1,
-          attempts: 1,
           code: 1,
-          numberOfParts: 1,
           numberOfQuestions: 1,
           duration: 1,
-          fileName: 1,
-          parts: 1,
+          difficulty: 1,
+          isPublished: 1,
+          attemptCount: 1,
+          userAttempt: 1,
           createdAt: 1,
-          isAttempted: 1, // Nếu userId không tồn tại, trường này sẽ không được thêm
+          updatedAt: 1,
         },
+      },
+
+      // Stage 4: Sort theo số lượt làm bài
+      {
+        $sort: { attemptCount: -1 },
       },
     ];
 
-    // Thực thi pipeline
-    const result = await testModel.aggregate(pipeline);
-    return result;
-  }
-  // export async function addAttempt(){
+    // Thêm $skip và $limit nếu có
+    if (skip) {
+      pipeline.push({ $skip: skip });
+    }
+    if (limit) {
+      pipeline.push({ $limit: limit });
+    }
 
-  // }
+    // Thêm $match cho id cụ thể nếu có
+    if (query.id) {
+      pipeline.unshift({
+        $match: { _id: new mongoose.Types.ObjectId(query.id) },
+      });
+    }
+
+    // Thực hiện query
+    const tests = await testModel.aggregate(pipeline);
+
+    return tests;
+  }
   export async function updateAll(updateData: object) {
     const rs = await testModel.updateMany(
       {}, // Filter criteria

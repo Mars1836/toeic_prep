@@ -49,5 +49,18 @@ namespace ResultCtrl {
     const rs = await ResultSrv.deleteById(data);
     res.status(200).json(rs);
   }
+  export async function getNewResultAnalyst(req: Request, res: Response) {
+    const { step, num } = req.query;
+    const rs = await ResultSrv.getNewResultAnalyst(Number(step), Number(num));
+    res.status(200).json(rs);
+  }
+  export async function getUserProgressAnalyst(req: Request, res: Response) {
+    const { step, num } = req.query;
+    const rs = await ResultSrv.getUserProgressAnalyst(
+      Number(step),
+      Number(num)
+    );
+    res.status(200).json(rs);
+  }
 }
 export default ResultCtrl;
