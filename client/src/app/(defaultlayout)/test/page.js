@@ -23,49 +23,6 @@ import { endpoint } from "~consts";
 import { ExamCard } from "~components/component/test_card";
 import withAuth from "../../../HOC/withAuth";
 
-// function ExamResultCard({ result, onViewDetails }) {
-//   return (
-//     <Card className="w-full">
-//       <CardHeader>
-//         <CardTitle className="text-xl font-bold">{result.title}</CardTitle>
-//       </CardHeader>
-//       <CardContent className="grid gap-4">
-//         <div className="flex items-center space-x-2">
-//           <CalendarDays className="w-4 h-4 text-muted-foreground" />
-//           <span className="text-sm">{result.date}</span>
-//         </div>
-//         <div className="flex items-center space-x-2">
-//           <Clock className="w-4 h-4 text-muted-foreground" />
-//           <span className="text-sm">{result.duration}</span>
-//         </div>
-//         <div className="grid grid-cols-3 gap-4">
-//           <div className="flex flex-col items-center p-2 bg-secondary rounded-lg">
-//             <CheckCircle className="w-5 h-5 mb-1 text-green-500" />
-//             <span className="text-xs text-muted-foreground">Correct</span>
-//             <span className="font-semibold">{result.correctAnswers}</span>
-//           </div>
-//           <div className="flex flex-col items-center p-2 bg-secondary rounded-lg">
-//             <PenTool className="w-5 h-5 mb-1 text-blue-500" />
-//             <span className="text-xs text-muted-foreground">Attempted</span>
-//             <span className="font-semibold">{result.attemptedQuestions}</span>
-//           </div>
-//           <div className="flex flex-col items-center p-2 bg-secondary rounded-lg">
-//             <HelpCircle className="w-5 h-5 mb-1 text-orange-500" />
-//             <span className="text-xs text-muted-foreground">Total</span>
-//             <span className="font-semibold">{result.totalQuestions}</span>
-//           </div>
-//         </div>
-//         <Badge variant="secondary" className="w-fit">
-//           {result.type}
-//         </Badge>
-//         <Button onClick={() => onViewDetails(result.id)} className="w-full">
-//           View Details
-//         </Button>
-//       </CardContent>
-//     </Card>
-//   );
-// }
-
 function TestPage() {
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -82,7 +39,7 @@ function TestPage() {
     }
     fetchData();
   }, []);
-  const itemsPerPage = 1;
+  const itemsPerPage = 8;
 
   const filteredResults = testData.filter(
     (result) => filter === "all" || result.type === filter
@@ -110,11 +67,9 @@ function TestPage() {
     }
   };
 
-  return currentResults.length > 0 ? (
+  return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Kết quả thi của bạn
-      </h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Tổng hợp bài test</h1>
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-[180px]">
@@ -122,8 +77,8 @@ function TestPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="mini exam">Mini Exam</SelectItem>
-            <SelectItem value="full exam">Full Exam</SelectItem>
+            <SelectItem value="miniexam">Mini Exam</SelectItem>
+            <SelectItem value="fullexam">Full Exam</SelectItem>
             <SelectItem value="read">Reading</SelectItem>
             <SelectItem value="listen">Listening</SelectItem>
           </SelectContent>
@@ -160,20 +115,24 @@ function TestPage() {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentResults.map((card) => (
-          <ExamCard key={card.id} card={card} />
-        ))}
-      </div>
-      <div className="mt-6 text-center">
-        Page {currentPage} of {totalPages}
-      </div>
-    </div>
-  ) : (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Không có kết quả thi nào
-      </h1>
+      {currentResults.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentResults.map((card) => (
+              <ExamCard key={card.id} card={card} />
+            ))}
+          </div>
+          <div className="mt-6 text-center">
+            Page {currentPage} of {totalPages}
+          </div>
+        </>
+      ) : (
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl font-bold mb-6 text-center">
+            Không có bài test nào
+          </h1>
+        </div>
+      )}
     </div>
   );
 }

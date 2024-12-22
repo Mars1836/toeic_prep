@@ -44,7 +44,7 @@ export function ExamCard({ card, isTaken }) {
   }, [card]);
   return (
     <Card className="relative flex h-full flex-col bg-white">
-      {card?.userAttempt && (
+      {!!card?.userAttempt?.count && (
         <div
           className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-green-500"
           aria-label="Completed"
@@ -68,7 +68,7 @@ export function ExamCard({ card, isTaken }) {
           </Badge>
           <Badge variant="primary" className="text-xs">
             <CheckCircle className="mr-1 h-3 w-3" />
-            {getAttempts()} lượt làm
+            {card.attemptCount} lượt làm
           </Badge>
 
           <Badge variant="primary" className="text-xs">
@@ -80,13 +80,13 @@ export function ExamCard({ card, isTaken }) {
           <p className="p-2 font-semibold text-sm">#{card.type}</p>
         </div>
         <div className="mt-4 space-y-2">
-          {card?.userAttempt ? (
+          {card?.userAttempt?.count ? (
             <div className="text-sm font-medium bg-green-200 text-green-800 p-2 rounded-md flex items-center justify-between">
-              <span>Đã nộp {card.userAttempt?.timeSubmit} lần</span>
+              <span>Đã nộp {card.userAttempt?.count} lần</span>
               <div className="flex items-center text-green-700">
                 <History className="w-4 h-4 mr-1" />
                 <span>
-                  {formatTimeAgo(new Date(card.userAttempt?.lastSubmit))}
+                  {formatTimeAgo(new Date(card.userAttempt?.lastTime))}
                 </span>
               </div>
             </div>
@@ -100,7 +100,7 @@ export function ExamCard({ card, isTaken }) {
       <CardFooter>
         <Button
           className={
-            card?.userAttempt
+            card?.userAttempt?.count
               ? "w-full bg-green-500 border text-white"
               : "w-full"
           }
@@ -109,7 +109,7 @@ export function ExamCard({ card, isTaken }) {
             goToPracticeTest();
           }}
         >
-          {card?.userAttempt ? "Làm lại bài thi" : "Làm bài thi"}
+          {card?.userAttempt?.count ? "Làm lại bài thi" : "Làm bài thi"}
         </Button>
       </CardFooter>
     </Card>

@@ -218,16 +218,7 @@ export function CategoryAccuracyChart({ categoryAccuracy, timeRange }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>
-          Category Accuracy Chart
-          {/* (
-          {timeRange === "week"
-            ? "Tuần"
-            : timeRange === "month"
-            ? "Tháng"
-            : "Năm"}
-          ) */}
-        </CardTitle>
+        <CardTitle>Category Accuracy Chart</CardTitle>
         <CardDescription>
           Accuracy percentages for different categories grouped by parts
         </CardDescription>

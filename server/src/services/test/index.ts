@@ -174,7 +174,7 @@ namespace TestSrv {
     },
     userId?: string
   ) {
-    let { skip = 0, limit = 3, ...filters } = query;
+    let { skip = 0, limit = 4, ...filters } = query;
     skip = Number(skip);
     limit = Number(limit);
     const pipeline: any[] = [
@@ -227,6 +227,8 @@ namespace TestSrv {
           title: 1,
           type: 1,
           code: 1,
+          parts: 1,
+          numberOfParts: 1,
           numberOfQuestions: 1,
           duration: 1,
           difficulty: 1,

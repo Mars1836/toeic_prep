@@ -98,7 +98,7 @@ function Component({ params }) {
                 <div className="flex gap-4 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Users className="h-4 w-4" />
-                    {getAttempts(testData)} lượt làm
+                    {testData.attemptCount} lượt làm
                   </span>
 
                   <span className="flex items-center gap-1">
