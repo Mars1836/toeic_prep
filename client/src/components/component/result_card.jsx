@@ -98,7 +98,7 @@ export default function ResultCardList() {
   }, [user]);
 
   return userResults && userResults.length > 0 ? (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-0 py-0">
       <h1 className="mb-6 text-center text-3xl font-bold">
         Kết quả bài thi của bạn
       </h1>
@@ -109,7 +109,7 @@ export default function ResultCardList() {
       </div>
     </div>
   ) : (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-0 py-0">
       {/* <h1 className="text-3xl font-bold mb-6 text-center">
         Không có kết quả thi nào
       </h1> */}

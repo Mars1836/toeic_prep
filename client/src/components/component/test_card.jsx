@@ -138,7 +138,7 @@ export default function TestCardList() {
     fetchData();
   }, []);
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-0 py-0">
       <h1 className="mb-6 text-center text-3xl font-bold">Bài thi TOEIC</h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {testData.map((card) => (

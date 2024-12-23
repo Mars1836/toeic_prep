@@ -6,19 +6,25 @@ const { Schema } = mongoose;
 // Định nghĩa interface cho flashcard
 export interface BlogAttr {
   title: string;
+  description: string;
   content: string;
   author: string;
   image: string;
   view: number;
+  category: string;
+  isPublished: boolean;
 }
 
 // Định nghĩa interface cho tài liệu flashcard (Document)
 export interface BlogDoc extends mongoose.Document {
   title: string;
+  description: string;
   content: string;
   author: string;
   image: string;
   view: number;
+  category: string;
+  isPublished: boolean;
 }
 
 // Định nghĩa interface cho model flashcard
@@ -28,6 +34,10 @@ export interface BlogModel extends mongoose.Model<BlogDoc> {}
 const blogSchema = new Schema(
   {
     title: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },
@@ -46,6 +56,13 @@ const blogSchema = new Schema(
       type: Number,
       default: 0,
     },
+    category: {
+      type: String,
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true, // Tự động thêm createdAt và updatedAt
@@ -58,5 +75,6 @@ const blogSchema = new Schema(
     },
   }
 );
-
+blogSchema.index({ title: "text" });
+blogSchema.index({ description: "text" });
 export const blogModel = mongoose.model<BlogDoc, BlogModel>("Blog", blogSchema);

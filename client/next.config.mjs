@@ -18,6 +18,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "storage.googleapis.com",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**", // Cho phép tất cả các đường dẫn từ hostname này
+      },
     ],
   },
   webpack: (config) => {

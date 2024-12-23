@@ -35,6 +35,8 @@ const upload = multer({ storage });
 adminBlogRouter.post("/", handleAsync(BlogCtrl.createBlog));
 adminBlogRouter.get("/", handleAsync(BlogCtrl.getBlog));
 adminBlogRouter.get("/:id", handleAsync(BlogCtrl.getBlogById));
+adminBlogRouter.put("/:id", handleAsync(BlogCtrl.updateBlog));
+adminBlogRouter.delete("/:id", handleAsync(BlogCtrl.deleteBlog));
 adminBlogRouter.post(
   "/upload-image",
   upload.single("image"),

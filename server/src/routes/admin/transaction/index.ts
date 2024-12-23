@@ -19,6 +19,7 @@ adminTransactionRouter.get(
   "/analyst/new",
   handleAsync(TransactionCtrl.getNewTransactionAnalyst)
 );
+adminTransactionRouter.get("/", handleAsync(TransactionCtrl.getTransactions));
 adminTransactionRouter.get(
   "/analyst/progress",
   handleAsync(TransactionCtrl.getProgressTransaction)

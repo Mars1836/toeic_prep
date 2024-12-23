@@ -84,6 +84,12 @@ const transcriptTestItem = {
   getByTranscriptTestId:
     originUrlPub + "/transcript-test-item/transcript-test-id",
 };
+const blog = {
+  getBlog: originUrlPub + "/blog",
+  searchBlog: originUrlPub + "/blog/search",
+  viewBlog: originUrlPub + "/blog",
+  getRelatedBlog: originUrlPub + "/blog", // + /id/related
+};
 export const endpoint = {
   auth,
   test,
@@ -100,5 +106,6 @@ export const endpoint = {
   provider,
   transcriptTest,
   transcriptTestItem,
+  blog,
 };
 export const RATE_LIMIT = 0.2;

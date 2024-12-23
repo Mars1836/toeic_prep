@@ -111,7 +111,9 @@ namespace TransactionSrv {
     return stats;
   }
   export async function getTransactions(query: any) {
-    const transactions = await transactionModel.find(query);
+    const transactions = await transactionModel
+      .find(query)
+      .sort({ createdAt: -1 });
     return transactions;
   }
 

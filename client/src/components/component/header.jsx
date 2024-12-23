@@ -89,7 +89,7 @@ function Header() {
           Flashcards
         </Link>
         <Link
-          href="/blogs"
+          href="/blog"
           className="text-sm font-medium hover:underline"
           prefetch={false}
         >
@@ -122,35 +122,28 @@ function Header() {
           <SheetContent side="right">
             <nav className="grid gap-6 text-lg font-medium">
               <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-                prefetch={false}
-              >
-                About
-              </Link>
-              <Link
-                href="#"
+                href="/test"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 Đề thi online
               </Link>
               <Link
-                href="#"
+                href="/flashcards/set"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 Flashcards
               </Link>
               <Link
-                href="#"
+                href="/blog"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
                 Blog
               </Link>
               <Link
-                href="#"
+                href="/upgrade"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
