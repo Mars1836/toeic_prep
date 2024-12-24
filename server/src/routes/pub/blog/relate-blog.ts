@@ -105,7 +105,6 @@ blogRouter.get(
         author: 1,
         createdAt: 1,
         view: 1,
-        id: 1,
       });
 
     // Calculate relevance score for each blog
