@@ -28,15 +28,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-const link = "http://localhost:4000/uploads";
+import { originUrlUpload } from "~consts";
 function getAudio(name, code) {
-  return link + `/audios/${code}/${name}.mp3`;
+  return originUrlUpload + `/audios/${code}/${name}.mp3`;
 }
 function getExcel(name, code) {
-  return link + `/excels/${code}/` + name;
+  return originUrlUpload + `/excels/${code}/` + name;
 }
 function getImage(name, code) {
-  return link + `/images/${code}/${name}.jpg`;
+  return originUrlUpload + `/images/${code}/${name}.jpg`;
 }
 const startedTime = new Date();
 let pointedTime = new Date();
@@ -221,6 +221,9 @@ function TestPage({ params }) {
     }
     fetchTestData();
   }, []);
+  useEffect(() => {
+    console.log(questionMap);
+  }, [questionMap]);
   return (
     <>
       {questionMap && Object.values(questionMap).length > 0 && (
@@ -238,11 +241,11 @@ function TestPage({ params }) {
                     )}
 
                     <div className="max-w-full" key={question.id}>
-                      <p className="font-semibold" id={question.number}>
+                      <p className="font-semibold mb-4" id={question.number}>
                         Câu {question.number}
                       </p>
                       {question.paragraph && (
-                        <div className="my-4 rounded border bg-blue-100 p-4">
+                        <div className="mb-4 rounded border bg-blue-100 p-4">
                           <pre
                             style={{
                               overflowWrap: "break-word",
@@ -255,7 +258,7 @@ function TestPage({ params }) {
                       )}
 
                       {question.audio && (
-                        <div className="m-4">
+                        <div className="mb-4">
                           <audio
                             controls
                             className="custom-audio w-full"
@@ -268,7 +271,7 @@ function TestPage({ params }) {
                         </div>
                       )}
                       {question.image && (
-                        <div className="aspect-w-16 aspect-h-9 relative flex justify-center">
+                        <div className="aspect-w-16 aspect-h-9 relative flex justify-center mb-4">
                           <Image
                             src={getImage(question.image, testData.code)}
                             alt={`TOEIC Part 1 Question ${question.id} Image`}
@@ -276,6 +279,18 @@ function TestPage({ params }) {
                             width={600}
                             height={500}
                           />
+                        </div>
+                      )}
+                      {question.question && ![2].includes(question.part) && (
+                        <div className="font-semibold mb-4">
+                          <pre
+                            style={{
+                              overflowWrap: "break-word",
+                              whiteSpace: "pre-wrap",
+                            }}
+                          >
+                            {question.question}
+                          </pre>
                         </div>
                       )}
                       <ChooseOption
@@ -304,7 +319,6 @@ function TestPage({ params }) {
               <CardContent className="p-0">
                 <div>
                   {parts.map((item, index1) => {
-                    console.log(item);
                     return (
                       <div key={index1}>
                         <p className="font-semibold text-sm mx-5">

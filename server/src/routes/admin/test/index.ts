@@ -54,10 +54,17 @@ adminTestRouter.post(
   ]),
   handleAsync(async (req: Request, res: Response) => {
     // Kiểm tra và gán dữ liệu từ `req.body`
-    let { title, type, parts, numberOfQuestions, isPublished, difficulty } =
-      req.body;
+    let {
+      title,
+      type,
+      parts,
+      numberOfQuestions,
+      isPublished,
+      difficulty,
+      duration,
+    } = req.body;
 
-    if (!title || !type || !parts || !numberOfQuestions) {
+    if (!title || !type || !parts || !numberOfQuestions || !duration) {
       return res.status(400).json({ message: "Missing required fields" });
     }
     parts = JSON.parse(parts);
@@ -77,6 +84,7 @@ adminTestRouter.post(
       numberOfQuestions: Number.parseInt(numberOfQuestions),
       isPublished: isPublished,
       difficulty: difficulty,
+      duration: duration,
     };
 
     try {
@@ -87,5 +95,32 @@ adminTestRouter.post(
     }
   })
 );
-
+adminTestRouter.get(
+  "/:id",
+  handleAsync(async (req: Request, res: Response) => {
+    const test = await TestSrv.getById(req.params.id);
+    res.status(200).json(test);
+  })
+);
+adminTestRouter.patch(
+  "/:id/infor",
+  handleAsync(async (req: Request, res: Response) => {
+    const test = await TestSrv.updateTest(req.params.id, req.body);
+    res.status(200).json(test);
+  })
+);
+adminTestRouter.patch(
+  "/:id/data",
+  handleAsync(async (req: Request, res: Response) => {
+    // const test = await TestSrv.updateTestData(req.params.id, req.body);
+    res.status(200).json(1);
+  })
+);
+adminTestRouter.delete(
+  "/:id",
+  handleAsync(async (req: Request, res: Response) => {
+    const test = await TestSrv.deleteTest(req.params.id);
+    res.status(200).json(test);
+  })
+);
 export default adminTestRouter;

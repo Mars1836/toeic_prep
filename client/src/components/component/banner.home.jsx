@@ -120,22 +120,6 @@ export default function ToeicBanner() {
           ))}
         </div>
       </div>
-
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-4">
-        <Button
-          size="lg"
-          className="text-primary bg-white hover:text-blue-600 "
-        >
-          Start Free Trial
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="text-primary border-white hover:bg-white hover:text-blue-600"
-        >
-          Learn More
-        </Button>
-      </div>
     </section>
   );
 }

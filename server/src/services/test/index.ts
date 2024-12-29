@@ -327,5 +327,14 @@ namespace TestSrv {
     }
     return list;
   }
+
+  export async function deleteTest(id: string) {
+    const rs = await testModel.findByIdAndDelete(id);
+    return rs;
+  }
+  export async function updateTest(id: string, data: object) {
+    const rs = await testModel.findByIdAndUpdate(id, data);
+    return rs;
+  }
 }
 export default TestSrv;

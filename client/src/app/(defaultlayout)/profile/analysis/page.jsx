@@ -17,7 +17,7 @@ import { RefreshCw, Lock } from "lucide-react";
 import withAuth from "~HOC/withAuth";
 import { useRouter } from "next/navigation";
 
-export function Dashboard() {
+function Dashboard() {
   const [timeRange, setTimeRange] = useState("week");
   const [accuracyByPart, setAccuracyByPart] = useState([]);
   const [averageTimeByPart, setAverageTimeByPart] = useState([]);

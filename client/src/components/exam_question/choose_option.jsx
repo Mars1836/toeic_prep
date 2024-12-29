@@ -68,7 +68,7 @@ function ChooseOption({
       <RadioGroup
         value={selectedOption || ""}
         onValueChange={handleOptionChange}
-        className="mb-4 mt-12"
+        className="mb-4"
       >
         {question.options.map((option, index) => (
           <div key={option.id} className="mb-2 flex items-center space-x-2">
@@ -94,7 +94,7 @@ function ChooseOption({
       </RadioGroup>
       {isCheck && (
         <p
-          className={`mt-4 font-bold ${
+          className={`mb-4 font-bold ${
             isAnswerCorrect() ? "text-green-500" : "text-red-500"
           }`}
         >
@@ -106,7 +106,7 @@ function ChooseOption({
         </p>
       )}
       {isCheck && [3, 4].includes(question.part) && question.transcript && (
-        <div className="my-4">
+        <div className="mb-4">
           <Button onClick={() => setIsShowTranscription(!isShowTranscription)}>
             {isShowTranscription ? "Ẩn transcription" : "Hiện transcription"}
           </Button>
@@ -162,7 +162,7 @@ function ChooseOption({
         </div>
       )}
       {explanData && (
-        <div className="my-4 space-y-4">
+        <div className="mb-4 space-y-4">
           <h3 className="font-bold text-lg">Explanations:</h3>
           {explanData.options.map((option) => (
             <div

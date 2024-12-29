@@ -84,7 +84,12 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
   const handleAutoComplete = async () => {
     setIsLoading(true);
     try {
+      if (inputWord.value === "") {
+        toast.error("Vui lòng nhập từ");
+        return;
+      }
       const data = await AICompletion(inputWord.value);
+
       const aiResult = JSON.parse(data);
       if (aiResult) {
         inputDefinition.setInput(aiResult?.definition || "");
@@ -149,52 +154,60 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="definition" className="text-right">
                 Definition
+                <span className="text-red-500"> *</span>
               </Label>
               <Input
                 id="definition"
                 value={inputDefinition.value}
                 onChange={inputDefinition.onChange}
                 className="col-span-3"
+                required
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="example" className="text-right">
-                Example 1
+                Example 1<span className="text-red-500"> *</span>
               </Label>
               <Input
                 id="example1"
                 value={inputExample1.value}
                 onChange={inputExample1.onChange}
                 className="col-span-3"
+                required
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="example" className="text-right">
-                Example 2
+                Example 2<span className="text-red-500"> *</span>
               </Label>
               <Input
                 id="example2"
                 value={inputExample2.value}
                 onChange={inputExample2.onChange}
                 className="col-span-3"
+                required
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="note" className="text-right">
                 Note
+                <span className="text-red-500"> *</span>
               </Label>
               <Input
                 id="note"
                 value={inputNote.value}
                 onChange={inputNote.onChange}
                 className="col-span-3"
+                required
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="part_of_speech" className="text-right">
                 Part of speech
+                <span className="text-red-500"> *</span>
               </Label>
               <Input
+                id="part_of_speech"
                 value={inputPartOfSpeech.value}
                 onChange={inputPartOfSpeech.onChange}
                 className="col-span-3"
@@ -204,12 +217,14 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="pronunciation" className="text-right">
                 Pronunciation
+                <span className="text-red-500"> *</span>
               </Label>
               <Input
                 id="pronunciation"
                 value={inputPronunciation.value}
                 onChange={inputPronunciation.onChange}
                 className="col-span-3"
+                required
               />
             </div>
           </div>

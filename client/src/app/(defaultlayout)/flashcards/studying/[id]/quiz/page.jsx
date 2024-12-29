@@ -21,6 +21,7 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { getLearningFlashcardData } from "~fetch";
 import {
   DndContext,
   closestCenter,
@@ -66,18 +67,7 @@ function sortFlashcard(learningFlashcards) {
   arr.forEach((fc) => {});
   return arr;
 }
-export async function getLearningFlashcardData(learningSetId) {
-  try {
-    const res = await instance.get(endpoint.learningFlashcard.getBySet, {
-      params: {
-        learningSetId: learningSetId,
-      },
-    });
-    return res.data;
-  } catch (error) {
-    handleErrorWithToast(error);
-  }
-}
+
 async function simulateGetDataFromAI(prompt) {
   const rs =
     '[{"flashcardId": "6735c30fc1ce28d58c2c1a9e", "quiz": {"correctAnswer": "serenity", "options": ["anxiety", "chaos", "serenity", "turmoil"], "question": "Which word means \\"the state of being calm, peaceful, and untroubled\\"?"}, "word": "serenity"}, {"flashcardId": "6735c30fc1ce28d58c2c1a9f", "quiz": {"correctAnswer": "tranquility", "options": ["tranquility", "disturbance", "agitation", "noise"], "question": "What word describes a state of peace and calm?"}, "word": "tranquility"}, {"flashcardId": "6735c30fc1ce28d58c2c1aa0", "quiz": {"correctAnswer": "calmness", "options": ["panic", "calmness", "excitement", "stress"], "question": "Which word refers to the quality of being free from agitation?"}, "word": "calmness"}]\n';
@@ -92,18 +82,6 @@ async function getQuizDataFromAI(prompt) {
   return data;
 }
 
-export async function getLearningSetData(id) {
-  try {
-    const res = await instance.get(endpoint.learningSet.getById, {
-      params: {
-        id: id,
-      },
-    });
-    return res.data;
-  } catch (error) {
-    handleErrorWithToast(error);
-  }
-}
 const diffLevels = [
   { value: 0, label: "Khó nhớ" }, // Rất khó, cần ôn tập thường xuyên.
   { value: 0.3, label: "Tương đối khó" }, // Khó, nhưng có thể ghi nhớ với nỗ lực trung bình.
