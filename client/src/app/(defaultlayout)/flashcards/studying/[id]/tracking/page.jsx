@@ -9,7 +9,7 @@ import { endpoint, RATE_LIMIT } from "~consts";
 import { handleErrorWithToast } from "~helper";
 import { useRouter } from "next/navigation";
 import StatusExplanationModal from "@/components/modal/status_explanation_modal";
-import { getLearningFlashcardData, getLearningSetData } from "../quiz/page";
+import { getLearningFlashcardData, getLearningSetData } from "~fetch";
 import {
   AlertDialog,
   AlertDialogAction,

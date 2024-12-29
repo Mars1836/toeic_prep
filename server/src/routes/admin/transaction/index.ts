@@ -1,6 +1,7 @@
 import express from "express";
 import { handleAsync } from "../../../middlewares/handle_async";
 import TransactionCtrl from "../../../controllers/transaction";
+import PaymentCtrl from "../../../controllers/payment";
 
 const adminTransactionRouter = express.Router();
 adminTransactionRouter.get(
@@ -25,4 +26,9 @@ adminTransactionRouter.get(
   handleAsync(TransactionCtrl.getProgressTransaction)
 );
 adminTransactionRouter.get("/", handleAsync(TransactionCtrl.getTransactions));
+adminTransactionRouter.get("/status", handleAsync(PaymentCtrl.getStatus));
+adminTransactionRouter.post(
+  "/update-status",
+  handleAsync(TransactionCtrl.updateStatus)
+);
 export default adminTransactionRouter;

@@ -79,8 +79,6 @@ function TestPage() {
             <SelectItem value="all">All Types</SelectItem>
             <SelectItem value="miniexam">Mini Exam</SelectItem>
             <SelectItem value="fullexam">Full Exam</SelectItem>
-            <SelectItem value="read">Reading</SelectItem>
-            <SelectItem value="listen">Listening</SelectItem>
           </SelectContent>
         </Select>
 

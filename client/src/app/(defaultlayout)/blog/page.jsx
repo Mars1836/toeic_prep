@@ -1,5 +1,4 @@
 "use client";
-import BlogList from "@/components/component/blog.blog-list";
 import BlogCardHorizontal from "@/components/component/blog.blog-horizontal";
 import { useCallback, useEffect, useState } from "react";
 import { Input } from "~components/ui/input";
@@ -8,39 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import instance from "~configs/axios.instance";
 import { endpoint } from "~consts";
+import { Pagination } from "./pagination";
 const ITEMS_PER_PAGE = 5;
-
-export function Pagination({ currentPage, totalPages, onPageChange }) {
-  return (
-    <div className="flex items-center justify-center space-x-2 mt-8">
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </Button>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-        <Button
-          key={page}
-          variant={currentPage === page ? "default" : "outline"}
-          onClick={() => onPageChange(page)}
-        >
-          {page}
-        </Button>
-      ))}
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      >
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-    </div>
-  );
-}
 
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -98,8 +66,8 @@ export default function BlogPage() {
       </div>
       <div className="mt-8">
         {currentItems.map((blog, index) => (
-          <div className="mb-8">
-            <BlogCardHorizontal key={blog.id} blog={blog} />
+          <div className="mb-8" key={blog.id}>
+            <BlogCardHorizontal blog={blog} />
           </div>
         ))}
         <Pagination

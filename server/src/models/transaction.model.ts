@@ -30,7 +30,7 @@ const transactionSchema = new Schema(
     currency: { type: String, required: true, default: "VND" },
     type: { type: String, required: true },
     description: { type: String },
-    userId: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     providerId: { type: String, required: true },
     status: {
       type: String,

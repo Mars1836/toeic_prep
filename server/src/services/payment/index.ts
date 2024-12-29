@@ -109,6 +109,13 @@ namespace PaymentSrv {
     };
     try {
       const rs = await axios(postConfig);
+      if (rs.data.return_code === 1) {
+        rs.data.status = TransactionStatus.success;
+      } else if (rs.data.return_code === 2) {
+        rs.data.status = TransactionStatus.failed;
+      } else {
+        rs.data.status = TransactionStatus.pending;
+      }
       return rs.data;
     } catch (error) {
       throw new BadRequestError("Fetch zalo to query status get error!");

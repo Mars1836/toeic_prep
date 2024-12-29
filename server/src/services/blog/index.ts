@@ -26,6 +26,7 @@ export const getBlogSrv = async (
 ) => {
   let isGetAll = false;
   let query: any = {};
+  console.log("aaaaaaaaaaaaa:", userId);
   if (userId) {
     const user = await userModel.findById(userId);
     if (user?.role === "admin") {

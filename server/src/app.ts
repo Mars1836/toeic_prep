@@ -7,7 +7,8 @@ import { passportA, passportU } from "./configs/passport";
 import routerU from "./routes/user";
 import routerA from "./routes/admin";
 import routerP from "./routes/pub";
-import path from 'path'
+import path from "path";
+import serveIndex from "serve-index";
 const express = require("express");
 const app = express();
 app.set("trust proxy", true);
@@ -53,8 +54,14 @@ app.use(
   })
 );
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/uploads",
+  serveIndex(path.join(__dirname, "uploads"), {
+    icons: true, // Hiển thị icon cho các file
+    view: "details", // Hiển thị chi tiết (size, modified date, etc.)
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passportA.initialize({ userProperty: "user" }));

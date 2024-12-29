@@ -19,6 +19,7 @@ import { endpoint } from "~consts";
 import { originUrlUpload } from "~consts";
 const containerParts = [];
 const handleCounterParts = (part) => {
+  console.log(part);
   if (!containerParts.includes(part)) {
     containerParts.push(part);
   }
@@ -226,6 +227,9 @@ export default function TestPage({ params }) {
   function goBack() {
     router.back();
   }
+  function handleGoBack() {
+    router.push(`/test/${idTest}/result/${rsId}`);
+  }
   return (
     resultItemMap &&
     questionMap && (
@@ -241,12 +245,13 @@ export default function TestPage({ params }) {
                       {handleCounterParts(question.part)}
                     </h3>
                   )}
+
                   <div className="max-w-full">
-                    <p className="font-semibold" id={question.number}>
+                    <p className="font-semibold mb-4" id={question.number}>
                       Câu {question.number}
                     </p>
                     {question.paragraph && (
-                      <div className="my-4 rounded border bg-blue-100 p-4">
+                      <div className="mb-4 rounded border bg-blue-100 p-4">
                         <pre
                           style={{
                             overflowWrap: "break-word",
@@ -259,7 +264,7 @@ export default function TestPage({ params }) {
                     )}
 
                     {question.audio && (
-                      <div className="m-4">
+                      <div className="mb-4">
                         <audio
                           controls
                           className="custom-audio w-full"
@@ -272,7 +277,7 @@ export default function TestPage({ params }) {
                       </div>
                     )}
                     {question.image && (
-                      <div className="aspect-w-16 aspect-h-9 relative flex justify-center">
+                      <div className="aspect-w-16 aspect-h-9 relative flex justify-center mb-4">
                         <Image
                           src={getImage(question.image, testData.code)}
                           alt={`TOEIC Part 1 Question ${question.id} Image`}
@@ -283,7 +288,7 @@ export default function TestPage({ params }) {
                       </div>
                     )}
                     {question.question && (
-                      <div className="my-4 rounded border p-4">
+                      <div className="mb-4  ">
                         <p
                           style={{
                             overflowWrap: "break-word",
@@ -362,8 +367,8 @@ export default function TestPage({ params }) {
               </div>
             </CardContent>
             <div className="mx-auto p-4">
-              <Button asChild onClick={goBack} variant={"outline"}>
-                <Link href="/start-test">Trở vể trang kết quả</Link>
+              <Button onClick={handleGoBack} variant={"outline"}>
+                Trở về trang kết quả
               </Button>
             </div>
           </Card>

@@ -86,9 +86,10 @@ export default function Component({ params }) {
             <Button
               variant="outline"
               className="group transition-all duration-300 ease-in-out transform hover:scale-105"
+              onClick={() => router.push("/")}
             >
               <ArrowLeft className="mr-2 h-4 w-4 group-hover:animate-bounce-left" />{" "}
-              Quay về trang đề thi
+              Quay về trang home
             </Button>
           </div>
 

@@ -21,10 +21,14 @@ namespace BlogCtrl {
   };
   export const getBlog = async (req: Request, res: Response) => {
     const { offset, limit } = req.query as { offset: string; limit: string };
-    const blogs = await getBlogSrv({
-      offset: parseInt(offset),
-      limit: parseInt(limit),
-    });
+    const userId = req.user?.id;
+    const blogs = await getBlogSrv(
+      {
+        offset: parseInt(offset),
+        limit: parseInt(limit),
+      },
+      userId
+    );
     return res.status(200).json(blogs);
   };
   export const increaseViewBlog = async (req: Request, res: Response) => {

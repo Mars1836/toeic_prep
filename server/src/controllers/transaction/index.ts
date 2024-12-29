@@ -32,5 +32,10 @@ namespace TransactionCtrl {
     const stats = await TransactionSrv.getProgressTransactionAnalyst();
     res.status(200).json(stats);
   }
+  export async function updateStatus(req: Request, res: Response) {
+    const { id, status } = req.body;
+    const transaction = await TransactionSrv.updateStatus(id, status);
+    res.status(200).json(transaction);
+  }
 }
 export default TransactionCtrl;

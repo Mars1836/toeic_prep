@@ -3,7 +3,26 @@ import { transactionModel } from "../../models/transaction.model";
 
 import { TransactionAttr } from "../../models/transaction.model";
 import { formatDate, getStartOfPeriod } from "../../utils";
+import UserRepo from "../user/repos";
 namespace TransactionSrv {
+  export async function updateStatus(id: string, status: TransactionStatus) {
+    const oldTransaction = await transactionModel.findOne({ providerId: id });
+    if (!oldTransaction) {
+      throw new Error("Transaction not found");
+    }
+    if (oldTransaction?.status === status) {
+      return oldTransaction;
+    }
+    if (status === TransactionStatus.success) {
+      await UserRepo.upgrade(oldTransaction?.userId);
+    }
+    const transaction = await transactionModel.findOneAndUpdate(
+      { providerId: id },
+      { status },
+      { new: true }
+    );
+    return transaction;
+  }
   export async function create(data: TransactionAttr) {
     const initData = {
       ...data,
@@ -113,6 +132,7 @@ namespace TransactionSrv {
   export async function getTransactions(query: any) {
     const transactions = await transactionModel
       .find(query)
+      .populate("userId")
       .sort({ createdAt: -1 });
     return transactions;
   }
