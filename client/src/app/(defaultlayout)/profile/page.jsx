@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import instance from "~configs/axios.instance";
 import ProfileTargetScore from "@/components/component/profile_target_score";
-import withAuth from "~HOC/withAuth";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
 function Profile() {
   const { endpoint } = useEndpoint();
@@ -108,4 +107,4 @@ function Profile() {
     </div>
   );
 }
-export default withAuth(Profile);
+export default Profile;

@@ -3,16 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import withAuth from "../../../../HOC/withAuth";
-import {
-  CalendarDays,
-  CircleAlertIcon,
-  CircleCheckIcon,
-  PlusIcon,
-  RefreshCw,
-  Trash2,
-  User2,
-} from "lucide-react";
+import { CalendarDays, RefreshCw, Trash2, User2 } from "lucide-react";
 import { CreateFlashcardSetModal } from "@/components/modal/create-flashcard-set-modal";
 import instance from "~configs/axios.instance";
 import { MoreVertical } from "lucide-react";
@@ -219,4 +210,4 @@ function FlashcartsPage() {
   );
 }
 
-export default withAuth(FlashcartsPage);
+export default FlashcartsPage;

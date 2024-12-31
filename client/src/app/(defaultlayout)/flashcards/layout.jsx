@@ -6,13 +6,14 @@ import { motion } from "framer-motion";
 import { ListIcon, BookOpenIcon, CompassIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import withAuth from "~HOC/withAuth";
 const navItems = [
   { name: "My List", href: "/flashcards/set", icon: ListIcon },
   { name: "Studying", href: "/flashcards/studying", icon: BookOpenIcon },
   { name: "Explore", href: "/flashcards/explore", icon: CompassIcon },
 ];
 
-export default function NavigationLayout({ children }) {
+export default withAuth(function NavigationLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   useEffect(() => {
@@ -87,4 +88,4 @@ export default function NavigationLayout({ children }) {
       {children}
     </div>
   );
-}
+});

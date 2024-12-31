@@ -29,7 +29,7 @@ import { expiredDate, formatDate, handleErrorWithToast } from "~helper";
 import { Alert, AlertDescription, AlertTitle } from "~components/ui/alert";
 import { useSelector } from "react-redux";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
-
+import withAuth from "../../../HOC/withAuth";
 const features = [
   { name: "Làm bài thi TOEIC", free: true, pro: true, icon: Book },
   { name: "Chấm điểm và lưu kết quả", free: true, pro: true, icon: Check },
@@ -61,7 +61,7 @@ function FeatureRow({ feature, isPro }) {
   );
 }
 
-export default function EnhancedPricingComparisonComponent() {
+function UpgradePage() {
   const { endpoint } = useEndpoint();
   const [paymentLoading, setPaymentloading] = useState(false);
   const user = useSelector((state) => state.user.data);
@@ -243,3 +243,5 @@ export default function EnhancedPricingComparisonComponent() {
     </div>
   );
 }
+
+export default withAuth(UpgradePage);
