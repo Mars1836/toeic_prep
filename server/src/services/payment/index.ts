@@ -13,15 +13,18 @@ namespace PaymentSrv {
     const items = [{ userId: userId, upgradeFor: 30 }];
     const transID = Math.floor(Math.random() * 1000000);
     let origin;
-    const snapshot = await get(ref(firebase, "ngrok/url1"));
-    origin = snapshot.val() || "http://localhost:4000";
+    let clientUrl;
+    const snapshotServerUrl = await get(ref(firebase, "ngrok/url1"));
+    const snapshotClientUrl = await get(ref(firebase, "ngrok/url2"));
+    origin = snapshotServerUrl.val() || "http://localhost:4000";
+    clientUrl = snapshotClientUrl.val() || "http://localhost:3000";
     const order = {
       app_id: configZalo.app_id,
       app_trans_id: `${moment().format("YYMMDD")}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
       app_user: userId,
       app_time: Date.now(), // miliseconds
       item: JSON.stringify(items),
-      embed_data: JSON.stringify(embedDataZalo),
+      embed_data: JSON.stringify({ redirectUrl: clientUrl }),
       amount: 5000,
       description: `Toeic - Payment for the upgrade account #${transID}`,
       callback_url: configZalo.callbackUrl(origin!),

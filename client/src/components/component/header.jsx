@@ -14,7 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserState } from "@/lib/redux/userSlice";
 import useFetch from "@/hooks/useFetch";
-import { BookIcon, MenuIcon } from "lucide-react";
+import { BookIcon, MenuIcon, Zap } from "lucide-react";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { UserPopup } from "./user_popup";
 import { useRouter } from "next/navigation";
@@ -68,13 +68,6 @@ function Header() {
         <span className="text-xl font-semibold">Toeic Journey</span>
       </Link>
       <nav className="hidden items-center gap-6 md:flex">
-        {/* <Link
-          href="/introduce"
-          className="text-sm font-medium hover:underline"
-          prefetch={false}
-        >
-          Giới thiệu
-        </Link> */}
         <Link
           href="/test"
           className="text-sm font-medium hover:underline"
@@ -105,10 +98,11 @@ function Header() {
         </Link>
         <Link
           href="/upgrade"
-          className="text-sm font-medium hover:underline"
+          className=" text-sm font-medium group relative inline-flex items-center gap-2 bg-gradient-to-r from-teal-400 via-cyan-500 to-teal-600 text-white px-6 py-2.5 rounded-full shadow-lg hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300 ease-in-out"
           prefetch={false}
         >
-          Kích hoạt tài khoản
+          <Zap className="w-5 h-5 animate-pulse" />
+          Nâng cấp tài khoản
         </Link>
       </nav>
 
@@ -148,7 +142,7 @@ function Header() {
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
                 prefetch={false}
               >
-                Kích hoạt tài khoản
+                Nâng cấp tài khoản
               </Link>
             </nav>
           </SheetContent>
