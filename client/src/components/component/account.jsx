@@ -8,12 +8,14 @@ import Link from "next/link";
 import useInput from "@/hooks/useInput";
 import { useDispatch } from "react-redux";
 import useFetch from "@/hooks/useFetch";
-import { endpoint } from "@/consts";
+// import { endpoint } from "@/consts";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import { setUserState } from "~lib/redux/userSlice";
+import { useEndpoint } from "~components/wrapper/endpoint-context";
 
 export function SignUp({ setShowSignUp }) {
+  const { endpoint } = useEndpoint();
   const [showPassword, setShowPassword] = useState(false);
   const name = useInput();
   const email = useInput();
@@ -92,6 +94,8 @@ export function SignUp({ setShowSignUp }) {
   );
 }
 export function SignIn({ setShowSignUp }) {
+  const { endpoint } = useEndpoint();
+  console.log(endpoint);
   const email = useInput();
   const password = useInput();
   const dispatch = useDispatch();

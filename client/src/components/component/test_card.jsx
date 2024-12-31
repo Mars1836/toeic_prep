@@ -20,12 +20,13 @@ import {
   History,
 } from "lucide-react";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import { useRouter } from "next/navigation";
 import { formatTimeAgo } from "~helper";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 export function ExamCard({ card, isTaken }) {
   const router = useRouter();
+  const { endpoint } = useEndpoint();
   function goToPracticeTest() {
     router.push(`/test/${card.id}/practice-set`);
   }
@@ -117,6 +118,7 @@ export function ExamCard({ card, isTaken }) {
 }
 
 export default function TestCardList() {
+  const { endpoint } = useEndpoint();
   const [takenTests, setTakenTests] = useState(new Set());
   const [testData, setTestData] = useState([]);
   const handleTakeTest = (id) => {

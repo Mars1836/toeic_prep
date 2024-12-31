@@ -2,13 +2,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { VerifyEmailWaiting } from "@/components/verify-email-waiting";
-import { endpoint } from "@/consts";
 import useFetch from "@/hooks/useFetch";
 import { handleToastPromise } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 function HandleVerifyMailPage() {
+  const { endpoint } = useEndpoint();
   const searchParams = useSearchParams();
   const { sendRequest } = useFetch({
     url: endpoint.auth.requestVerifyEmail,

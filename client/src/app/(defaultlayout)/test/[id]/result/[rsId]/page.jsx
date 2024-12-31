@@ -16,11 +16,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import { useRouter } from "next/navigation";
 import { convertSeconds } from "~helper";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 export default function Component({ params }) {
+  const { endpoint } = useEndpoint();
   const [showAlert, setShowAlert] = useState(true);
   const [resultData, setResultData] = useState();
   const [resultItems, setResultItems] = useState();

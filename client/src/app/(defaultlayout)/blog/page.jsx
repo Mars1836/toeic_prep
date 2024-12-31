@@ -4,13 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { Input } from "~components/ui/input";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import { Pagination } from "./pagination";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
+
 const ITEMS_PER_PAGE = 5;
 
 export default function BlogPage() {
+  const { endpoint } = useEndpoint();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState([]);

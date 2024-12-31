@@ -23,12 +23,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { expiredDate, formatDate, handleErrorWithToast } from "~helper";
 import { Alert, AlertDescription, AlertTitle } from "~components/ui/alert";
 import { useSelector } from "react-redux";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 const features = [
   { name: "Làm bài thi TOEIC", free: true, pro: true, icon: Book },
@@ -62,6 +62,7 @@ function FeatureRow({ feature, isPro }) {
 }
 
 export default function EnhancedPricingComparisonComponent() {
+  const { endpoint } = useEndpoint();
   const [paymentLoading, setPaymentloading] = useState(false);
   const user = useSelector((state) => state.user.data);
   const router = useRouter();

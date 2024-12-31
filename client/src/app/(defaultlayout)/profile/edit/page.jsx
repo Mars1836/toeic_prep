@@ -22,16 +22,17 @@ import { Camera } from "lucide-react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import CropImage from "@/components/component/crop_Image";
-import { endpoint } from "@/consts";
 import instance from "~configs/axios.instance";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "@/hooks/useInput";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 async function blobUrlToBlob(blobUrl) {
   const response = await fetch(blobUrl);
   const blob = await response.blob();
   return blob;
 }
 export default function Component() {
+  const { endpoint } = useEndpoint();
   const user = useSelector((state) => state?.user?.data);
   const nameInput = useInput(user?.name || "");
   const bioInput = useInput(user?.bio || "");

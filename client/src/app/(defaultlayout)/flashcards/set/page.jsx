@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { CreateFlashcardSetModal } from "@/components/modal/create-flashcard-set-modal";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import { MoreVertical } from "lucide-react";
 import { UpdateFlashcardSetModal } from "@/components/modal/update-flashcard-set-modal";
 import {
@@ -29,6 +28,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { formatDate } from "~helper";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,6 +38,7 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 function FlashcartsPage() {
+  const { endpoint } = useEndpoint();
   const [setData, setSetData] = useState();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);

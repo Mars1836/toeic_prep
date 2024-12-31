@@ -18,7 +18,7 @@ import { Loader2, Lock, PlusIcon } from "lucide-react";
 import useInput from "@/hooks/useInput";
 import { toast } from "react-toastify";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import useFetch from "~hooks/useFetch";
 import { useSelector } from "react-redux";
 const AICompletion = async (word) => {
@@ -29,6 +29,7 @@ const AICompletion = async (word) => {
   return data;
 };
 export function CreateFlashcardModal({ setId, setFlashcards }) {
+  const { endpoint } = useEndpoint();
   const [open, setOpen] = useState(false);
   const inputWord = useInput("");
   const inputDefinition = useInput("");

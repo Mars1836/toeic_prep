@@ -7,11 +7,14 @@ import { BadRequestError } from "../../errors/bad_request_error";
 import UserRepo from "../user/repos";
 import TransactionSrv from "../transaction";
 import { TransactionStatus, TransactionType } from "../../configs/enum";
-
+import { firebase, get, ref } from "../../configs/firebase";
 namespace PaymentSrv {
   export async function create(userId: string) {
     const items = [{ userId: userId, upgradeFor: 30 }];
     const transID = Math.floor(Math.random() * 1000000);
+    let origin;
+    const snapshot = await get(ref(firebase, "ngrok/url1"));
+    origin = snapshot.val() || "http://localhost:4000";
     const order = {
       app_id: configZalo.app_id,
       app_trans_id: `${moment().format("YYMMDD")}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
@@ -21,7 +24,7 @@ namespace PaymentSrv {
       embed_data: JSON.stringify(embedDataZalo),
       amount: 5000,
       description: `Toeic - Payment for the upgrade account #${transID}`,
-      callback_url: configZalo.callbackUrl,
+      callback_url: configZalo.callbackUrl(origin!),
       bank_code: "",
       mac: "",
     };
@@ -54,6 +57,7 @@ namespace PaymentSrv {
     });
     const datars = rs.data;
     datars.trans_id = order.app_trans_id;
+    datars.callbackUrl = configZalo.callbackUrl(origin!);
     return datars;
   }
   export async function callback(data: { data: string; mac: string }) {

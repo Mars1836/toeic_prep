@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { VerifyEmailWaiting } from "@/components/verify-email-waiting";
-import { endpoint } from "@/consts";
 import useCountdown from "@/hooks/useCountDown";
 import useFetch from "@/hooks/useFetch";
 import { handleToastPromise } from "@/lib/utils";
@@ -10,8 +9,10 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 function VerifyMail() {
+  const { endpoint } = useEndpoint();
   const searchParams = useSearchParams();
   const [disabledBtn, setDisabledBtn] = useState(false);
   const user = useSelector((state) => state.user.data);

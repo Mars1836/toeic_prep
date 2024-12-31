@@ -7,11 +7,12 @@ import Link from "next/link";
 import { CreateFlashcardModal } from "@/components/modal/create-flashcard-modal";
 import ExcelUploader from "../../../../../components/excelupload/ExcelUploader";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { handleErrorWithToast } from "~helper";
 import { useRouter } from "next/navigation";
 import { UpdateFlashcardSetModal } from "@/components/modal/update-flashcard-set-modal";
 function FCDetailPage({ params }) {
+  const { endpoint } = useEndpoint();
   //id of set flashcard
   const id = params.id;
   const [flashcards, setFlashcards] = useState([]);

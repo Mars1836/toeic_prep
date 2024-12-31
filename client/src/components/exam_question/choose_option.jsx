@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { handleErrorWithToast } from "~helper";
-import { endpoint } from "~consts";
 import instance from "~configs/axios.instance";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { useRouter } from "next/navigation";
 function getExplanation(option, explanData) {
   if (!option?.label || !explanData?.explanation) {
@@ -30,6 +30,7 @@ function ChooseOption({
   const [isLoading, setIsLoading] = useState(false);
   const [isShowTranscription, setIsShowTranscription] = useState(false);
   const router = useRouter();
+  const { endpoint } = useEndpoint();
   const goToUpgrade = () => {
     router.push("/upgrade");
   };

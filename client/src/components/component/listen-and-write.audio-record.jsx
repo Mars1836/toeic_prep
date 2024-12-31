@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Mic, StopCircle, Play, Pause } from "lucide-react";
 import instance from "@/configs/axios.instance";
-import { endpoint, originUrlUpload } from "@/consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { Loader2 } from "lucide-react";
 
 const checkWordAccuracy = (sampleWordsObjects, recognizedWords) => {
@@ -51,6 +51,7 @@ function splitAndLowercase(input) {
   return (input.match(/\b[\w']+\b/g) || []).map((word) => word.toLowerCase());
 }
 const PronunciationChecker = ({ question }) => {
+  const { endpoint } = useEndpoint();
   const [audioUrl, setAudioUrl] = useState(question.audioUrl);
   const [currentSentence, setCurrentSentence] = useState(question.transcript);
   const [isRecording, setIsRecording] = useState(false);
@@ -221,7 +222,7 @@ const PronunciationChecker = ({ question }) => {
       <div className="text-center mb-4 flex flex-col items-center">
         <h2 className="text-xl font-bold mb-2">Kiểm Tra Phát Âm</h2>
         <p className="text-gray-600 font-semibold mb-4">{currentSentence}</p>
-        {audioUrl && <audio src={originUrlUpload + audioUrl} controls />}
+        {audioUrl && <audio src={endpoint.originUrlUpload + audioUrl} controls />}
       </div>
 
       <canvas

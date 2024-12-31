@@ -9,7 +9,7 @@ import TimeAnalysis from "@/components/component/profile_time_analysis";
 import CustomRecommendations from "@/components/component/profile_custom_recommendation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { endpoint } from "@/consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import instance from "~configs/axios.instance";
 import { handleErrorWithToast } from "~helper";
 import { CategoryAccuracyChart } from "@/components/component/profile_category_accuracy";
@@ -18,6 +18,7 @@ import withAuth from "~HOC/withAuth";
 import { useRouter } from "next/navigation";
 
 function Dashboard() {
+  const { endpoint } = useEndpoint();
   const [timeRange, setTimeRange] = useState("week");
   const [accuracyByPart, setAccuracyByPart] = useState([]);
   const [averageTimeByPart, setAverageTimeByPart] = useState([]);

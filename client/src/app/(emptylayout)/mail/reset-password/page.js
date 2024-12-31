@@ -3,14 +3,15 @@ import { ChangePassword } from "@/components/change-password";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { endpoint } from "@/consts";
 import useFetch from "@/hooks/useFetch";
 import useInput from "@/hooks/useInput";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 function PasswordChangePage() {
+  const { endpoint } = useEndpoint();
   const password = useInput();
   const cfPassword = useInput();
   const searchParams = useSearchParams();

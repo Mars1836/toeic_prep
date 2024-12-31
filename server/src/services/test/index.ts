@@ -175,6 +175,7 @@ namespace TestSrv {
     userId?: string
   ) {
     let { skip = 0, limit = 4, ...filters } = query;
+    console.log("test: ", userId);
     skip = Number(skip);
     limit = Number(limit);
     const pipeline: any[] = [

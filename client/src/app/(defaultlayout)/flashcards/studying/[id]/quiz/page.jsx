@@ -11,7 +11,7 @@ import { Check, X, ChevronRight, ChevronLeft, Eye } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { filterObject, handleErrorWithToast } from "~helper";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { CSS } from "@dnd-kit/utilities";
 import { ArrowUpDown } from "lucide-react";
 import {
@@ -21,7 +21,7 @@ import {
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { getLearningFlashcardData } from "~fetch";
+import { getLearningFlashcardData, getLearningSetData } from "~fetch";
 import {
   DndContext,
   closestCenter,
@@ -200,6 +200,7 @@ function createOrderingSlide(sentence, id) {
   };
 }
 export default function FlashcardLearning({ params }) {
+  const { endpoint } = useEndpoint();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [wordDifficulty, setWordDifficulty] = useState("");
   const [userAnswer, setUserAnswer] = useState("");
@@ -979,8 +980,9 @@ export default function FlashcardLearning({ params }) {
 
   useEffect(() => {
     async function fetchData() {
-      const learningSetData = await getLearningSetData(id);
+      const learningSetData = await getLearningSetData(endpoint, id);
       const learningFlashcardData = await getLearningFlashcardData(
+        endpoint,
         learningSetData.id
       );
       setLearningFlashcardData(sortFlashcard(learningFlashcardData));

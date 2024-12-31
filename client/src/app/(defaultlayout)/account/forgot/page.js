@@ -1,19 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { endpoint } from "@/consts";
 import useCountdown from "@/hooks/useCountDown";
 import useFetch from "@/hooks/useFetch";
 import useInput from "@/hooks/useInput";
-import { handleErrorPromiseToast, handleToastPromise } from "@/lib/utils";
+import { handleToastPromise } from "@/lib/utils";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 function ForgetPage() {
   const email = useInput();
+  const { endpoint } = useEndpoint();
   const [btnDisabled, setBtnDisabled] = useState(false);
   const router = useRouter();
 

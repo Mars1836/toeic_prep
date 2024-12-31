@@ -27,7 +27,8 @@ import {
 } from "lucide-react";
 import { CreateFlashcardSetModal } from "@/components/modal/create-flashcard-set-modal";
 import instance from "~configs/axios.instance";
-import { endpoint, RATE_LIMIT } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
+import { RATE_LIMIT } from "~consts";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,6 +45,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { Badge } from "~components/ui/badge";
 function StudyingPage() {
+  const { endpoint } = useEndpoint();
   const [setData, setSetData] = useState();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [learningSetIdFocused, setLearningSetIdFocused] = useState();
