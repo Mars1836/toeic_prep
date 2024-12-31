@@ -17,13 +17,14 @@ import {
 import { PlusIcon } from "lucide-react";
 import useInput from "~hooks/useInput";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { handleErrorWithToast } from "~helper";
 
 export function CreateFlashcardSetModal({ setFC, setSetFC }) {
   const [open, setOpen] = useState(false);
   const title = useInput();
   const description = useInput();
+  const { endpoint } = useEndpoint();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

@@ -15,7 +15,6 @@ import { Sheet, SheetContent, SheetTrigger } from "~components/ui/sheet";
 import { useRouter, useSearchParams } from "next/navigation";
 import ClockCtrl from "@/components/clock";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import withAuth from "~HOC/withAuth";
 import {
   AlertDialog,
@@ -28,20 +27,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-import { originUrlUpload } from "~consts";
-function getAudio(name, code) {
-  return originUrlUpload + `/audios/${code}/${name}.mp3`;
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
+function getAudio(endpoint, name, code) {
+  return endpoint.originUrlUpload + `/audios/${code}/${name}.mp3`;
 }
-function getExcel(name, code) {
-  return originUrlUpload + `/excels/${code}/` + name;
+function getExcel(endpoint, name, code) {
+  return endpoint.originUrlUpload + `/excels/${code}/` + name;
 }
-function getImage(name, code) {
-  return originUrlUpload + `/images/${code}/${name}.jpg`;
+function getImage(endpoint, name, code) {
+  return endpoint.originUrlUpload + `/images/${code}/${name}.jpg`;
 }
 const startedTime = new Date();
 let pointedTime = new Date();
 
 function TestPage({ params }) {
+  const { endpoint } = useEndpoint();
   const [testData, setTestData] = useState();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,7 +67,9 @@ function TestPage({ params }) {
     setError(null);
 
     try {
-      const response = await fetch(getExcel(testData.fileName, testData.code));
+      const response = await fetch(
+        getExcel(endpoint, testData.fileName, testData.code)
+      );
       const arrayBuffer = await response.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer, { type: "array" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -200,7 +202,7 @@ function TestPage({ params }) {
   }, [testData]);
   useEffect(() => {}, [answerList]);
   const handleAudioStart = (id, name) => {
-    const url = getAudio(name, testData.code);
+    const url = getAudio(endpoint, name, testData.code);
     const audioElement = document.getElementById("audio" + id);
     if (audioElement) {
       if (audioElement.src != url) {
@@ -273,7 +275,11 @@ function TestPage({ params }) {
                       {question.image && (
                         <div className="aspect-w-16 aspect-h-9 relative flex justify-center mb-4">
                           <Image
-                            src={getImage(question.image, testData.code)}
+                            src={getImage(
+                              endpoint,
+                              question.image,
+                              testData.code
+                            )}
                             alt={`TOEIC Part 1 Question ${question.id} Image`}
                             className="rounded-lg"
                             width={600}

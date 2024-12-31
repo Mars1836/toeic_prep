@@ -2,11 +2,8 @@
 const nextConfig = {
   output: "standalone",
   images: {
+    unoptimized: true, // Tắt tối ưu hóa hình ản
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-      },
       {
         protocol: "http",
         hostname: "localhost",

@@ -14,8 +14,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserState } from "@/lib/redux/userSlice";
 import useFetch from "@/hooks/useFetch";
-import { endpoint } from "@/consts";
 import { BookIcon, MenuIcon } from "lucide-react";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { UserPopup } from "./user_popup";
 import { useRouter } from "next/navigation";
 // const upgradeUser = {
@@ -44,6 +44,7 @@ function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.data);
   const router = useRouter();
+  const { endpoint } = useEndpoint();
   const { sendRequest: sendLogoutRequest } = useFetch({
     url: endpoint.auth.logout,
     method: "post",

@@ -1,7 +1,7 @@
-export const originUrlUser = "http://localhost:4000/api/user";
-export const originUrlPub = "http://localhost:4000/api/pub";
 export const originUrl = "http://localhost:4000";
-export const originUrlUpload = "http://localhost:4000/uploads";
+export const originUrlUser = `${originUrl}/api/user`;
+export const originUrlPub = `${originUrl}/api/pub`;
+export const originUrlUpload = `${originUrl}/uploads`;
 const auth = {
   localSignupCache: originUrlUser + "/auth/local-signup-cache",
   login: originUrlUser + "/auth/login",
@@ -108,4 +108,5 @@ export const endpoint = {
   transcriptTestItem,
   blog,
 };
+
 export const RATE_LIMIT = 0.2;

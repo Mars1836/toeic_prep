@@ -4,10 +4,11 @@ import { useState } from "react";
 import { TranscriptTestSidebar } from "@/components/component/transcipt-test.sidebar";
 import { TranscriptTestCart } from "@/components/component/transcript-test.cart";
 import instance from "../../../configs/axios.instance";
-import { endpoint } from "../../../consts";
 import { useEffect } from "react";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 export default function TranscriptTestPage() {
+  const { endpoint } = useEndpoint();
   const [activeFilters, setActiveFilters] = useState([]);
   const [transcriptTestData, setTranscriptTestData] = useState([]);
   const handleFilterChange = (filters) => {

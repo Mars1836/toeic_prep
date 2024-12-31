@@ -17,9 +17,9 @@ import {
 import { PlusIcon } from "lucide-react";
 import useInput from "~hooks/useInput";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import { handleErrorWithToast } from "~helper";
 import { toast } from "react-toastify";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 export function UpdateFlashcardSetModal({
   setFCFocused,
@@ -27,6 +27,7 @@ export function UpdateFlashcardSetModal({
   open,
   setOpen,
 }) {
+  const { endpoint } = useEndpoint();
   const title = useInput(setFCFocused?.title || "");
   const description = useInput(setFCFocused?.description || "");
   useEffect(() => {

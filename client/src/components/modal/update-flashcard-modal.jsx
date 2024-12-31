@@ -18,7 +18,7 @@ import { Loader2, PlusIcon, RefreshCw } from "lucide-react";
 import useInput from "@/hooks/useInput";
 import { toast } from "react-toastify";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 export function UpdateFlashcardModal({
   isUpdateDialogOpen,
@@ -27,6 +27,7 @@ export function UpdateFlashcardModal({
   setFlashcards,
   flashcard,
 }) {
+  const { endpoint } = useEndpoint();
   const inputWord = useInput(flashcard.word || "");
   const inputDefinition = useInput(flashcard.definition || "");
   const inputTranslation = useInput(flashcard.translation || "");

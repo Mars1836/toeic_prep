@@ -7,13 +7,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CalendarDays, Eye, MessageSquare, TagIcon, User } from "lucide-react";
 import Image from "next/image";
-import { endpoint } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import instance from "~configs/axios.instance";
 import { useEffect, useState } from "react";
 import { formatDate } from "~helper";
 import { useRouter } from "next/navigation";
 
 export function BlogCard({ blog }) {
+  const { endpoint } = useEndpoint();
   const router = useRouter();
   return (
     <Card
@@ -62,6 +63,7 @@ export function BlogCard({ blog }) {
 }
 
 export default function BlogList() {
+  const { endpoint } = useEndpoint();
   const [blogPosts, setBlogPosts] = useState([]);
   useEffect(() => {
     async function fetchData() {

@@ -15,10 +15,11 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import instance from "~configs/axios.instance";
-import { endpoint, originUrl } from "~consts";
 import ProfileTargetScore from "@/components/component/profile_target_score";
 import withAuth from "~HOC/withAuth";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 function Profile() {
+  const { endpoint } = useEndpoint();
   const router = useRouter();
   const user = useSelector((state) => state.user.data);
   const [readScore, setReadScore] = useState(0);
@@ -53,7 +54,10 @@ function Profile() {
       <Card className="max-w-2xl mx-auto">
         <CardHeader className="flex flex-col items-center space-y-4">
           <Avatar className="h-24 w-24  font-bold text-primary text-2xl">
-            <AvatarImage src={originUrl + user.avatar} alt={user.name} />
+            <AvatarImage
+              src={endpoint.originUrl + user.avatar}
+              alt={user.name}
+            />
             <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <CardTitle className="text-2xl font-bold">{user.name}</CardTitle>

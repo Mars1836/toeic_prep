@@ -19,11 +19,12 @@ import {
   HelpCircle,
 } from "lucide-react";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
 import { ExamCard } from "~components/component/test_card";
 import withAuth from "../../../HOC/withAuth";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 function TestPage() {
+  const { endpoint } = useEndpoint();
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");

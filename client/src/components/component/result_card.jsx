@@ -9,15 +9,15 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { Button } from "~components/ui/button";
-import { endpoint } from "~consts";
 import { useEffect, useState } from "react";
 import { convertSeconds, formatDate } from "../../helper";
 import instance from "~configs/axios.instance";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 export function ExamResultCard({ result }) {
   const router = useRouter();
+  const { endpoint } = useEndpoint();
   const handleViewDetails = (idTest, idResult) => {
     router.push(`/test/${idTest}/result/${idResult}`);
   };
@@ -76,7 +76,7 @@ export function ExamResultCard({ result }) {
 export default function ResultCardList() {
   const [userResults, setUserResults] = useState();
   const user = useSelector((state) => state.user.data);
-
+  const { endpoint } = useEndpoint();
   const router = useRouter();
   useEffect(() => {
     if (!user) {
@@ -109,10 +109,6 @@ export default function ResultCardList() {
       </div>
     </div>
   ) : (
-    <div className="container mx-auto px-0 py-0">
-      {/* <h1 className="text-3xl font-bold mb-6 text-center">
-        Không có kết quả thi nào
-      </h1> */}
-    </div>
+    <div className="container mx-auto px-0 py-0"></div>
   );
 }

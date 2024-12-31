@@ -11,6 +11,7 @@ import path from "path";
 import serveIndex from "serve-index";
 const express = require("express");
 const app = express();
+
 app.set("trust proxy", true);
 const corsOptions = {
   origin: (
@@ -41,8 +42,10 @@ app.use(
   "/api/user",
   cookieSession({
     name: "user-session",
+    httpOnly: true,
     signed: false,
-    // secure: true, // must be connect in https connection
+    sameSite: "none",
+    // secure: false, // must be connect in https connection
   })
 );
 app.use(
@@ -50,6 +53,8 @@ app.use(
   cookieSession({
     name: "admin-session",
     signed: false,
+    httpOnly: true,
+    // sameSite: "none",
     // secure: true, // must be connect in https connection
   })
 );
@@ -76,4 +81,5 @@ app.use("/test", (req: Request, res: Response) => {
 });
 
 app.use(handleError);
+
 export default app;

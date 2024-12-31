@@ -14,10 +14,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageCircle, Calendar, Users, Clock, Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { endpoint } from "~consts";
 import instance from "~configs/axios.instance";
 import { convertSeconds, formatDate } from "~helper";
 import withAuth from "~HOC/withAuth";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 const toeicParts = [
   { id: 1, name: "Photographs", questions: 6 },
@@ -40,6 +40,7 @@ const timeLimits = [
 ];
 
 function Component({ params }) {
+  const { endpoint } = useEndpoint();
   const [selectedParts, setSelectedParts] = React.useState([]);
   const [timeLimit, setTimeLimit] = React.useState("0");
   const [testData, setTestData] = React.useState([]);

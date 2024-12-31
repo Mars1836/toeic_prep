@@ -21,7 +21,7 @@ import {
 import { Upload, Table as TableIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import instance from "~configs/axios.instance";
-import { endpoint, originUrlUpload } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 export default function ExcelUploader({ setId, setFlashcards }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,7 @@ export default function ExcelUploader({ setId, setFlashcards }) {
   const [error, setError] = useState(null);
   const [dataHandled, setDataHandled] = useState(null);
   const fileInputRef = useRef(null);
-
+  const { endpoint } = useEndpoint();
   const header = [
     "word",
     "translation",
@@ -143,7 +143,8 @@ export default function ExcelUploader({ setId, setFlashcards }) {
     }
   };
   function handleDownloadTemplate() {
-    const url = originUrlUpload + "/template/file-mau-set-flashcard.xlsx";
+    const url =
+      endpoint.originUrlUpload + "/template/file-mau-set-flashcard.xlsx";
     window.open(url, "_blank");
   }
   function handleData() {

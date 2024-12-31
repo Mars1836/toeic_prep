@@ -2,9 +2,10 @@
 import AudioTranscription from "@/components/component/listen-and-write.audio-transcript";
 import { useState, useEffect } from "react";
 import instance from "@/configs/axios.instance";
-import { endpoint } from "@/consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 
 export default function ListenAndWritePage({ params }) {
+  const { endpoint } = useEndpoint();
   const [questionData, setQuestionData] = useState([]);
   const [indexQuestion, setIndexQuestion] = useState(0);
   const transcriptTestId = params.id;

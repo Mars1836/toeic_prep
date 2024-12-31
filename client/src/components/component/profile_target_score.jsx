@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { TargetScoreModal } from "@/components/modal/update-target-score-modal";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { updateTargetScore } from "~lib/redux/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 export default function ProfileTargetScore({ targetScores, currentScores }) {
   const dispatch = useDispatch();
+  const { endpoint } = useEndpoint();
   const handleUpdateTargets = async (reading, listening) => {
     try {
       const { data } = await instance.post(endpoint.profile.updateTargetScore, {

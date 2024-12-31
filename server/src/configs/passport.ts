@@ -70,11 +70,11 @@ passportU.use(
     {
       clientID: constEnv.facebookClientId!,
       clientSecret: constEnv.facebookClientSecret!,
-      callbackURL:
-        "http://localhost:4000/api/user/auth/facebook-login/callback",
+      callbackURL: "/api/user/auth/facebook-login/callback",
       profileFields: ["id", "displayName", "emails", "photos"], // Specify the fields you want to get
+      scope: ["email"],
     },
-    function (
+    async function (
       accessToken: string,
       refreshToken: string,
       profile: ProfileFB,
@@ -84,9 +84,33 @@ passportU.use(
       const user = {
         id: profile.id,
         name: profile.displayName,
-        email: profile.emails?.[0].value, // Safely access email
+        email: profile.emails?.[0]?.value, // Safely access email
         avatar: profile._json.picture.data.url, // Facebook profile picture URL
       };
+      if (!user.email) {
+        throw new Error("Can not get email");
+      }
+      const userExisted = await userModel.findOne({
+        email: user.email,
+      });
+      if (userExisted) {
+        if (!userExisted.facebookId) {
+          userExisted.set({ facebookId: user.id });
+          await userExisted.save();
+          return done(null, userExisted);
+        }
+        if (userExisted.facebookId === user.id) {
+          console.log("userExisted", userExisted);
+          return done(null, userExisted);
+        }
+      } else {
+        const createUser = await userModel.create({
+          name: user.name,
+          facebookId: user.id,
+          email: user.email,
+        });
+        return done(null, createUser);
+      }
 
       return done(null, user);
     }

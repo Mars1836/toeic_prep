@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Shuffle, Trash2 } from "lucide-react";
 import Link from "next/link";
 import instance from "~configs/axios.instance";
-import { endpoint, RATE_LIMIT } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
+import { RATE_LIMIT } from "~consts";
 import { handleErrorWithToast } from "~helper";
 import { useRouter } from "next/navigation";
 import StatusExplanationModal from "@/components/modal/status_explanation_modal";
@@ -54,6 +55,7 @@ function sortFlashcard(learningFlashcards) {
 }
 
 function TrackingFlashcardPage({ params }) {
+  const { endpoint } = useEndpoint();
   //id of set flashcard
   const id = params.id;
   const [learningFlashcardData, setLearningFlashcardData] = useState([]);
@@ -84,8 +86,9 @@ function TrackingFlashcardPage({ params }) {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   useEffect(() => {
     async function fetchData() {
-      const learningSetData = await getLearningSetData(id);
+      const learningSetData = await getLearningSetData(endpoint, id);
       const learningFlashcardData = await getLearningFlashcardData(
+        endpoint,
         learningSetData.id
       );
       let sortedFlashcardData = sortFlashcard(learningFlashcardData);

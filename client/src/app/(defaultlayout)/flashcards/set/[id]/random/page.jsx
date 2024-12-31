@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import FlashcardSlider from "@/components/flashcard/flashcardSlider";
 import instance from "~configs/axios.instance";
-import { endpoint } from "~consts";
-
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 function FCRan({ params }) {
+  const { endpoint } = useEndpoint();
   const id = params.id;
   const [flashcards, setFlashcards] = useState([]);
   useEffect(() => {

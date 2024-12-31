@@ -1,7 +1,6 @@
 "use client";
 import instance from "~configs/axios.instance";
 import { useEffect, useState } from "react";
-import { endpoint } from "~consts";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import DOMPurify from "dompurify";
@@ -10,8 +9,11 @@ import { formatDate } from "~helper";
 import { CalendarIcon, Eye, TagIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import { BlogCard } from "~components/component/home.blog-list";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
+
 function BlogPage({ params }) {
   const { id } = params;
+  const { endpoint } = useEndpoint();
   const [blogData, setBlogData] = useState(null);
   const [relatedBlogs, setRelatedBlogs] = useState([]);
   useEffect(() => {

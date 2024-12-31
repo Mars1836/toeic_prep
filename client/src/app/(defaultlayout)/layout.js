@@ -1,11 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { setUserState } from "../../lib/redux/userSlice";
+
 import Header from "../../components/component/header";
-import useFetch from "../../hooks/useFetch";
-import { endpoint } from "@/consts";
 
 function DefaultLayout({ children }) {
   return (

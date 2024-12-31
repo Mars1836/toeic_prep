@@ -19,6 +19,7 @@ namespace TestCtrl {
     const query = req.query;
     //@ts-ignore
     const userId = req.user?.id;
+    console.log("user: ", req.user);
     const rs = await TestSrv.getByQuery(query, userId);
     res.status(200).json(rs);
   }
