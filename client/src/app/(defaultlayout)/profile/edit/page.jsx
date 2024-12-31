@@ -26,12 +26,13 @@ import instance from "~configs/axios.instance";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "@/hooks/useInput";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
+import withAuth from "@/HOC/withAuth";
 async function blobUrlToBlob(blobUrl) {
   const response = await fetch(blobUrl);
   const blob = await response.blob();
   return blob;
 }
-export default function Component() {
+function EditProfile() {
   const { endpoint } = useEndpoint();
   const user = useSelector((state) => state?.user?.data);
   const nameInput = useInput(user?.name || "");
@@ -196,3 +197,4 @@ export default function Component() {
     </Card>
   );
 }
+export default withAuth(EditProfile);

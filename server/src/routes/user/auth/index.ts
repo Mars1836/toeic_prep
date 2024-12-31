@@ -89,7 +89,6 @@ userAuthRouter.get(
   "/google-login/callback",
   passportU.authenticate("google"),
   function (req: Request, res: Response) {
-    console.log("req.user", req.user);
     res.redirect(constEnv.clientOrigin!);
   }
 );
@@ -98,7 +97,6 @@ userAuthRouter.get(
   "/facebook-login/callback",
   passportU.authenticate("facebook"),
   function (req: Request, res: Response) {
-    console.log("req.user", req.user);
     res.redirect(constEnv.clientOrigin!);
   }
 );
