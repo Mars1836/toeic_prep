@@ -10,30 +10,36 @@ import { CalendarIcon, Eye, TagIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import { BlogCard } from "~components/component/home.blog-list";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
-
+import { Loader2 } from "lucide-react";
 function BlogPage({ params }) {
   const { id } = params;
   const { endpoint } = useEndpoint();
   const [blogData, setBlogData] = useState(null);
   const [relatedBlogs, setRelatedBlogs] = useState([]);
+  const [loadingBlog, setLoadingBlog] = useState(true);
   useEffect(() => {
-    const fetchBlogData = async () => {
+    async function fetchBlogData() {
       const response = await instance.get(`${endpoint.blog.getBlog}/${id}`);
       const data = await response.data;
       setBlogData(data);
-      instance.post(`${endpoint.blog.viewBlog}/${id}/view`);
-    };
-    const fetchRelatedBlogs = async () => {
+      await instance.post(`${endpoint.blog.viewBlog}/${id}/view`);
+      setLoadingBlog(false);
+    }
+    async function fetchRelatedBlogs() {
       const response = await instance.get(
         `${endpoint.blog.getRelatedBlog}/${id}/related?limit=3`
       );
       const data = await response.data;
       setRelatedBlogs(data);
-    };
+    }
     fetchBlogData();
     fetchRelatedBlogs();
   }, [id]);
-  return (
+  return loadingBlog ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     <div className="max-w-4xl mx-auto">
       {blogData && (
         <>

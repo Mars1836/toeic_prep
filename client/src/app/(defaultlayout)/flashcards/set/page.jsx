@@ -28,12 +28,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux";
 function FlashcartsPage() {
   const { endpoint } = useEndpoint();
   const [setData, setSetData] = useState();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
   const [setFCFocused, setSetFCFocused] = useState();
+  const [loadingSetFlashcard, setLoadingSetFlashcard] = useState(true);
+  const user = useSelector((state) => state.user.data);
   const router = useRouter();
   const handleUpdate = (setFCFocused) => {
     setSetFCFocused(setFCFocused);
@@ -67,6 +71,7 @@ function FlashcartsPage() {
   useEffect(() => {
     async function fetchSetData() {
       const { data } = await instance.get(endpoint.setFlashcard.getByUser);
+      setLoadingSetFlashcard(false);
       setSetData(data);
     }
     fetchSetData();
@@ -78,7 +83,11 @@ function FlashcartsPage() {
       });
     }
   }, [setData]);
-  return (
+  return loadingSetFlashcard ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     setData && (
       <div>
         <div className="flex min-h-[100dvh] flex-col">
@@ -139,11 +148,11 @@ function FlashcartsPage() {
 
                           <div className="flex items-center gap-1 text-muted-foreground">
                             <User2 className="w-4 h-4" />
-                            <span>Người tạo: hauvu</span>
+                            <span>Người tạo: {user.name}</span>
                           </div>
                           <div className="flex items-center gap-1 text-muted-foreground">
                             <CalendarDays className="w-4 h-4" />
-                            <span>Created: {formatDate(item.createdAt)}</span>
+                            <span>Ngày tạo: {formatDate(item.createdAt)}</span>
                           </div>
                           <div className="mt-auto flex items-center justify-between">
                             <span className="text-sm">

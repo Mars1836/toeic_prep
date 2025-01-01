@@ -6,7 +6,7 @@ export class MemoryRetention {
    * @param {number} k - Hệ số suy giảm (mặc định: 0.2).
    * @param {number} C - Hệ số tăng cường học tập (mặc định: 0.2).
    */
-  constructor(k = 0.2, C = 0.2) {
+  constructor(k = 0.3, C = 1) {
     this.k = k;
     this.C = C;
   }

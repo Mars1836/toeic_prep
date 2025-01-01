@@ -26,7 +26,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
+import { Loader2 } from "lucide-react";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
 function getAudio(endpoint, name, code) {
   return endpoint.originUrlUpload + `/audios/${code}/${name}.mp3`;
@@ -44,7 +44,7 @@ function TestPage({ params }) {
   const { endpoint } = useEndpoint();
   const [testData, setTestData] = useState();
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState(null);
   const [answerList, setAnswerList] = useState({});
   const [isCheck, setIsCheck] = useState(false);
@@ -62,8 +62,8 @@ function TestPage({ params }) {
       containerParts.push(part);
     }
   };
-  const handleFileUpload = async () => {
-    setIsLoading(true);
+  async function handleFileUpload() {
+    setLoadingData(true);
     setError(null);
 
     try {
@@ -83,9 +83,9 @@ function TestPage({ params }) {
         "Error parsing Excel file. Please make sure it's a valid .xlsx file."
       );
     } finally {
-      setIsLoading(false);
+      setLoadingData(false);
     }
-  };
+  }
 
   async function handleCheckList() {
     const _resultItems = {};
@@ -226,7 +226,11 @@ function TestPage({ params }) {
   useEffect(() => {
     console.log(questionMap);
   }, [questionMap]);
-  return (
+  return loadingData ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     <>
       {questionMap && Object.values(questionMap).length > 0 && (
         <div className="container mx-auto px-2 py-8 lg:px-20">

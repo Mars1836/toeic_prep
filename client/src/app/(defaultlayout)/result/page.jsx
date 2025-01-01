@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import instance from "~configs/axios.instance";
 import { ExamCard } from "~components/component/test_card";
+import { Loader2 } from "lucide-react";
 import withAuth from "../../../HOC/withAuth";
 import { useSelector } from "react-redux";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
@@ -31,6 +32,7 @@ function ResultPage() {
   const [pageInput, setPageInput] = useState("");
   const [resultData, setResultData] = useState([]);
   const user = useSelector((state) => state.user.data);
+  const [loadingResult, setLoadingResult] = useState(true);
 
   useEffect(() => {
     if (!user) {
@@ -44,6 +46,7 @@ function ResultPage() {
           },
         });
         setResultData(data);
+        setLoadingResult(false);
       } catch (error) {
         console.log(error);
       }
@@ -78,7 +81,11 @@ function ResultPage() {
     }
   };
 
-  return currentResults.length > 0 ? (
+  return loadingResult ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : currentResults.length > 0 ? (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Kết quả bài thi</h1>
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">

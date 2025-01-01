@@ -33,6 +33,7 @@ import {
 import { useDispatch } from "react-redux";
 import { WordResultsCard } from "@/components/component/flashcard_quiz_result";
 import { Badge } from "~components/ui/badge";
+import { Loader2 } from "lucide-react";
 const FILTER_FLASHCARD_DATA = [
   "id",
   "word",
@@ -75,12 +76,6 @@ async function simulateGetDataFromAI(prompt) {
 
   return rs;
 }
-async function getQuizDataFromAI(prompt) {
-  const { data } = await instance.post(endpoint.aichat.getQuizData, {
-    prompt,
-  });
-  return data;
-}
 
 const diffLevels = [
   { value: 0, label: "Khó nhớ" }, // Rất khó, cần ôn tập thường xuyên.
@@ -118,7 +113,7 @@ const multipleChoiceSlide = {
     return `What is the meaning of ${this.word}?`;
   },
 };
-async function createQuizSlice(learningFlashcard, type) {
+async function createQuizSlice(endpoint, learningFlashcard, type) {
   let data;
   try {
     data = await instance.get(endpoint.word.get4RandomWords);
@@ -330,11 +325,11 @@ export default function FlashcardLearning({ params }) {
     try {
       const slidesArray = [];
       for (const item of learningFlashcardDataSlice) {
-        const slide = await createQuizSlice(item, "description");
+        const slide = await createQuizSlice(endpoint, item, "description");
         slidesArray.push(slide);
       }
       for (const item of learningFlashcardDataSlice) {
-        const slide = await createQuizSlice(item, "translation");
+        const slide = await createQuizSlice(endpoint, item, "translation");
         slidesArray.push(slide);
       }
       setSlides((prev) => [...prev, ...slidesArray]);
@@ -532,9 +527,9 @@ export default function FlashcardLearning({ params }) {
         endpoint.learningFlashcard.updateLearningSession,
         dataUpdate
       );
-      console.log(dataUpdate);
       setResults(dataUpdate);
     } catch (error) {
+      console.log(error);
       handleErrorWithToast(error);
     }
   };
@@ -985,6 +980,7 @@ export default function FlashcardLearning({ params }) {
         endpoint,
         learningSetData.id
       );
+      console.log(endpoint);
       setLearningFlashcardData(sortFlashcard(learningFlashcardData));
     }
 

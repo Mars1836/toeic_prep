@@ -6,7 +6,8 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "./pagination";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
-
+import instance from "~configs/axios.instance";
+import { Loader2 } from "lucide-react";
 const ITEMS_PER_PAGE = 5;
 
 export default function BlogPage() {
@@ -14,6 +15,7 @@ export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [blogPosts, setBlogPosts] = useState([]);
+  const [loadingBlog, setLoadingBlog] = useState(true);
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const currentItems = blogPosts.slice(indexOfFirstItem, indexOfLastItem);
@@ -30,14 +32,17 @@ export default function BlogPage() {
       },
     });
     setBlogPosts(response.data);
+    setLoadingBlog(false);
     setCurrentPage(1);
     setSearchTerm("");
   }, [searchTerm]);
   useEffect(() => {
     fetchBlogPosts();
   }, []);
-  const handleSearch = () => {
-    fetchBlogPosts();
+  const handleSearch = async () => {
+    setLoadingBlog(true);
+    await fetchBlogPosts();
+    setLoadingBlog(false);
   };
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -65,16 +70,24 @@ export default function BlogPage() {
         <Button onClick={handleSearch}>Search</Button>
       </div>
       <div className="mt-8">
-        {currentItems.map((blog, index) => (
-          <div className="mb-8" key={blog.id}>
-            <BlogCardHorizontal blog={blog} />
+        {loadingBlog ? (
+          <div className="flex justify-center items-center ">
+            <Loader2 className="h-8 w-8 animate-spin" />
           </div>
-        ))}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        ) : (
+          <>
+            {currentItems.map((blog, index) => (
+              <div className="mb-8" key={blog.id}>
+                <BlogCardHorizontal blog={blog} />
+              </div>
+            ))}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
+        )}
       </div>
     </div>
   );
