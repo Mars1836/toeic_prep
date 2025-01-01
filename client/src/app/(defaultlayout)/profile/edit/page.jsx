@@ -13,7 +13,6 @@ import {
 import { updateAvatar, updateProfile } from "@/lib/redux/userSlice";
 import { toast } from "react-toastify";
 import { originUrl } from "@/consts";
-import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,6 +24,7 @@ import CropImage from "@/components/component/crop_Image";
 import instance from "~configs/axios.instance";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "@/hooks/useInput";
+import { Loader2 } from "lucide-react";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import withAuth from "@/HOC/withAuth";
 async function blobUrlToBlob(blobUrl) {
@@ -42,6 +42,7 @@ function EditProfile() {
   const [isLoadingAvatarUpdate, setIsLoadingAvatarUpdate] = useState(false);
   const [isLoadingProfileUpdate, setIsLoadingProfileUpdate] = useState(false);
   const dispatch = useDispatch();
+  const [loadingData, setLoadingData] = useState(true);
 
   const handleUpdateProfile = async (e) => {
     const body = {
@@ -66,6 +67,7 @@ function EditProfile() {
   useEffect(() => {
     nameInput.setInput(user?.name || "");
     bioInput.setInput(user?.bio || "");
+    setLoadingData(false);
   }, [user]);
   async function handleUpdateAvatar() {
     try {
@@ -104,7 +106,11 @@ function EditProfile() {
       reader.readAsDataURL(e.target.files[0]);
     }
   }
-  return (
+  return loadingData ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Chỉnh sửa hồ sơ</CardTitle>

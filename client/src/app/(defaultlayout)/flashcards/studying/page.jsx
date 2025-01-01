@@ -44,8 +44,10 @@ import { FlashcardSetSelectorComponent } from "@/components/modal/flashcard-set-
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { Badge } from "~components/ui/badge";
+import { Loader2 } from "lucide-react";
 function StudyingPage() {
   const { endpoint } = useEndpoint();
+  const [loadingStudying, setLoadingStudying] = useState(true);
   const [setData, setSetData] = useState();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [learningSetIdFocused, setLearningSetIdFocused] = useState();
@@ -85,6 +87,7 @@ function StudyingPage() {
       //   return item.setFlashcardId;
       // });
       setSetData(data);
+      setLoadingStudying(false);
     }
     fetchSetData();
   }, []);
@@ -95,7 +98,11 @@ function StudyingPage() {
       });
     }
   }, [setData]);
-  return (
+  return loadingStudying ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     setData && (
       <div>
         <div className="flex min-h-[100dvh] flex-col">
@@ -110,11 +117,9 @@ function StudyingPage() {
               </section> */}
 
               <section>
-                <h2 className="mb-4 text-2xl font-bold">
-                  Learning Flashcard Categories
-                </h2>
+                <h2 className="mb-4 text-2xl font-bold">Learning Flashcard</h2>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
                   {setData && setData.length > 0 ? (
                     setData.map((item) => {
                       return (
@@ -166,18 +171,19 @@ function StudyingPage() {
                               </div>
                             </div>
                           </CardContent>
-                          <CardFooter className="flex justify-between pt-4 border-t">
+                          <CardFooter className="grid grid-cols-2 justify-between pt-4 border-t gap-2">
                             <Button
                               onClick={() => goToTrackingSet(item.id)}
-                              className="flex-1 mr-2 bg-green-500 hover:bg-green-600 text-white"
+                              className=" w-full bg-green-500 hover:bg-green-600 text-white"
                             >
                               <PlayIcon className="mr-2 h-4 w-4" />
                               Tracking
                             </Button>
+
                             <Button
                               onClick={() => handleRemoveLearningSet(item.id)}
                               variant="outline"
-                              className="flex-1 ml-2 border-red-500 text-red-500 hover:bg-red-50"
+                              className=" w-full border-red-500 text-red-500 hover:bg-red-50"
                             >
                               <TrashIcon className="mr-2 h-4 w-4" />
                               Remove

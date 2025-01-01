@@ -44,6 +44,7 @@ function Component({ params }) {
   const [selectedParts, setSelectedParts] = React.useState([]);
   const [timeLimit, setTimeLimit] = React.useState("0");
   const [testData, setTestData] = React.useState([]);
+  const [loadingData, setLoadingData] = React.useState(true);
   const router = useRouter();
   const id = params.id;
   const togglePart = (partId) => {
@@ -85,10 +86,15 @@ function Component({ params }) {
       });
       console.log(data);
       setTestData(data);
+      setLoadingData(false);
     }
     fetchTesttData();
   }, []);
-  return (
+  return loadingData ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     testData && (
       <div className="min-h-screen bg-background lg:px-12 md:px-6 px-4">
         <main className="container mx-auto px-4 py-6">

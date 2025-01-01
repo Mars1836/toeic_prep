@@ -100,3 +100,6 @@ export function expiredDate(date) {
   if (new Date(date) < now) return formatDate(date);
   return "";
 }
+export function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

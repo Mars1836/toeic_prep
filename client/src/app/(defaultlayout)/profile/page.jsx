@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PencilIcon, BarChart2Icon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -24,6 +25,7 @@ function Profile() {
   const [readScore, setReadScore] = useState(0);
   const [listenScore, setListenScore] = useState(0);
   const [score, setScore] = useState(0);
+  const [loadingData, setLoadingData] = useState(true);
   const goToAnalysisPage = () => {
     router.push("/profile/analysis");
   };
@@ -42,13 +44,18 @@ function Profile() {
         setReadScore(data.readScore);
         setListenScore(data.listenScore);
         setScore(data.score);
+        setLoadingData(false);
       } catch (error) {
         handleErrorWithToast(error);
       }
     };
     fetchDataAnalysis();
   }, []);
-  return (
+  return loadingData ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     <div className="container mx-auto py-8">
       <Card className="max-w-2xl mx-auto">
         <CardHeader className="flex flex-col items-center space-y-4">

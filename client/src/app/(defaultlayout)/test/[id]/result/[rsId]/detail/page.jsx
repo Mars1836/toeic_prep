@@ -16,6 +16,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ClockCtrl from "@/components/clock";
 import instance from "~configs/axios.instance";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
+import { Loader2 } from "lucide-react";
 const containerParts = [];
 const handleCounterParts = (part) => {
   console.log(part);
@@ -49,6 +50,7 @@ export default function TestPage({ params }) {
   const [resultItemMap, setResultItemMap] = useState();
   const [testData, setTestData] = useState();
   const [data, setData] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [answerList, setAnswerList] = useState({});
@@ -80,7 +82,7 @@ export default function TestPage({ params }) {
         "Error parsing Excel file. Please make sure it's a valid .xlsx file."
       );
     } finally {
-      setIsLoading(false);
+      setLoadingData(false);
     }
   };
 
@@ -232,9 +234,12 @@ export default function TestPage({ params }) {
   function handleGoBack() {
     router.push(`/test/${idTest}/result/${rsId}`);
   }
-  return (
-    resultItemMap &&
-    questionMap && (
+  return loadingData ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
+    resultItemMap && questionMap && (
       <div className="container mx-auto px-2 py-8 lg:px-20">
         <div className="flex flex-col gap-6 md:flex-row">
           <div className="flex-grow">

@@ -11,6 +11,9 @@ import path from "path";
 import serveIndex from "serve-index";
 const express = require("express");
 const app = express();
+// Lấy môi trường từ process.env.NODE_ENV
+
+// Load file env tương ứng
 
 app.set("trust proxy", true);
 const corsOptions = {
@@ -24,12 +27,19 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// app.use(
-//   cookieSession({
-//     signed: false,
-//     // secure: true, // must be connect in https connection
-//   })
-// );
+const env = process.env.APP_ENV;
+const userCookieConfig =
+  env === "prod"
+    ? { name: "user-session", sameSite: "none", httpOnly: true, signed: false }
+    : {
+        name: "user-session",
+        sameSite: "lax",
+        httpOnly: true,
+        signed: false,
+      };
+console.log("userCookieConfig: ", userCookieConfig);
+console.log("env: ", env);
+console.log("client_origin: ", process.env.CLIENT_ORIGIN);
 app.use(
   "/",
   cookieSession({
@@ -40,13 +50,8 @@ app.use(
 );
 app.use(
   "/api/user",
-  cookieSession({
-    name: "user-session",
-    httpOnly: true,
-    signed: false,
-    sameSite: "none",
-    // secure: false, // must be connect in https connection
-  })
+  // @ts-ignore
+  cookieSession(userCookieConfig)
 );
 app.use(
   "/api/admin",

@@ -28,17 +28,11 @@ export class SuperMemo {
     if (n === 1) {
       interval = 1; // Lần học đầu tiên
     } else if (n === 2) {
-      interval = 6; // Lần học thứ 2
+      interval = 2; // Lần học thứ 2
     } else if (n > 2) {
       interval = Math.round(interval * EF); // Lần học thứ 3 trở đi
     }
 
-    // In kết quả
-    // console.log(
-    //   `Lần học thứ ${n}: EF = ${this.EF.toFixed(2)}, Interval = ${
-    //     this.interval
-    //   } ngày`
-    // );
     return interval;
   }
 

@@ -11,17 +11,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import {
-  CalendarDays,
-  Clock,
-  CheckCircle,
-  PenTool,
-  HelpCircle,
-} from "lucide-react";
+
 import instance from "~configs/axios.instance";
 import { ExamCard } from "~components/component/test_card";
 import withAuth from "../../../HOC/withAuth";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
+import { Loader2 } from "lucide-react";
 
 function TestPage() {
   const { endpoint } = useEndpoint();
@@ -29,14 +24,21 @@ function TestPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const [testData, setTestData] = useState([]);
+  const [loadingTest, setLoadingTest] = useState(true);
   useEffect(() => {
     async function fetchData() {
-      const { data } = await instance.get(endpoint.test.getByQuery, {
-        params: {
-          limit: 30,
-        },
-      });
-      setTestData(data);
+      try {
+        const { data } = await instance.get(endpoint.test.getByQuery, {
+          params: {
+            limit: 30,
+          },
+        });
+        setTestData(data);
+        setLoadingTest(false);
+      } catch (error) {
+        console.error("Error fetching test data:", error);
+        setLoadingTest(false);
+      }
     }
     fetchData();
   }, []);
@@ -50,7 +52,6 @@ function TestPage() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentResults = filteredResults.slice(startIndex, endIndex);
-
   const handlePageChange = (page) => {
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
   };
@@ -114,23 +115,32 @@ function TestPage() {
           </Button>
         </div>
       </div>
-      {currentResults.length > 0 ? (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {currentResults.map((card) => (
-              <ExamCard key={card.id} card={card} />
-            ))}
-          </div>
-          <div className="mt-6 text-center">
-            Page {currentPage} of {totalPages}
-          </div>
-        </>
-      ) : (
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold mb-6 text-center">
-            Không có bài test nào
-          </h1>
+      {loadingTest ? (
+        <div className="flex justify-center items-center h-screen">
+          <Loader2 className="h-8 w-8 animate-spin" />
         </div>
+      ) : (
+        <>
+          {" "}
+          {currentResults.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {currentResults.map((card) => (
+                  <ExamCard key={card.id} card={card} />
+                ))}
+              </div>
+              <div className="mt-6 text-center">
+                Page {currentPage} of {totalPages}
+              </div>
+            </>
+          ) : (
+            <div className="container mx-auto px-4 py-8">
+              <h1 className="text-3xl font-bold mb-6 text-center">
+                Không có bài test nào
+              </h1>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -19,13 +19,14 @@ import instance from "~configs/axios.instance";
 import { useRouter } from "next/navigation";
 import { convertSeconds } from "~helper";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
-
+import { Loader2 } from "lucide-react";
 export default function Component({ params }) {
   const { endpoint } = useEndpoint();
   const [showAlert, setShowAlert] = useState(true);
   const [resultData, setResultData] = useState();
   const [resultItems, setResultItems] = useState();
   const [testData, setTestData] = useState("");
+  const [loadingResult, setLoadingResult] = useState(true);
   const rsId = params.rsId;
   const router = useRouter();
   const renderParts = () => {
@@ -56,6 +57,7 @@ export default function Component({ params }) {
         }
       );
       setResultItems(itemDatas);
+      setLoadingResult(false);
     }
     fetchResultData();
   }, []);
@@ -64,7 +66,11 @@ export default function Component({ params }) {
       router.prefetch(rsId + "/detail");
     }
   }, [resultData]);
-  return (
+  return loadingResult ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     resultData && (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white  p-4 md:p-8">
         <div className="max-w-4xl mx-auto space-y-8">

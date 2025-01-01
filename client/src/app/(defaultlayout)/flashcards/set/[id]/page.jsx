@@ -11,10 +11,12 @@ import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { handleErrorWithToast } from "~helper";
 import { useRouter } from "next/navigation";
 import { UpdateFlashcardSetModal } from "@/components/modal/update-flashcard-set-modal";
+import { Loader2 } from "lucide-react";
 function FCDetailPage({ params }) {
   const { endpoint } = useEndpoint();
   //id of set flashcard
   const id = params.id;
+  const [loadingFlashcard, setLoadingFlashcard] = useState(true);
   const [flashcards, setFlashcards] = useState([]);
   const [setCard, setSetCard] = useState({});
   const router = useRouter();
@@ -34,6 +36,7 @@ function FCDetailPage({ params }) {
           },
         }
       );
+      setLoadingFlashcard(false);
       setFlashcards(data);
       setSetCard(setData);
     }
@@ -52,7 +55,11 @@ function FCDetailPage({ params }) {
       handleErrorWithToast(error);
     }
   };
-  return (
+  return loadingFlashcard ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     setCard && (
       <div className="flex min-h-[100dvh] flex-col">
         <div className="mx-auto px-2 py-8 md:px-2 md:w-[700px] lg:w-[900px]">

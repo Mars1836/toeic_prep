@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test:local": "cross-env RUN_MODE=local jest --watchAll --no-cache",
-    "start": "  ts-node-dev src/index.ts"
+    "start": "cross-env APP_ENV=prod ts-node-dev src/index.ts",
+    "dev": "cross-env APP_ENV=dev ENV_FILE=.env.dev ts-node-dev src/index.ts"
+
   },
   "jest": {
     "preset": "ts-jest",

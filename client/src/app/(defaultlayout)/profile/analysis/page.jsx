@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import instance from "~configs/axios.instance";
+import { Loader2 } from "lucide-react";
 import { handleErrorWithToast } from "~helper";
 import { CategoryAccuracyChart } from "@/components/component/profile_category_accuracy";
 import { RefreshCw, Lock } from "lucide-react";
@@ -29,6 +30,7 @@ function Dashboard() {
   const [listenScore, setListenScore] = useState(0);
   const [recommend, setRecommend] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
   const isUpgraded = useSelector((state) => state.user.data.isUpgraded);
   const router = useRouter();
   const handleGenerateNewSuggestions = async () => {
@@ -69,13 +71,19 @@ function Dashboard() {
         }
       } catch (error) {
         handleErrorWithToast(error);
+      } finally {
+        setLoadingData(false);
       }
     };
 
     fetchDataAnalysis();
   }, []);
 
-  return (
+  return loadingData ? (
+    <div className="flex justify-center items-center w-full mt-10">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  ) : (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">
         TOEIC Performance Dashboard

@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./configs/dotenv";
 import fs from "fs";
 import app from "./app";
 import { connectMongo } from "./connect/mongo";
