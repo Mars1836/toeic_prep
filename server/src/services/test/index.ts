@@ -23,51 +23,57 @@ namespace TestSrv {
     const newTest = await testModel.create(data);
     return newTest;
   }
-  export async function getAll(userId?: string) {
-    if (!userId) {
-      const rs = await testModel.find({});
-      return rs;
-    }
-    const tests = await testModel.find({}).lean();
+  export async function getAll() {
+    const pipeline: any[] = [
+      // Stage 1: Lookup để join với collection results
+      {
+        $lookup: {
+          from: "results",
+          localField: "_id",
+          foreignField: "testId",
+          as: "results",
+        },
+      },
 
-    const markedTests = await Promise.all(
-      tests.map(async (test) => {
-        const userAttempt = test.attempts.find(
-          (attempt: { userId: string }) => attempt.userId === userId
-        );
-        if (!userAttempt) {
-          return {
-            ...test,
-            id: test._id,
-            userAttempt: null,
-          };
-        }
-        const result = await resultModel
-          .findOne({
-            userId: userId,
-            testId: test._id,
-          })
-          .sort({ createdAt: -1 })
-          .lean();
-        const resultAll = await resultModel
-          .find({
-            userId: userId,
-            testId: test._id,
-          })
-          .lean();
-        const count = resultAll.length;
-        return {
-          ...test,
-          userAttempt: {
-            ...userAttempt,
-            lastSubmit: result?.createdAt,
-            timeSubmit: count,
-          },
-          id: test._id,
-        };
-      })
-    );
-    return markedTests;
+      // Stage 2: Thêm trường attemptCount và userAttempt
+      {
+        $addFields: {
+          attemptCount: { $size: "$results" },
+        },
+      },
+
+      // Stage 3: Project để chọn các trường cần thiết và format
+      {
+        $project: {
+          _id: 0,
+          id: "$_id",
+          title: 1,
+          type: 1,
+          code: 1,
+          parts: 1,
+          numberOfParts: 1,
+          numberOfQuestions: 1,
+          duration: 1,
+          difficulty: 1,
+          isPublished: 1,
+          attemptCount: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+
+      // Stage 4: Sort theo số lượt làm bài
+      {
+        $sort: { "userAttempt.lastSubmit": -1, createdAt: -1 },
+      },
+    ];
+
+    // Thêm $skip và $limit nếu có
+
+    // Thực hiện query
+    const tests = await testModel.aggregate(pipeline);
+
+    return tests;
   }
   export async function getByCode(code: string) {
     const rs = await testModel.findOne({
@@ -79,93 +85,6 @@ namespace TestSrv {
     const rs = await testModel.findById(id);
     return rs;
   }
-  // export async function getByQuery(
-  //   query: {
-  //     id?: string;
-  //     limit: number;
-  //     skip: number;
-  //   },
-  //   userId?: string
-  // ) {
-  //   let { skip = 0, limit = 3, ...filters } = query;
-  //   skip = Number(skip);
-  //   limit = Number(limit);
-  //   let isGetPublished = true;
-  //   if (userId) {
-  //     const admin = await userModel.findOne({
-  //       id: userId,
-  //       role: "admin",
-  //     });
-  //     if (admin) {
-  //       isGetPublished = false;
-  //     }
-  //   }
-  //   const pipeline: any[] = [
-  //     // 1. Match điều kiện lọc
-  //     {
-  //       $match: {
-  //         ...(filters.id
-  //           ? { _id: new mongoose.Types.ObjectId(filters.id) }
-  //           : {}),
-  //         ...(isGetPublished ? { isPublished: true } : {}),
-  //       },
-  //     },
-  //     // 2. Sort giảm dần theo `createdAt`
-  //     {
-  //       $sort: { createdAt: -1 },
-  //     },
-  //     // 3. Skip và Limit cho phân trang
-  //     {
-  //       $skip: skip,
-  //     },
-  //     {
-  //       $limit: limit,
-  //     },
-  //     // 4. Thêm trường `isAttempted` dựa trên userId (nếu có)
-  //     ...(userId
-  //       ? [
-  //           {
-  //             $addFields: {
-  //               isAttempted: {
-  //                 $anyElementTrue: {
-  //                   $map: {
-  //                     input: "$attempts",
-  //                     as: "attempt",
-  //                     in: { $eq: ["$$attempt.userId", userId] },
-  //                   },
-  //                 },
-  //               },
-  //             },
-  //           },
-  //         ]
-  //       : []),
-  //     // 5. Chuyển `_id` thành `id` và loại bỏ các trường không cần thiết
-  //     {
-  //       $project: {
-  //         id: "$_id",
-  //         _id: 0,
-  //         title: 1,
-  //         url: 1,
-  //         type: 1,
-  //         attempts: 1,
-  //         code: 1,
-  //         numberOfParts: 1,
-  //         numberOfQuestions: 1,
-  //         duration: 1,
-  //         fileName: 1,
-  //         parts: 1,
-  //         createdAt: 1,
-  //         isAttempted: 1, // Nếu userId không tồn tại, trường này sẽ không được thêm
-  //         isPublished: 1,
-  //         difficulty: 1,
-  //       },
-  //     },
-  //   ];
-
-  //   // Thực thi pipeline
-  //   const result = await testModel.aggregate(pipeline);
-  //   return result;
-  // }
   export async function getByQuery(
     query: {
       id?: string;
@@ -175,10 +94,14 @@ namespace TestSrv {
     userId?: string
   ) {
     let { skip = 0, limit = 4, ...filters } = query;
-    console.log("test: ", userId);
     skip = Number(skip);
     limit = Number(limit);
     const pipeline: any[] = [
+      {
+        $match: {
+          isPublished: true,
+        },
+      },
       // Stage 1: Lookup để join với collection results
       {
         $lookup: {
@@ -243,7 +166,7 @@ namespace TestSrv {
 
       // Stage 4: Sort theo số lượt làm bài
       {
-        $sort: { attemptCount: -1 },
+        $sort: { "userAttempt.lastSubmit": -1, createdAt: -1 },
       },
     ];
 

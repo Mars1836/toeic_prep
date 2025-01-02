@@ -21,6 +21,7 @@ namespace BlogCtrl {
   };
   export const getBlog = async (req: Request, res: Response) => {
     const { offset, limit } = req.query as { offset: string; limit: string };
+    // @ts-ignore
     const userId = req.user?.id;
     const blogs = await getBlogSrv(
       {
@@ -41,6 +42,7 @@ namespace BlogCtrl {
   };
   export const searchBlog = async (req: Request, res: Response) => {
     const { search } = req.query;
+    // @ts-ignore
     const userId = req.user?.id;
     // @ts-ignore
     const blogs = await searchBlogSrv(search as string, userId);

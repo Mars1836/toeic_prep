@@ -21,7 +21,7 @@ const user = {
 }
 const test = {
   create: `${originUrlAdmin}/test`,
-  get: `${originUrlPub}/test`,
+  get: `${originUrlAdmin}/test`,
   getById: (id) => `${originUrlAdmin}/test/${id}`,
   updateInfor: (id) => `${originUrlAdmin}/test/${id}/infor`,
   updateData: (id) => `${originUrlAdmin}/test/${id}/data`,

@@ -25,6 +25,7 @@ import { endpoint } from '../../../api'
 import { offset } from '@popperjs/core'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import { formatDate } from '../../../utils/formatDate'
+import { toast } from 'react-toastify'
 
 const ExamList = () => {
   const [exams, setExams] = useState([
@@ -63,6 +64,7 @@ const ExamList = () => {
   const handleDeleteExam = async (examId) => {
     if (window.confirm('Are you sure you want to delete this exam?')) {
       const { data } = await instance.delete(endpoint.test.delete(examId))
+      setExams(exams.filter((exam) => exam.id !== examId))
       toast.success('Exam deleted successfully')
     } else {
       toast.error('Failed to delete exam')

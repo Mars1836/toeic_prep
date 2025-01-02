@@ -18,7 +18,7 @@ import instance from "~configs/axios.instance";
 import { convertSeconds, formatDate } from "~helper";
 import withAuth from "~HOC/withAuth";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
-
+import { Loader2 } from "lucide-react";
 const toeicParts = [
   { id: 1, name: "Photographs", questions: 6 },
   { id: 2, name: "Question-Response", questions: 25 },
