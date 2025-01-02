@@ -482,7 +482,8 @@
   {
     "path": "/api/admin/test",
     "methods": [
-      "POST"
+      "POST",
+      "GET"
     ]
   },
   {

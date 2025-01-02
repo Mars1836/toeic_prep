@@ -6,6 +6,3 @@ export const configZalo = {
   endpointQuery: "https://sb-openapi.zalopay.vn/v2/query",
   callbackUrl: (origin: string): string => `${origin}/api/pub/payment/callback`,
 };
-export const embedDataZalo = {
-  redirectUrl: "http://localhost:3000",
-};

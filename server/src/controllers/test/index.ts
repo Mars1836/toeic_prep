@@ -10,9 +10,7 @@ namespace TestCtrl {
     res.status(200).json(rs);
   }
   export async function getAll(req: Request, res: Response) {
-    //@ts-ignore
-    const userId = req.user?.id;
-    const rs = await TestSrv.getAll(userId);
+    const rs = await TestSrv.getAll();
     res.status(200).json(rs);
   }
   export async function getByQuery(req: Request, res: Response) {

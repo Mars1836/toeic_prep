@@ -10,6 +10,7 @@ import { modelAIRecommend } from "../../configs/aichat/recommend";
 import { userModel, UserTargetScore } from "../../models/user.model";
 import { recommendModel } from "../../models/recommend";
 import { createRecommend } from "../recommend";
+import axios from "axios";
 function promptText(word: string) {
   return `Provide structured details for the word "${word}" following the specified schema.`;
 }
@@ -29,11 +30,25 @@ namespace AiChatSrv {
     const result = await modelAIQuizz.generateContent(prompt);
     return result.response.text();
   }
-  export async function explainQuestion(question: Object) {
-    const prompt = `Tạo lời giải bằng tiếng việt với câu hỏi: ${JSON.stringify(
+  export async function explainQuestion(question: any) {
+    const prompt = `Tạo lời giải bằng tiếng Việt cho các câu hỏi có dữ liệu là đoạn văn bản. Trong lời giải, nếu câu trả lời có thể được trích từ đoạn văn, hãy chỉ rõ câu nào thể hiện đáp án đúng và đoạn văn đó nằm ở vị trí thứ mấy (nếu văn bản có nhiều đoạn).   : ${JSON.stringify(
       question
     )}`;
-    const result = await explainAIModel.generateContent(prompt);
+
+    const image = question.image;
+    const imageList = await Promise.all(
+      image.map(async (item: string) => {
+        const { data } = await axios.get(item, { responseType: "arraybuffer" });
+        return {
+          inlineData: {
+            data: Buffer.from(data).toString("base64"),
+            mimeType: "image/jpg",
+          },
+        };
+      })
+    );
+
+    const result = await explainAIModel.generateContent([prompt, ...imageList]);
     return result.response.text();
   }
   export async function suggestForStudy({ userId }: { userId: string }) {

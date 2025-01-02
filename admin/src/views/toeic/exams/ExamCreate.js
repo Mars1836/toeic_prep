@@ -123,7 +123,12 @@ const ExamCreate = () => {
       const arrayBuffer = await file.arrayBuffer()
       const workbook = XLSX.read(arrayBuffer)
       const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' })
+      const jsonData = XLSX.utils
+        .sheet_to_json(worksheet, { header: 1, defval: '' })
+        .filter((row) => {
+          return !row.every((cell) => !cell)
+        })
+      console.log(jsonData)
       setNumberOfQuestions(jsonData.length - 1)
       const partSet = new Set(jsonData.map((row) => row[10]))
       setParts(Array.from(partSet).filter((part) => typeof part === 'number'))
@@ -247,7 +252,7 @@ const ExamCreate = () => {
     if (duration <= 0) {
       newErrors.duration = 'Duration phải lớn hơn 0'
     }
-    if (Number(duration) !== duration) {
+    if (isNaN(Number(duration))) {
       newErrors.duration = 'Duration phải là số'
     }
     if (!type) {
@@ -330,9 +335,11 @@ const ExamCreate = () => {
       })
       console.log('Exam created successfully:', response.data)
       setValidationMessage('Bài kiểm tra đã được lưu thành công!')
+      toast.success('Bài kiểm tra đã được lưu thành công!')
       resetForm() // Reset the form after successful submission
     } catch (error) {
       console.error('Error creating exam:', error)
+      toast.error('Có lỗi xảy ra khi lưu bài kiểm tra.')
       setValidationMessage('Có lỗi xảy ra khi lưu bài kiểm tra.')
     }
   }

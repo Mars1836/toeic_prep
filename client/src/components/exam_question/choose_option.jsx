@@ -24,6 +24,7 @@ function ChooseOption({
   isCheck = false,
   value,
   paragraph,
+  image = [],
   handleChooseOption = () => {},
 }) {
   const isUpgraded = useSelector((state) => state.user.data.isUpgraded);
@@ -50,7 +51,7 @@ function ChooseOption({
     setIsLoading(true);
     try {
       const { data } = await instance.post(endpoint.aichat.getExplanation, {
-        prompt: { ...question, paragraph },
+        prompt: { ...question, paragraph, image },
       });
       // const data =
       //   '{"correctAnswer": "D", "explanation": {"correctReason": "Trong câu này, \\"support\\" được sử dụng như một danh từ không đếm được, mang nghĩa \\"sự hỗ trợ\\". Cụm từ \\"technical support\\" mang nghĩa \\"hỗ trợ kỹ thuật\\".", "incorrectReasons": {"A": "\\"Supported\\" là động từ ở dạng quá khứ phân từ, mang nghĩa \\"được hỗ trợ\\". Nó không phù hợp với ngữ cảnh của câu.", "B": "\\"Supporter\\" là danh từ, mang nghĩa \\"người hỗ trợ\\". Sử dụng từ này trong câu sẽ làm câu không đúng ngữ pháp và sai nghĩa.", "C": "\\"Supporting\\" là động từ ở dạng hiện tại phân từ hoặc tính từ, mang nghĩa \\"hỗ trợ, ủng hộ\\". Từ này không phù hợp về mặt ngữ pháp và nghĩa trong câu này."\n        ,\n          "D": ""\n        }\n    },\n  "options": [\n    {\n      "label": "A",\n      "text": "supported"\n    },\n        {\n            "label": "B",\n            "text": "supporter"\n        },\n    {\n      "label": "C",\n      "text": "supporting"\n    },\n    {\n      "label": "D",\n      "text": "support"\n        }\n  ]\n}';

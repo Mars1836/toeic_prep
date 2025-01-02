@@ -85,6 +85,7 @@ adminTestRouter.post(
       isPublished: isPublished,
       difficulty: difficulty,
       duration: duration,
+      fileName: files.excelFile[0].filename,
     };
 
     try {
@@ -93,6 +94,13 @@ adminTestRouter.post(
     } catch (err) {
       res.status(500).json({ message: "Error creating test", error: err });
     }
+  })
+);
+adminTestRouter.get(
+  "/",
+  handleAsync(async (req: Request, res: Response) => {
+    const test = await TestSrv.getAll();
+    res.status(200).json(test);
   })
 );
 adminTestRouter.get(

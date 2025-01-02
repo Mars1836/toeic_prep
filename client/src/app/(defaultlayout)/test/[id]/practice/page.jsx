@@ -155,7 +155,7 @@ function TestPage({ params }) {
         const questionItem = {
           id: arr[0],
           [header[0]]: arr[0],
-          [header[1]]: arr[1],
+          [header[1]]: arr[1].split(",").filter((item) => item !== ""),
           [header[2]]: arr[2],
           [header[3]]: arr[3],
           [header[4]]: arr[4],
@@ -167,7 +167,7 @@ function TestPage({ params }) {
           [header[10]]: arr[10], //part
           [header[11]]: arr[11].split(","), //category
         };
-
+        console.log(questionItem);
         const options = [arr[5], arr[6], arr[7], arr[8]];
         const labels = ["A", "B", "C", "D"];
         questionItem.options = options
@@ -276,19 +276,24 @@ function TestPage({ params }) {
                           ></audio>
                         </div>
                       )}
-                      {question.image && (
-                        <div className="aspect-w-16 aspect-h-9 relative flex justify-center mb-4">
-                          <Image
-                            src={getImage(
-                              endpoint,
-                              question.image,
-                              testData.code
-                            )}
-                            alt={`TOEIC Part 1 Question ${question.id} Image`}
-                            className="rounded-lg"
-                            width={600}
-                            height={500}
-                          />
+                      {question?.image && question?.image?.length > 0 && (
+                        <div className="grid grid-cols-1 gap-4">
+                          {question.image.map((item, index) => {
+                            return (
+                              <div
+                                className="aspect-w-16 aspect-h-9 relative flex justify-center mb-4"
+                                key={index}
+                              >
+                                <Image
+                                  src={getImage(endpoint, item, testData.code)}
+                                  alt={`TOEIC Part 1 Question ${question.id} Image`}
+                                  className="rounded-lg"
+                                  width={600}
+                                  height={500}
+                                />
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                       {question.question && ![2].includes(question.part) && (

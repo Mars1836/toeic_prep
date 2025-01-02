@@ -151,6 +151,7 @@ namespace TransactionSrv {
         // Lọc các transaction từ startDate
         $match: {
           createdAt: { $gte: periodStart },
+          status: TransactionStatus.success,
         },
       },
       {

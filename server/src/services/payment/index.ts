@@ -1,4 +1,4 @@
-import { configZalo, embedDataZalo } from "../../configs/zalopay";
+import { configZalo } from "../../configs/zalopay";
 import { generateMac } from "../../utils";
 import axios from "axios";
 import moment from "moment";
