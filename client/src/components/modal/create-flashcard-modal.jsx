@@ -21,7 +21,7 @@ import instance from "~configs/axios.instance";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import useFetch from "~hooks/useFetch";
 import { useSelector } from "react-redux";
-const AICompletion = async (word) => {
+const AICompletion = async (endpoint, word) => {
   // Trong thực tế, đây sẽ là một cuộc gọi API đến dịch vụ AI
   const { data } = await instance.post(endpoint.aichat.getFlashcardInfor, {
     prompt: word,
@@ -89,7 +89,7 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
         toast.error("Vui lòng nhập từ");
         return;
       }
-      const data = await AICompletion(inputWord.value);
+      const data = await AICompletion(endpoint, inputWord.value);
 
       const aiResult = JSON.parse(data);
       if (aiResult) {
