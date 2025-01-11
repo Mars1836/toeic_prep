@@ -56,11 +56,7 @@ const CreatePost = () => {
           formData.append('image', file)
 
           // Upload to server
-          const { data } = await instance.post(endpoint.cloudinary.uploadImage, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          })
+          const { data } = await instance.post(endpoint.cloudinary.uploadImage, formData)
 
           // Get the uploaded image URL from response
           const imageUrl = data.url
@@ -100,7 +96,7 @@ const CreatePost = () => {
     formData.append('image', file)
     let api = endpoint.cloudinary.uploadImage
     try {
-      const { data } = await axios.post(api, formData)
+      const { data } = await instance.post(api, formData)
       handleInputChange('image', data.url)
     } catch (error) {
       console.error('Error uploading image:', error)
@@ -180,7 +176,7 @@ const CreatePost = () => {
       description,
     }
     try {
-      const response = await createBlogPost(postData)
+      const response = await instance.post(endpoint.blog.create, postData)
       resetForm()
       toast.success('Create post success!')
     } catch (error) {

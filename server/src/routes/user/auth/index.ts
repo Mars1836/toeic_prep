@@ -10,7 +10,7 @@ import { validate_request } from "../../../middlewares/validate_request";
 import { body } from "express-validator";
 import { redis, redisKey } from "../../../connect/redis";
 import { delay, generateOTP } from "../../../utils";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import {
   sendMailChangePW,

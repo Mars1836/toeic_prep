@@ -1,0 +1,37 @@
+services:
+  server:
+    image: server-toeic
+    container_name: server-toeic-container
+    build:
+      context: .
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - mongo
+    volumes:
+      - .:/app
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - redis_data:/data
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+      - ./backup:/backup
+      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+volumes:
+  mongo_data:
+  redis_data:

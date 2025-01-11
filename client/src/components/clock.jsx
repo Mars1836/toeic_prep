@@ -73,9 +73,10 @@ function ClockCtrl({
     }
   }, [m]);
   return (
-    <div className="flex items-center justify-center p-4 p-6 px-4">
-      <p className="flex items-center gap-2 text-3xl font-bold">
-        <Clock10 size={30}></Clock10>
+    <div className="flex items-center justify-center p-4 px-4">
+      <p className="flex items-center lg:gap-2 text-medium lg:text-3xl font-bold flex-col lg:flex-row gap-0">
+        <Clock10 size={22} className=" lg:hidden font-semibold"></Clock10>
+        <Clock10 size={30} className="lg:block hidden"></Clock10>
         {formatNumber(h)}:{formatNumber(m)}:{formatNumber(s)}
       </p>
     </div>

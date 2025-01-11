@@ -29,7 +29,7 @@ app.use(cors(corsOptions));
 
 const env = process.env.APP_ENV;
 const userCookieConfig =
-  env === "prod"
+  env === "prod" || env === "docker"
     ? { name: "user-session", sameSite: "none", httpOnly: true, signed: false }
     : {
         name: "user-session",
@@ -37,9 +37,7 @@ const userCookieConfig =
         httpOnly: true,
         signed: false,
       };
-console.log("userCookieConfig: ", userCookieConfig);
-console.log("env: ", env);
-console.log("client_origin: ", process.env.CLIENT_ORIGIN);
+
 app.use(
   "/",
   cookieSession({

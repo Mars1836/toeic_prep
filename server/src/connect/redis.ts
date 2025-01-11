@@ -3,7 +3,7 @@ import { RedisClientType, createClient } from "@redis/client";
 class Redis {
   client: RedisClientType;
   constructor() {
-    this.client = createClient(); // Initialize the client
+    this.client = createClient({ url: process.env.REDIS_LOCAL_URL }); // Initialize the client
     this.client.on("error", (err) => console.error("Redis Client Error", err));
   }
 

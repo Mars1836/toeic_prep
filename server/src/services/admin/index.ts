@@ -1,5 +1,5 @@
 import { userModel } from "../../models/user.model";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import * as _ from "lodash";
 import jwt from "jsonwebtoken";
 import { constEnv } from "../../configs/const";

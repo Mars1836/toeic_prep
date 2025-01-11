@@ -15,8 +15,9 @@ namespace PaymentSrv {
     let origin;
     let clientUrl;
     const snapshotServerUrl = await get(ref(firebase, "ngrok/url1"));
-    const snapshotClientUrl = await get(ref(firebase, "ngrok/url2"));
+    const snapshotClientUrl = await get(ref(firebase, "client/url1"));
     origin = snapshotServerUrl.val() || "http://localhost:4000";
+
     clientUrl = snapshotClientUrl.val() || "http://localhost:3000";
     const order = {
       app_id: configZalo.app_id,
@@ -31,6 +32,8 @@ namespace PaymentSrv {
       bank_code: "",
       mac: "",
     };
+    console.log(configZalo.callbackUrl(origin!));
+
     const newTransaction = await TransactionSrv.create({
       userId: userId,
       type: TransactionType.upgrade_account,

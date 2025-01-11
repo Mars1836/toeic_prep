@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test:local": "cross-env RUN_MODE=local jest --watchAll --no-cache",
-    "start": "cross-env APP_ENV=prod ts-node-dev src/index.ts",
-    "dev": "cross-env APP_ENV=dev ENV_FILE=.env.dev ts-node-dev src/index.ts"
-
+    "start": "cross-env APP_ENV=prod ENV_FILE=.env.prod ts-node-dev src/index.ts",
+    "dev": "cross-env APP_ENV=dev ENV_FILE=.env.dev ts-node-dev src/index.ts",
+    "start:docker": "cross-env APP_ENV=docker ENV_FILE=.env ts-node-dev src/index.ts",
+    "build": "tsc"
   },
   "jest": {
     "preset": "ts-jest",
@@ -37,6 +38,7 @@
     "@types/passport-local": "^1.0.38",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.1.0",
@@ -51,6 +53,7 @@
     "firebase": "^11.1.0",
     "firebase-admin": "^13.0.2",
     "google-auth-library": "^9.14.1",
+    "https": "^1.0.0",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",
@@ -71,6 +74,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/multer": "^1.4.12",
     "@types/nodemailer": "^6.4.15",
     "@types/passport-facebook": "^3.0.3",
