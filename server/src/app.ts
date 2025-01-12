@@ -37,7 +37,20 @@ const userCookieConfig =
         httpOnly: true,
         signed: false,
       };
-
+const adminCookieConfig =
+  env === "prod" || env === "docker"
+    ? {
+        name: "admin-session",
+        sameSite: "none",
+        httpOnly: true,
+        signed: false,
+      }
+    : {
+        name: "admin-session",
+        sameSite: "lax",
+        httpOnly: true,
+        signed: false,
+      };
 app.use(
   "/",
   cookieSession({
@@ -53,13 +66,8 @@ app.use(
 );
 app.use(
   "/api/admin",
-  cookieSession({
-    name: "admin-session",
-    signed: false,
-    httpOnly: true,
-    // sameSite: "none",
-    // secure: true, // must be connect in https connection
-  })
+  // @ts-ignore
+  cookieSession(adminCookieConfig)
 );
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

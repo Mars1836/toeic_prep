@@ -7,12 +7,15 @@ import App from './App'
 import store from './store'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { EndpointProvider } from './wrapper/EndpointContext'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <EndpointProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </EndpointProvider>
     <ToastContainer
       position="top-right"
       autoClose={1000}

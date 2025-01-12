@@ -29,7 +29,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilSearch, cilFilter, cilTrash, cilPencil, cilUser } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom' // Import useNavigate
-import { endpoint } from '../../../api'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 import instance from '../../../configs/axios.instance'
 import { formatDate } from '../../../utils/formatDate'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
@@ -53,6 +53,7 @@ function formatUser(user) {
   })
 }
 const Users = () => {
+  const { endpoint } = useEndpoint()
   const navigate = useNavigate() // Initialize useNavigate
 
   const [users, setUsers] = useState([])

@@ -21,13 +21,13 @@ import CIcon from '@coreui/icons-react'
 import { cilFile, cilPencil, cilSearch, cilTrash } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
 import instance from '../../../configs/axios.instance'
-import { endpoint } from '../../../api'
 import { offset } from '@popperjs/core'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import { formatDate } from '../../../utils/formatDate'
 import { toast } from 'react-toastify'
-
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 const ExamList = () => {
+  const { endpoint } = useEndpoint()
   const [exams, setExams] = useState([
     {
       id: 1,

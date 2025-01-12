@@ -37,7 +37,10 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
         <div className="flex flex-col space-y-4">
           <div className="flex items-center space-x-4">
             <Avatar className="h-16 w-16 text-2xl font-bold text-primary">
-              <AvatarImage src={originUrl + user.avatar} alt={user.name} />
+              <AvatarImage
+                src={endpoint.originUrl + user.avatar}
+                alt={user.name}
+              />
               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">

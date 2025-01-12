@@ -25,7 +25,7 @@ import { createBlogPost } from '../../../api/Blog/blog'
 import axios from 'axios'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import instance from '../../../configs/axios.instance'
-import { endpoint } from '../../../api'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 import { toast } from 'react-toastify'
 const CreatePost = () => {
   const [activeTab, setActiveTab] = useState(1)
@@ -40,7 +40,7 @@ const CreatePost = () => {
     // likes: 0
   })
   const quillRef = useRef(null)
-
+  const { endpoint } = useEndpoint()
   const handleImageUpload = useCallback(async () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')

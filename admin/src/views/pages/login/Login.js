@@ -17,10 +17,12 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useAuth } from '../../../context/AuthContext'
 import instance from '../../../configs/axios.instance'
-import { endpoint } from '../../../api'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 const Login = () => {
+  const { endpoint } = useEndpoint()
+  console.log('endpoint', endpoint)
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')

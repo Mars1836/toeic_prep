@@ -15,14 +15,14 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { useEffect } from 'react'
-
-import { endpoint } from '../../../api'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 import instance from '../../../configs/axios.instance'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import { toast } from 'react-toastify'
 import { useParams } from 'react-router-dom'
 const ExamCreate = () => {
   const { examId } = useParams()
+  const { endpoint } = useEndpoint()
   const [examData, setExamData] = useState({
     title: '',
     type: '',

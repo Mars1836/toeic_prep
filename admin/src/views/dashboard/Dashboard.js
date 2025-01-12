@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import instance from '../../configs/axios.instance'
-import { endpoint } from '../../api'
+import { useEndpoint } from '../../wrapper/EndpointContext'
 import {
   CButton,
   CButtonGroup,
@@ -190,6 +190,7 @@ function handleProgressData(progressData, num, dataCount) {
 }
 
 const Dashboard = () => {
+  const { endpoint } = useEndpoint()
   const [timeRange, setTimeRange] = useState('Month')
   const [labels, setLabels] = useState(getLastMonths(7))
   const [userChartData, setUserChartData] = useState(_userChartData)

@@ -36,12 +36,13 @@ import { useNavigate } from 'react-router-dom'
 import DOMPurify from 'dompurify'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import instance from '../../../configs/axios.instance'
-import { endpoint } from '../../../api'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 import { formatDate, formatDateTime } from '../../../utils/formatDate'
 import './quill-custom.css'
 import { toast } from 'react-toastify'
 
 const Posts = () => {
+  const { endpoint } = useEndpoint()
   const navigate = useNavigate()
   const [posts, setPosts] = useState([])
 

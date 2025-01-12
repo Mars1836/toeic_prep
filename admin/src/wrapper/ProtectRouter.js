@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import instance from '../configs/axios.instance'
-import { endpoint } from '../api'
+import { useEndpoint } from '../wrapper/EndpointContext'
 
 const ProtectRouter = ({ children }) => {
+  const { endpoint } = useEndpoint()
   const [isAuthenticated, setIsAuthenticated] = useState(null) // Trạng thái đăng nhập
   const [loading, setLoading] = useState(true) // Trạng thái chờ API
 

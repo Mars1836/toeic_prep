@@ -17,10 +17,11 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import * as XLSX from 'xlsx'
 import { toast } from 'react-toastify'
-import { endpoint } from '../../../api'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 import instance from '../../../configs/axios.instance'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 const ExamCreate = () => {
+  const { endpoint } = useEndpoint()
   const [examData, setExamData] = useState({
     title: '',
     type: '',

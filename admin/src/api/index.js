@@ -58,3 +58,80 @@ export const endpoint = {
   cloudinary,
   blog,
 }
+export class Endpoint {
+  constructor(originUrl) {
+    this.originUrl = originUrl
+    this.originUrlUpload = originUrl + '/uploads'
+    this.userAnalyst = this.handleUserAnalyst()
+    this.transactionAnalyst = this.handleTransactionAnalyst()
+    this.resultAnalyst = this.handleResultAnalyst()
+    this.user = this.handleUser()
+    this.test = this.handleTest()
+    this.auth = this.handleAuth()
+    this.transaction = this.handleTransaction()
+    this.cloudinary = this.handleCloudinary()
+    this.blog = this.handleBlog()
+  }
+  handleUserAnalyst() {
+    return {
+      upgrade: this.originUrl + '/api/admin/user/analyst/upgrade',
+      new: this.originUrl + '/api/admin/user/analyst/new',
+      progress: this.originUrl + '/api/admin/user/analyst/progress',
+    }
+  }
+  handleTransactionAnalyst() {
+    return {
+      new: this.originUrl + '/api/admin/transaction/analyst/new',
+      progress: this.originUrl + '/api/admin/transaction/analyst/progress',
+    }
+  }
+  handleResultAnalyst() {
+    return {
+      new: this.originUrl + '/api/admin/result/analyst/new',
+      progress: this.originUrl + '/api/admin/result/analyst/progress',
+    }
+  }
+  handleUser() {
+    return {
+      get: this.originUrl + '/api/admin/user',
+    }
+  }
+  handleTest() {
+    return {
+      create: this.originUrl + '/api/admin/test',
+      get: this.originUrl + '/api/admin/test',
+      getById: (id) => `${this.originUrl}/api/admin/test/${id}`,
+      updateInfor: (id) => `${this.originUrl}/api/admin/test/${id}/infor`,
+      updateData: (id) => `${this.originUrl}/api/admin/test/${id}/data`,
+      delete: (id) => `${this.originUrl}/api/admin/test/${id}`,
+    }
+  }
+  handleAuth() {
+    return {
+      login: this.originUrl + '/api/admin/auth/login',
+      logout: this.originUrl + '/api/admin/auth/logout',
+      currentUser: this.originUrl + '/api/admin/auth/current-user',
+    }
+  }
+  handleTransaction() {
+    return {
+      get: this.originUrl + '/api/admin/transaction',
+      updateStatus: this.originUrl + '/api/admin/transaction/update-status',
+      getStatus: this.originUrl + '/api/admin/transaction/status',
+    }
+  }
+  handleCloudinary() {
+    return {
+      uploadImage: this.originUrl + '/api/admin/cloudinary/upload-image',
+    }
+  }
+  handleBlog() {
+    return {
+      create: this.originUrl + '/api/admin/blog',
+      get: this.originUrl + '/api/admin/blog',
+      getById: this.originUrl + '/api/admin/blog',
+      update: this.originUrl + '/api/admin/blog',
+      delete: this.originUrl + '/api/admin/blog',
+    }
+  }
+}

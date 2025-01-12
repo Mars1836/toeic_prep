@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import instance from '../configs/axios.instance'
-import { endpoint } from '../api'
+import { useEndpoint } from '../wrapper/EndpointContext'
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
+  const { endpoint } = useEndpoint()
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return !!localStorage.getItem('admin_user')
   })

@@ -43,7 +43,7 @@ import { CChart } from '@coreui/react-chartjs'
 import { formatCurrency } from '../../../utils/formatCurrency'
 import { getTransactions } from '../../../api/Transaction/transaction'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
-import { endpoint } from '../../../api'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 import instance from '../../../configs/axios.instance'
 import { formatDate, formatDateTime } from '../../../utils/formatDate'
 import { toast } from 'react-toastify'
@@ -60,6 +60,7 @@ const _subscriptionData = {
 }
 
 const Revenue = () => {
+  const { endpoint } = useEndpoint()
   const [filteredTransactions, setFilteredTransactions] = useState([])
   const [premiumUsers, setPremiumUsers] = useState(0)
   const [growthRate, setGrowthRate] = useState(0)

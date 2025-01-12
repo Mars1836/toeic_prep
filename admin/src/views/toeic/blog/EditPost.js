@@ -24,11 +24,12 @@ import './quill-custom.css'
 import axios from 'axios'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import instance from '../../../configs/axios.instance'
-import { endpoint } from '../../../api'
+import { useEndpoint } from '../../../wrapper/EndpointContext'
 import { toast } from 'react-toastify'
 import { useParams } from 'react-router-dom'
 import { formatDate, formatDateTime } from '../../../utils/formatDate'
 const EditPost = () => {
+  const { endpoint } = useEndpoint()
   const [activeTab, setActiveTab] = useState(1)
   const [formData, setFormData] = useState({
     title: '',
