@@ -19,7 +19,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, Mic } from "lucide-react";
-import { originUrlUpload } from "@/consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 function splitAndIndexWords(input) {
   const regex = /\b[\w']+\b/g; // Biểu thức chính quy tìm từ
   let match;
@@ -47,6 +47,7 @@ const AudioTranscription = ({
   indexQuestion,
   totalQuestion,
 }) => {
+  const { endpoint } = useEndpoint();
   const [userInput, setUserInput] = useState("");
   const [correctTranscript, setCorrectTranscript] = useState(
     question.transcript
@@ -172,7 +173,10 @@ const AudioTranscription = ({
         <div>
           {audioUrl && (
             <audio controls>
-              <source src={originUrlUpload + audioUrl} type="audio/mp3" />
+              <source
+                src={endpoint.originUrlUpload + audioUrl}
+                type="audio/mp3"
+              />
             </audio>
           )}
         </div>

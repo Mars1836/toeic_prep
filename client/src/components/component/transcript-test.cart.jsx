@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { originUrlUpload } from "@/consts";
 import { useRouter } from "next/navigation";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 export function TranscriptTestCart({ transcriptTest }) {
   const router = useRouter();
+  const { endpoint } = useEndpoint();
   const handleClick = () => {
     router.push(`/transcript-test/${transcriptTest.id}/listen-and-write`);
   };
@@ -12,7 +13,7 @@ export function TranscriptTestCart({ transcriptTest }) {
       <div className="relative">
         <div className="aspect-[4/3] relative">
           <Image
-            src={originUrlUpload + transcriptTest.image}
+            src={endpoint.originUrlUpload + transcriptTest.image}
             alt={transcriptTest.title}
             fill
             className="object-cover"
