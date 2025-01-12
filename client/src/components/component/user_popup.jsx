@@ -12,7 +12,9 @@ import { expiredDate, formatDate } from "~helper";
 import { Alert, AlertDescription, AlertTitle } from "~components/ui/alert";
 import { useRouter } from "next/navigation";
 import { originUrl } from "~consts";
+import { useEndpoint } from "@/components/wrapper/endpoint-context";
 export function UserPopup({ user, onProfileClick, handleLogout }) {
+  const { endpoint } = useEndpoint();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   function goToUpgrade() {
@@ -23,7 +25,10 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
       <PopoverTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8  font-bold text-primary">
-            <AvatarImage src={originUrl + user.avatar} alt={user.name} />
+            <AvatarImage
+              src={endpoint.originUrl + user.avatar}
+              alt={user.name}
+            />
             <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>

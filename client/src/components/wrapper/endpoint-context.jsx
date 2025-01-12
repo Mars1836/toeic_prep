@@ -14,11 +14,11 @@ export const EndpointProvider = ({ children }) => {
   const [endpoint, setEndpoint] = useState(null);
   const env = process.env.NEXT_PUBLIC_ENV;
   useEffect(() => {
-    if (env === "dev") {
-      const endpointInstance = new Endpoint("http://localhost:4000");
-      setEndpoint(endpointInstance);
-      return;
-    }
+    // if (env === "dev") {
+    //   const endpointInstance = new Endpoint("http://localhost:4000");
+    //   setEndpoint(endpointInstance);
+    //   return;
+    // }
 
     get(ref(db, "ngrok/url1")).then((snapshot) => {
       if (!snapshot.exists()) return;
