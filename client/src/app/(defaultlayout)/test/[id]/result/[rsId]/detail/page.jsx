@@ -57,6 +57,8 @@ export default function TestPage({ params }) {
   const [isCheck, setIsCheck] = useState(true);
   const [questionMap, setQuestionMap] = useState({});
   const [paragraphData, setParagraphData] = useState([]);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const router = useRouter();
   const idTest = params.id;
   const rsId = params.rsId;
@@ -404,7 +406,7 @@ export default function TestPage({ params }) {
                 >
                   <ClockCtrl
                     isRun={!isCheck}
-                    limit={time}
+                    limit={resultData.secondTime}
                     onTimeOut={handleCheckList}
                   ></ClockCtrl>
                 </Button>
@@ -431,60 +433,57 @@ export default function TestPage({ params }) {
                       </h3>
                       <ScrollArea className="h-[calc(80vh-8rem)] relative">
                         <div className="mb-12">
-                          {parts.map((item, index1) => {
-                            return (
-                              <div key={index1}>
-                                <p className="font-semibold text-sm py-2">
-                                  Part {item}
-                                </p>
-                                <div className="scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent grid max-h-[500px] grid-cols-5 gap-1 overflow-y-scroll">
-                                  {Object.values(questionMap).map(
-                                    (question, index) => {
-                                      if (question.part !== item) {
-                                        return;
+                          <div>
+                            {resultData?.parts.map((item, index1) => {
+                              return (
+                                <div key={index1}>
+                                  <p className="font-semibold text-sm mx-5">
+                                    Part {item}
+                                  </p>
+                                  <div className="scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent grid max-h-[500px] grid-cols-5 gap-1 overflow-y-scroll p-4">
+                                    {Object.values(questionMap).map(
+                                      (question, index) => {
+                                        if (question.part !== item) {
+                                          return;
+                                        }
+                                        return (
+                                          <Button
+                                            key={question.id}
+                                            variant={
+                                              "selectedQuestion.id" ===
+                                              question.id
+                                                ? "default"
+                                                : "outline"
+                                            }
+                                            size="sm"
+                                            onClick={() => {
+                                              setMobileOpen(false);
+                                              handleSelectQuestion(question);
+                                            }}
+                                            className={`w-full transition-all duration-200 ${
+                                              answerList[question.id]?.value
+                                                ? "bg-yellow-500 text-white hover:bg-yellow-300"
+                                                : ""
+                                            } ${
+                                              resultItemMap[question.id]
+                                                ? resultItemMap[question.id]
+                                                    .isCorrect
+                                                  ? "bg-green-500 text-white hover:bg-green-600"
+                                                  : "bg-red-500 text-white hover:bg-red-600"
+                                                : ""
+                                            } `}
+                                          >
+                                            {question.number}
+                                            <p className="bg-red-200">{}</p>
+                                          </Button>
+                                        );
                                       }
-                                      return (
-                                        <Button
-                                          key={question.id}
-                                          variant={
-                                            "selectedQuestion.id" ===
-                                            question.id
-                                              ? "default"
-                                              : "outline"
-                                          }
-                                          size="sm"
-                                          onClick={() => {
-                                            setMobileOpen(false);
-                                            handleSelectQuestion(question);
-                                          }}
-                                          className={`w-full transition-all duration-200 ${
-                                            answerList[question.id]?.value
-                                              ? "bg-yellow-500 text-white hover:bg-yellow-300"
-                                              : ""
-                                          } ${
-                                            "selectedQuestion.id" ===
-                                            question.id
-                                              ? "ring-primary ring-offset-gray-90 ring-2 ring-offset-2"
-                                              : ""
-                                          } ${
-                                            resultItems[question.id]
-                                              ? resultItems[question.id]
-                                                  .isCorrect
-                                                ? "bg-green-500 text-white hover:bg-green-600"
-                                                : "bg-red-500 text-white hover:bg-red-600"
-                                              : ""
-                                          } `}
-                                        >
-                                          {question.number}
-                                          <p className="bg-red-200">{}</p>
-                                        </Button>
-                                      );
-                                    }
-                                  )}
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
+                          </div>
                         </div>
                         <div className="w-full absolute bottom-0">
                           <Button
