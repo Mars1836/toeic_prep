@@ -14,12 +14,15 @@ export const EndpointProvider = ({ children }) => {
   const [endpoint, setEndpoint] = useState(null);
   const env = process.env.NEXT_PUBLIC_ENV;
   useEffect(() => {
-    // if (env === "dev") {
-    //   const endpointInstance = new Endpoint("http://localhost:4000");
-    //   setEndpoint(endpointInstance);
-    //   return;
-    // }
-
+    console.log("env", env);
+    if (env === "vercel") {
+      get(ref(db, "ngrok/vercel")).then((snapshot) => {
+        if (!snapshot.exists()) return;
+        const endpointInstance = new Endpoint(snapshot.val()); // Tạo instance một lần
+        setEndpoint(endpointInstance); // Cập nhật instance vào state
+      });
+      return;
+    }
     get(ref(db, "ngrok/url1")).then((snapshot) => {
       if (!snapshot.exists()) return;
       const endpointInstance = new Endpoint(snapshot.val()); // Tạo instance một lần
