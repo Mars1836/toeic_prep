@@ -89,8 +89,13 @@ function TestPage({ params }) {
   }
 
   async function handleCheckList() {
+    const anwserListArray = Object.entries(answerList);
+    if (anwserListArray.length === 0) {
+      toast.error("Vui lòng chọn đáp án trước khi nộp bài");
+      return;
+    }
     const _resultItems = {};
-    for (const [key, value] of Object.entries(answerList)) {
+    for (const [key, value] of anwserListArray) {
       _resultItems[key] = {
         // type: questionMap[key].type,
         useranswer: value.value,
@@ -115,7 +120,6 @@ function TestPage({ params }) {
     if (d?.data) {
       router.push(`/test/${idTest}/result/${d.data.id}`);
     }
-    setResultItems(_resultItems);
   }
   function handleChooseOption(id) {
     return (value) => {
@@ -164,7 +168,7 @@ function TestPage({ params }) {
           [header[6]]: arr[6],
           [header[7]]: arr[7],
           [header[8]]: arr[8],
-          [header[9]]: arr[9],
+          [header[9]]: arr[9].trim(), //correctanswer
           [header[10]]: arr[10], //part
           [header[11]]: arr[11].split(","), //category
         };

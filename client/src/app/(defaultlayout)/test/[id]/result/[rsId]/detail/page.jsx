@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { Grid } from "lucide-react";
-
+import Transcript from "@/components/exam_question/transcript";
 import ChooseOption from "@/components/exam_question/choose_option";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
@@ -19,10 +19,11 @@ import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import { Loader2 } from "lucide-react";
 const containerParts = [];
 const handleCounterParts = (part) => {
-  console.log(part);
   if (!containerParts.includes(part)) {
     containerParts.push(part);
+    return part;
   }
+  return "";
 };
 function getAudio(endpoint, name, code) {
   return endpoint.originUrlUpload + `/audios/${code}/${name}.mp3`;
@@ -129,7 +130,7 @@ export default function TestPage({ params }) {
           [header[6]]: arr[6],
           [header[7]]: arr[7],
           [header[8]]: arr[8],
-          [header[9]]: arr[9],
+          [header[9]]: arr[9].trim(), //correctanswer
           [header[10]]: arr[10], //part
           [header[11]]: arr[11].split(","), //category
           [header[12]]: arr[12], //transcript
@@ -159,7 +160,6 @@ export default function TestPage({ params }) {
         }
         _questionMap[arr[0]] = questionItem;
       }
-      console.log(_paragraphData);
       setParagraphData(_paragraphData);
       setQuestionMap(_questionMap);
     }
@@ -253,8 +253,11 @@ export default function TestPage({ params }) {
                 <div key={question.id} className="max-w-full">
                   {!containerParts.includes(question.part) && (
                     <h3 className="text-center text-2xl font-semibold mb-10">
-                      Part {question.part}
-                      {handleCounterParts(question.part)}
+                      {handleCounterParts(question.part) ? (
+                        <>Part {question.part}</>
+                      ) : (
+                        <></>
+                      )}
                     </h3>
                   )}
 
@@ -309,6 +312,12 @@ export default function TestPage({ params }) {
                         })}
                       </div>
                     )}
+                    <div className="mb-4">
+                      <Transcript
+                        part={question.part}
+                        transcript={question.transcript}
+                      ></Transcript>
+                    </div>
                     {question.question && (
                       <div className="mb-4  ">
                         <p

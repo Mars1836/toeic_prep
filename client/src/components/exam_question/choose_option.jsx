@@ -82,7 +82,6 @@ function ChooseOption({
                 `. ${option.content}`}
               {isCheck && `. ${option.content}`}
             </Label>
-
             {isCheck && option.id === question.correctanswer && (
               <CheckCircle className="ml-2 text-green-500" />
             )}
@@ -107,7 +106,7 @@ function ChooseOption({
               "."}
         </p>
       )}
-      {isCheck && [3, 4].includes(question.part) && question.transcript && (
+      {/* {isCheck && [3, 4].includes(question.part) && question.transcript && (
         <div className="mb-4">
           <Button onClick={() => setIsShowTranscription(!isShowTranscription)}>
             {isShowTranscription ? "Ẩn transcription" : "Hiện transcription"}
@@ -125,7 +124,7 @@ function ChooseOption({
             </div>
           )}
         </div>
-      )}
+      )} */}
       {isCheck && [5, 6, 7].includes(question.part) && (
         <div>
           {isUpgraded ? (
