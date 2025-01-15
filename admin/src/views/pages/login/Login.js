@@ -22,7 +22,6 @@ import { toast } from 'react-toastify'
 import { useEndpoint } from '../../../wrapper/EndpointContext'
 const Login = () => {
   const { endpoint } = useEndpoint()
-  console.log('endpoint', endpoint)
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -45,7 +44,6 @@ const Login = () => {
         toast.error('Email or password is incorrect')
       }
     } catch (error) {
-      console.log('error', error)
       toast.error('Email or password is incorrect')
     }
   }

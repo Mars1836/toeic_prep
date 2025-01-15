@@ -269,24 +269,22 @@ const Dashboard = () => {
       setRevenueProgressData(
         handleProgressData(revenueProgressData, 1, progressTransactionData.totalTransaction),
       )
-      const { data: newResultData } = await instance.get(endpoint.result.new, {
+      const { data: newResultData } = await instance.get(endpoint.resultAnalyst.new, {
         params: {
           step: step,
           num: num,
         },
       })
-      const { data: progressResultData } = await instance.get(endpoint.result.progress)
+      const { data: progressResultData } = await instance.get(endpoint.resultAnalyst.progress)
       const countNewResultData = newResultData.map((item) => item.count)
       setExamChartData(handleChartData(examChartData, 0, countNewResultData))
+      console.log(examChartData)
       setExamProgressData(handleProgressData(examProgressData, 0, progressResultData.totalResult))
       setLabelsToAllChart(labels)
     }
     fetchData()
   }, [timeRange])
-  // useEffect(() => {
-  //   setLabelsToAllChart(labels)
-  // }, [labels])
-  // Render statistics sections
+
   const renderStatisticsSection = (title, chartData, progressData) => (
     <CCard className="mb-4">
       <CCardBody>

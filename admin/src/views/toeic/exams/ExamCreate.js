@@ -196,7 +196,6 @@ const ExamCreate = () => {
   }
 
   const handleFileValidation = () => {
-    console.log('Validate uploaded file')
     // Add validation logic here
     setFileValid(true) // or false based on validation
   }
@@ -315,18 +314,6 @@ const ExamCreate = () => {
     formData.append('duration', duration)
     formData.append('isPublished', isPublished)
     // Log the submitted data
-    console.log('Submitted Data:', {
-      title: examData.title,
-      difficulty: examData.difficulty,
-      type: type,
-      numberOfQuestions: numberOfQuestions,
-      parts: parts,
-      files: {
-        images: files.images ? Array.from(files.images).map((file) => file.name) : [],
-        audioFiles: files.audioFiles ? Array.from(files.audioFiles).map((file) => file.name) : [],
-        excelFile: files.excelFile ? files.excelFile[0].name : null,
-      },
-    })
 
     try {
       const response = await instance.post(endpoint.test.create, formData, {
@@ -334,7 +321,6 @@ const ExamCreate = () => {
           'Content-Type': 'multipart/form-data',
         },
       })
-      console.log('Exam created successfully:', response.data)
       setValidationMessage('Bài kiểm tra đã được lưu thành công!')
       toast.success('Bài kiểm tra đã được lưu thành công!')
       resetForm() // Reset the form after successful submission

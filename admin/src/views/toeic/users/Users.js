@@ -113,7 +113,6 @@ const Users = () => {
 
   const handleStatusChange = (user) => {
     const { id, status } = user
-    console.log(id, status)
     setUsers((prev) =>
       prev.map((u) =>
         u.id === user.id ? { ...u, status: u.status === 'Active' ? 'Blocked' : 'Active' } : u,

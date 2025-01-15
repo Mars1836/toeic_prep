@@ -94,7 +94,6 @@ const Posts = () => {
   useEffect(() => {
     async function fetchPosts() {
       const { data } = await instance.get(endpoint.blog.get)
-      console.log(data)
       setPosts(data)
     }
     fetchPosts()

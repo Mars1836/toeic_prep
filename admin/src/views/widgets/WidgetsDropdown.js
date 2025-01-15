@@ -41,9 +41,7 @@ function getPercentage(data) {
 const WidgetsDropdown = ({ userChartData, revenueChartData, examChartData }) => {
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
-  console.log(userChartData)
-  console.log(revenueChartData)
-  console.log(examChartData)
+
   useEffect(() => {
     document.documentElement.addEventListener('ColorSchemeChange', () => {
       if (widgetChartRef1.current) {

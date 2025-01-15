@@ -117,7 +117,6 @@ const ExamCreate = () => {
     if (!examData.type) {
       newErrors.type = 'Test Type là bắt buộc'
     }
-    console.log('newErrors', newErrors)
     setErrors(newErrors)
 
     // Nếu có lỗi, hiển thị thông báo
