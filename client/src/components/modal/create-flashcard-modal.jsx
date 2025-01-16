@@ -21,6 +21,7 @@ import instance from "~configs/axios.instance";
 import { useEndpoint } from "@/components/wrapper/endpoint-context";
 import useFetch from "~hooks/useFetch";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 const AICompletion = async (endpoint, word) => {
   // Trong thực tế, đây sẽ là một cuộc gọi API đến dịch vụ AI
   const { data } = await instance.post(endpoint.aichat.getFlashcardInfor, {
@@ -41,6 +42,7 @@ export function CreateFlashcardModal({ setId, setFlashcards }) {
   const inputPartOfSpeech = useInput("");
   const [isLoading, setIsLoading] = useState(false);
   const isUpgraded = useSelector((state) => state.user.data.isUpgraded);
+  const router = useRouter();
   const goToUpgrade = () => {
     setOpen(false);
     router.push("/upgrade");
