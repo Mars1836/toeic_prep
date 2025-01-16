@@ -72,7 +72,7 @@ const ExamList = () => {
   }
   const handleViewTemplate = () => {
     const url =
-      'https://docs.google.com/spreadsheets/d/1gzZJZ90qk1KIadXhqyct_CBksHfk-_hORWm27r9XX2U/edit?usp=sharing' // sau có thể lấy từ DB, biến,....
+      'https://docs.google.com/spreadsheets/d/1tjjUiuK8n0lrAtFEaD5GraqLo9bcGrJ3pbiRMwtI3b4/edit?gid=1818801142#gid=1818801142' // sau có thể lấy từ DB, biến,....
     window.open(url, '_blank') // Mở liên kết trong tab mới
   }
   const filteredExams = exams.filter((exam) => {
