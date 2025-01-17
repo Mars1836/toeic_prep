@@ -23,7 +23,7 @@ const getScoreColor = (decayScore) => {
 const getCoefficientColor = (retentionScore) => {
   if (retentionScore >= 4) return "bg-blue-500";
   if (retentionScore >= 3) return "bg-yellow-500";
-  if (retentionScore >= 1) return "bg-orange-500";
+  if (retentionScore >= 2) return "bg-orange-500";
   return "bg-red-500";
 };
 function getDiffDays(optimalTime) {
