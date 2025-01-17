@@ -26,12 +26,15 @@ export default function BlogPage() {
     setCurrentPage(pageNumber);
   };
   const fetchBlogPosts = useCallback(async () => {
-    const response = await instance.get(endpoint.blog.searchBlog, {
+    const { data } = await instance.get(endpoint.blog.searchBlog, {
       params: {
         search: searchTerm,
       },
     });
-    setBlogPosts(response.data);
+    if (!searchTerm) {
+      data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    setBlogPosts(data);
     setLoadingBlog(false);
     setCurrentPage(1);
     setSearchTerm("");
