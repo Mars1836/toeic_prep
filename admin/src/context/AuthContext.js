@@ -19,7 +19,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     localStorage.removeItem('admin_user')
     await instance.post(endpoint.auth.logout)
-    window.location.href = '/login'
+    window.location.reload()
+
     setIsLoggedIn(false)
   }
 
