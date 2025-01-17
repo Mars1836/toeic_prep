@@ -117,7 +117,9 @@ function StudyingPage() {
               </section> */}
 
               <section>
-                <h2 className="mb-4 text-2xl font-bold">Learning Flashcard</h2>
+                <h2 className="mb-4 text-2xl font-bold">
+                  Danh sách flashcard đang học
+                </h2>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
                   {setData && setData.length > 0 ? (
@@ -177,7 +179,7 @@ function StudyingPage() {
                               className=" w-full bg-green-500 hover:bg-green-600 text-white"
                             >
                               <PlayIcon className="mr-2 h-4 w-4" />
-                              Tracking
+                              Theo dõi
                             </Button>
 
                             <Button
@@ -186,7 +188,7 @@ function StudyingPage() {
                               className=" w-full border-red-500 text-red-500 hover:bg-red-50"
                             >
                               <TrashIcon className="mr-2 h-4 w-4" />
-                              Remove
+                              Xóa
                             </Button>
                           </CardFooter>
                         </Card>

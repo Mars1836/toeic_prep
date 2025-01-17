@@ -86,7 +86,7 @@ function Dashboard() {
   ) : (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">
-        TOEIC Performance Dashboard
+        Phân tích kết quả thi TOEIC
       </h1>
 
       <div className="grid grid-cols-1 gap-6  md:grid-cols-2 lg:grid-cols-3 mt-6">

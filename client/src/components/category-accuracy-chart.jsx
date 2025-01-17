@@ -208,10 +208,8 @@ export default function CategoryAccuracyChart() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Category Accuracy Chart</CardTitle>
-        <CardDescription>
-          Accuracy percentages for different categories grouped by parts
-        </CardDescription>
+        <CardTitle>Biểu đồ độ chính xác các phần</CardTitle>
+        <CardDescription>Độ chính xác các phần theo từng phần</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-4">

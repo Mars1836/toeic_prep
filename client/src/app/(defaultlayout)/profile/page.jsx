@@ -99,7 +99,7 @@ function Profile() {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button variant="outline" onClick={goToEditProfilePage}>
-            <PencilIcon className="mr-2 h-4 w-4" /> Cập nhật profile
+            <PencilIcon className="mr-2 h-4 w-4" /> Cập nhật hồ sơ
           </Button>
           <div className="flex gap-2">
             <Button onClick={goToHistoryPage}>

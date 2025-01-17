@@ -50,7 +50,7 @@ export function CreateFlashcardSetModal({ setFC, setSetFC }) {
       <DialogTrigger asChild>
         <Button variant="outline">
           <PlusIcon className="mr-2 h-4 w-4" />
-          Create Flashcard
+          Tạo flashcard
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

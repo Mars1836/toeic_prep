@@ -52,11 +52,11 @@ export function MenuWithConfirmation() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={handleUpdate}>
                 <RefreshCw className="mr-2 h-4 w-4" />
-                <span>Update</span>
+                <span>Cập nhật</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleRemove}>
                 <Trash2 className="mr-2 h-4 w-4" />
-                <span>Remove</span>
+                <span>Xóa</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

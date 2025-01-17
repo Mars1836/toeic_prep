@@ -8,9 +8,9 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import withAuth from "~HOC/withAuth";
 const navItems = [
-  { name: "My List", href: "/flashcards/set", icon: ListIcon },
-  { name: "Studying", href: "/flashcards/studying", icon: BookOpenIcon },
-  { name: "Explore", href: "/flashcards/explore", icon: CompassIcon },
+  { name: "Danh sách", href: "/flashcards/set", icon: ListIcon },
+  { name: "Học tập", href: "/flashcards/studying", icon: BookOpenIcon },
+  { name: "Khám phá", href: "/flashcards/explore", icon: CompassIcon },
 ];
 
 export default withAuth(function NavigationLayout({ children }) {

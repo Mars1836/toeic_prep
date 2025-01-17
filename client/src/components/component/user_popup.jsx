@@ -91,7 +91,7 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
               className="justify-start"
             >
               <User className="mr-2 h-4 w-4" />
-              Profile
+              Hồ sơ
             </Button>
             <Button
               variant="outline"
@@ -99,7 +99,7 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
               className="justify-start"
             >
               <Settings className="mr-2 h-4 w-4" />
-              Account Settings
+              Cài đặt tài khoản
             </Button>
 
             <Button
@@ -108,7 +108,7 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
               className="justify-start text-red-500 hover:text-red-500 hover:bg-red-50"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              Log out
+              Đăng xuất
             </Button>
           </div>
         </div>

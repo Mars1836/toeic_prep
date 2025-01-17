@@ -101,9 +101,7 @@ function FlashcartsPage() {
               </section>
 
               <section>
-                <h2 className="mb-4 text-2xl font-bold">
-                  Flashcard Categories
-                </h2>
+                <h2 className="mb-4 text-2xl font-bold">Danh sách flashcard</h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {setData && setData.length > 0 ? (
                     setData.map((item) => {
@@ -128,7 +126,7 @@ function FlashcartsPage() {
                                     }}
                                   >
                                     <RefreshCw className="mr-2 h-4 w-4" />
-                                    <span>Update</span>
+                                    <span>Cập nhật</span>
                                   </DropdownMenuItem>
                                   <DropdownMenuItem
                                     onClick={() => {
@@ -136,7 +134,7 @@ function FlashcartsPage() {
                                     }}
                                   >
                                     <Trash2 className="mr-2 h-4 w-4" />
-                                    <span>Remove</span>
+                                    <span>Xóa</span>
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
@@ -165,7 +163,7 @@ function FlashcartsPage() {
                                 goToView(item.id);
                               }}
                             >
-                              View
+                              Xem
                             </Button>
                           </div>
                         </Card>
