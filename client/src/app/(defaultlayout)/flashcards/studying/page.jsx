@@ -176,7 +176,7 @@ function StudyingPage() {
                           <CardFooter className="grid grid-cols-2 justify-between pt-4 border-t gap-2">
                             <Button
                               onClick={() => goToTrackingSet(item.id)}
-                              className=" w-full bg-green-500 hover:bg-green-600 text-white"
+                              className=" w-full bg-primary hover:bg-primary/90 text-white"
                             >
                               <PlayIcon className="mr-2 h-4 w-4" />
                               Theo dõi
