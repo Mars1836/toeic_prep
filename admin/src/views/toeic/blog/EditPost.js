@@ -21,7 +21,6 @@ import 'react-quill/dist/quill.snow.css'
 import 'react-quill/dist/quill.bubble.css'
 import DOMPurify from 'dompurify'
 import './quill-custom.css'
-import axios from 'axios'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import instance from '../../../configs/axios.instance'
 import { useEndpoint } from '../../../wrapper/EndpointContext'
@@ -103,7 +102,7 @@ const EditPost = () => {
     formData.append('image', file)
     let api = endpoint.cloudinary.uploadImage
     try {
-      const { data } = await axios.post(api, formData)
+      const { data } = await instance.post(api, formData)
       handleInputChange('image', data.url)
     } catch (error) {
       console.error('Error uploading image:', error)
