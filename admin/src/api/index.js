@@ -118,6 +118,9 @@ export class Endpoint {
       get: this.originUrl + '/api/admin/transaction',
       updateStatus: this.originUrl + '/api/admin/transaction/update-status',
       getStatus: this.originUrl + '/api/admin/transaction/status',
+      getLast7Years: this.originUrl + '/api/admin/transaction/last-7-years',
+      getLast7Months: this.originUrl + '/api/admin/transaction/last-7-months',
+      getLast7Days: this.originUrl + '/api/admin/transaction/last-7-days',
     }
   }
   handleCloudinary() {

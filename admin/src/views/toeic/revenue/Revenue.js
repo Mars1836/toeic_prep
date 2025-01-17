@@ -44,9 +44,9 @@ import { formatCurrency } from '../../../utils/formatCurrency'
 import { getTransactions } from '../../../api/Transaction/transaction'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
 import { useEndpoint } from '../../../wrapper/EndpointContext'
-import instance from '../../../configs/axios.instance'
 import { formatDate, formatDateTime } from '../../../utils/formatDate'
 import { toast } from 'react-toastify'
+import instance from '../../../configs/axios.instance'
 
 const _subscriptionData = {
   labels: ['Premium', 'Regular'],
@@ -236,7 +236,8 @@ const Revenue = () => {
   })
 
   const fetchRevenueData = async (timeFrame) => {
-    const data = await getTransactions(timeFrame)
+    const { data } = await instance.get(endpoint.transaction.getLast7Months)
+    console.log('dataaaaaaa ', data)
     let labels = []
     let amounts = []
 

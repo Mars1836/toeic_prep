@@ -94,7 +94,6 @@ const ExamList = () => {
           limit: 10,
         },
       })
-      console.log(data)
       setExams(data)
     }
     fetchExams()
