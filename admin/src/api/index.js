@@ -1,63 +1,3 @@
-export const originUrlUser = 'http://localhost:4000/api/user'
-export const originUrlAdmin = 'http://localhost:4000/api/admin'
-export const originUrlPub = 'http://localhost:4000/api/pub'
-export const originUrl = 'http://localhost:4000'
-export const originUrlUpload = 'http://localhost:4000/uploads'
-const userAnalyst = {
-  upgrade: `${originUrlAdmin}/user/analyst/upgrade`,
-  new: `${originUrlAdmin}/user/analyst/new`,
-  progress: `${originUrlAdmin}/user/analyst/progress`,
-}
-const transactionAnalyst = {
-  new: `${originUrlAdmin}/transaction/analyst/new`,
-  progress: `${originUrlAdmin}/transaction/analyst/progress`,
-}
-const result = {
-  new: `${originUrlAdmin}/result/analyst/new`,
-  progress: `${originUrlAdmin}/result/analyst/progress`,
-}
-const user = {
-  get: `${originUrlAdmin}/user`,
-}
-const test = {
-  create: `${originUrlAdmin}/test`,
-  get: `${originUrlAdmin}/test`,
-  getById: (id) => `${originUrlAdmin}/test/${id}`,
-  updateInfor: (id) => `${originUrlAdmin}/test/${id}/infor`,
-  updateData: (id) => `${originUrlAdmin}/test/${id}/data`,
-  delete: (id) => `${originUrlAdmin}/test/${id}`,
-}
-const auth = {
-  login: `${originUrlAdmin}/auth/login`,
-  logout: `${originUrlAdmin}/auth/logout`,
-  currentUser: `${originUrlAdmin}/auth/current-user`,
-}
-const transaction = {
-  get: `${originUrlAdmin}/transaction`,
-  updateStatus: `${originUrlAdmin}/transaction/update-status`,
-  getStatus: `${originUrlAdmin}/transaction/status`,
-}
-const cloudinary = {
-  uploadImage: `${originUrlAdmin}/cloudinary/upload-image`,
-}
-const blog = {
-  create: `${originUrlAdmin}/blog`,
-  get: `${originUrlAdmin}/blog`,
-  getById: `${originUrlAdmin}/blog`,
-  update: `${originUrlAdmin}/blog`,
-  delete: `${originUrlAdmin}/blog`,
-}
-export const endpoint = {
-  userAnalyst,
-  transactionAnalyst,
-  result,
-  user,
-  test,
-  auth,
-  transaction,
-  cloudinary,
-  blog,
-}
 export class Endpoint {
   constructor(originUrl) {
     this.originUrl = originUrl
@@ -71,6 +11,8 @@ export class Endpoint {
     this.transaction = this.handleTransaction()
     this.cloudinary = this.handleCloudinary()
     this.blog = this.handleBlog()
+    this.toeicTesting = this.handleToeicTesting()
+    this.toeicTestSession = this.handleToeicTestSession()
   }
   handleUserAnalyst() {
     return {
@@ -135,6 +77,31 @@ export class Endpoint {
       getById: this.originUrl + '/api/admin/blog',
       update: this.originUrl + '/api/admin/blog',
       delete: this.originUrl + '/api/admin/blog',
+    }
+  }
+  handleExam() {
+    return {
+      get: this.originUrl + '/api/admin/exam',
+      getById: (id) => `${this.originUrl}/api/admin/exam/${id}`,
+      updateInfor: (id) => `${this.originUrl}/api/admin/exam/${id}/infor`,
+      updateData: (id) => `${this.originUrl}/api/admin/exam/${id}/data`,
+      delete: (id) => `${this.originUrl}/api/admin/exam/${id}`,
+    }
+  }
+  handleToeicTesting() {
+    return {
+      getAll: this.originUrl + '/api/admin/toeic-testing',
+      getById: (id) => `${this.originUrl}/api/admin/toeic-testing/${id}`,
+      create: this.originUrl + '/api/admin/toeic-testing',
+      createMany: this.originUrl + '/api/admin/toeic-testing/batch',
+      getByFilter: this.originUrl + '/api/admin/toeic-testing/filter/all',
+      update: (id) => `${this.originUrl}/api/admin/toeic-testing/${id}`,
+      delete: (id) => `${this.originUrl}/api/admin/toeic-testing/${id}`,
+    }
+  }
+  handleToeicTestSession() {
+    return {
+      create: this.originUrl + '/api/admin/toeic-test-session',
     }
   }
 }

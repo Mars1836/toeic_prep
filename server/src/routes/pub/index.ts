@@ -8,8 +8,11 @@ import wordRouter from "./word";
 import pubBlogRouter from "./blog";
 import pubTranscriptTestRouter from "./transcript_test";
 import pubTranscriptTestItemRouter from "./transcript_test_item";
+import testRegistrationRouter from "./test_registration";
 import { RateLimitInstance } from "../../middlewares/rate_limit";
+
 const routerP = express.Router();
+
 routerP.use("/test", RateLimitInstance.createHighLimitMiddleware(), testRouter);
 routerP.use(
   "/payment",
@@ -37,4 +40,10 @@ routerP.use(
   RateLimitInstance.createHighLimitMiddleware(),
   pubTranscriptTestItemRouter
 );
+routerP.use(
+  "/registration",
+  RateLimitInstance.createHighLimitMiddleware(),
+  testRegistrationRouter
+);
+
 export default routerP;

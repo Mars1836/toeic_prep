@@ -19,6 +19,9 @@ export class Endpoint {
     this.transcriptTest = this.handleTranscriptTest();
     this.transcriptTestItem = this.handleTranscriptTestItem();
     this.blog = this.handleBlog();
+    this.toeicTest = this.handleToeicTest();
+    this.toeicTestSession = this.handleToeicTestSession();
+    this.examResult = this.handleExamResult();
   }
   handleAuth() {
     return {
@@ -92,6 +95,8 @@ export class Endpoint {
   handlePayment() {
     return {
       createPayment: this.originUrl + "/api/user/payment",
+      createPaymentTestRegistration:
+        this.originUrl + "/api/user/payment/test-registration",
     };
   }
   handleLearningFlashcard() {
@@ -140,6 +145,31 @@ export class Endpoint {
       searchBlog: this.originUrl + "/api/pub/blog/search",
       viewBlog: this.originUrl + "/api/pub/blog",
       getRelatedBlog: this.originUrl + "/api/pub/blog", // + /id/related
+    };
+  }
+  handleExamRegistration() {
+    return {
+      create: this.originUrl + "/api/user/test-registration",
+      getByUser: this.originUrl + "/api/user/test-registration/user",
+      getById: this.originUrl + "/api/user/test-registration/id",
+    };
+  }
+  handleToeicTest() {
+    return {
+      getPendingTests: this.originUrl + "/api/user/toeic-testing/pending",
+    };
+  }
+  handleToeicTestSession() {
+    return {
+      getByUser: this.originUrl + "/api/user/toeic-test-session/my-sessions",
+      getSessionByUserIdAndId:
+        this.originUrl + "/api/user/toeic-test-session/my-sessions",
+      getExamByToken: this.originUrl + "/api/user/toeic-test-session/exam",
+    };
+  }
+  handleExamResult() {
+    return {
+      storeResult: this.originUrl + "/api/user/exam-result/items",
     };
   }
 }

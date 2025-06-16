@@ -4,13 +4,14 @@ FROM node:18-alpine
 # Thiết lập thư mục làm việc bên trong container
 WORKDIR /app
 
-# Copy file package.json và package-lock.json
+# Copy package files first to leverage Docker cache
 COPY package*.json ./
 
-# Cài đặt dependencies
-RUN npm install
+# Install dependencies with cache mount
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
 
-# Copy toàn bộ mã nguồn vào container
+# Copy source code
 COPY . .
 
 # Expose port mà server sử dụng

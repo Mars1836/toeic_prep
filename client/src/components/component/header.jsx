@@ -54,6 +54,32 @@ function Header() {
         >
           Đề thi online
         </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="text-sm font-medium hover:underline"
+            >
+              Thi TOEIC
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem>
+              <Link
+                href="/test-registration"
+                className="w-full"
+                prefetch={false}
+              >
+                Đăng ký thi
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/exam" className="w-full" prefetch={false}>
+                Trang thi
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <Link
           href="/flashcards/set"
           className="text-sm font-medium hover:underline"
@@ -102,6 +128,34 @@ function Header() {
               >
                 Đề thi online
               </Link>
+              <div className="space-y-2">
+                <div className="font-medium text-muted-foreground">
+                  Thi TOEIC
+                </div>
+                <div className="pl-4 space-y-2">
+                  <Link
+                    href="/test-registration"
+                    className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
+                    prefetch={false}
+                  >
+                    Đăng ký thi
+                  </Link>
+                  <Link
+                    href="/exam"
+                    className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
+                    prefetch={false}
+                  >
+                    Phần thi
+                  </Link>
+                  <Link
+                    href="/exam/result"
+                    className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
+                    prefetch={false}
+                  >
+                    Kết quả thi
+                  </Link>
+                </div>
+              </div>
               <Link
                 href="/flashcards/set"
                 className="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"

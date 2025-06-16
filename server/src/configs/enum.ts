@@ -32,6 +32,7 @@ export enum Role {
 }
 export enum TransactionType {
   upgrade_account = "upgrade_account",
+  test_registration = "test_registration",
 }
 export enum TransactionStatus {
   pending = "pending",

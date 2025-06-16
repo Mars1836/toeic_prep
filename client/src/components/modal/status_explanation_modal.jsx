@@ -34,11 +34,11 @@ const StatusExplanationModal = () => (
           <ul className="list-disc list-inside space-y-2">
             <li>
               <span className="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span>
-              4 - : Ghi nhớ tốt, quên khá chậm.
+              4 - : Ghi nhớ rất tốt, quên rất chậm.
             </li>
             <li>
               <span className="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
-              3-4: Ghi nhớ tốt, quên khá chậm.
+              3-4: Ghi nhớ tốt, quên chậm.
             </li>
             <li>
               <span className="inline-block w-3 h-3 rounded-full bg-orange-500 mr-2"></span>

@@ -18,21 +18,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const firebase = getDatabase(app);
 
-// Ghi dữ liệu
-set(ref(firebase, "users/user1"), {
-  name: "Alice",
-  age: 25,
-});
-
-// Đọc dữ liệu
-get(ref(firebase, "users/user1")).then((snapshot: any) => {
-  if (snapshot.exists()) {
-    console.log(snapshot.val());
-  } else {
-    console.log("No data available");
-  }
-});
-
 // Lắng nghe thay đổi dữ liệu
 onValue(ref(firebase, "users"), (snapshot: any) => {
   console.log("Updated data:", snapshot.val());

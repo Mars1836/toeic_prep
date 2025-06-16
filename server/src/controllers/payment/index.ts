@@ -7,6 +7,15 @@ namespace PaymentCtrl {
     const rs = await PaymentSrv.create(userId);
     res.status(201).json(rs);
   }
+  export async function registration(req: Request, res: Response) {
+    //@ts-ignore
+    const userId = req.user.id;
+    const rs = await PaymentSrv.createTestRegistration({
+      userId,
+      ...req.body,
+    });
+    res.status(201).json(rs);
+  }
   export async function getStatus(req: Request, res: Response) {
     const transId = req.query.transId as string;
     const rs = await PaymentSrv.getStatus(transId);

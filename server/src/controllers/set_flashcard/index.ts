@@ -8,12 +8,14 @@ import SetFlashcardSrv from "../../services/set_flashcard";
 namespace SetFlashcardCtrl {
   export async function create(req: Request, res: Response) {
     const data = req.body as SetFlashcardAttr;
+    // @ts-ignore
     data.userId = req.user!.id;
     const setFlashcard = await SetFlashcardSrv.create(req.body);
     res.status(200).json(setFlashcard);
   }
   export async function getById(req: Request, res: Response) {
     const data = {
+      // @ts-ignore
       userId: req?.user?.id,
       id: req.query.id as string,
     };
@@ -21,6 +23,7 @@ namespace SetFlashcardCtrl {
     res.status(200).json(rs);
   }
   export async function getByUser(req: Request, res: Response) {
+    // @ts-ignore
     const userId = req.user!.id;
     const rs = await SetFlashcardSrv.getByUser(userId);
     res.status(200).json(rs);

@@ -199,6 +199,12 @@
     ]
   },
   {
+    "path": "/api/user/payment/test-registration",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
     "path": "/api/user/payment/status",
     "methods": [
       "GET"
@@ -321,6 +327,61 @@
   },
   {
     "path": "/api/user/provider/speech-to-text",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/test-registration",
+    "methods": [
+      "POST",
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/test-registration/upcoming",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/test-registration/:id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/test-registration/:id/cancel",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/user/toeic-test-session/my-sessions",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/toeic-test-session/exam",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/toeic-test-session/my-sessions/:id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/toeic-testing/pending",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/exam-result/items",
     "methods": [
       "POST"
     ]
@@ -524,6 +585,144 @@
     ]
   },
   {
+    "path": "/api/admin/test-certificate",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/test-certificate/:id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test-certificate/user/:userId",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test-certificate/valid/all",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test-certificate/:id/status",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/admin/test-certificate/:id/score",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-testing",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-testing/:id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-testing/filter/all",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-testing/batch",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/test-registration",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test-registration/:id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test-registration/:id/status",
+    "methods": [
+      "PATCH"
+    ]
+  },
+  {
+    "path": "/api/admin/test-registration/date-range",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test-registration/status/:status",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/test-registration/test-center/:testCenter",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-test-session",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-test-session/:id",
+    "methods": [
+      "GET",
+      "PUT",
+      "DELETE"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-test-session/:id/participants",
+    "methods": [
+      "POST",
+      "DELETE"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-test-session/test/:testId",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-test-session/testing/:testingId",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/admin/toeic-test-session/user/:userId",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
     "path": "/api/pub/test",
     "methods": [
       "GET"
@@ -625,6 +824,43 @@
     "path": "/api/pub/transcript-test-item/transcript-test-id",
     "methods": [
       "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/registration",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/pub/registration/:id",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/registration/user/:userId",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/registration/upcoming/all",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/registration/date-range",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/pub/registration/:id/status",
+    "methods": [
+      "PATCH"
     ]
   }
 ]

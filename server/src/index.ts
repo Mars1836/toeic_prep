@@ -4,6 +4,7 @@ import app from "./app";
 import { connectMongo } from "./connect/mongo";
 import { connectRedis } from "./connect/redis";
 import expressListEndpoints from "express-list-endpoints";
+import "./cron/update_test_status";
 
 connectMongo();
 connectRedis();

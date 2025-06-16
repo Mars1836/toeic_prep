@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 import { constEnv } from "./const";
 import { changePwMailTemp } from "../utils/mail_temp/mail.change-pw.temp";
 import { verifyMailTemp } from "../utils/mail_temp/mail.verify.temp";
+import { resultExamTemplate } from "../utils/mail_temp/mail.result-exam.temp";
+
 export const transport = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -43,3 +45,33 @@ export async function sendMailVerifyEmail(data: { to: string; otp: string }) {
   }
   // send mail with defined transport object
 }
+export const sendResultExam = async ({
+  to,
+  data,
+}: {
+  to: string;
+  data: {
+    name: string;
+    certificate?: {
+      transactionHash: string;
+      blockNumber: number;
+      cid: string;
+      url: string;
+    };
+  };
+}) => {
+  const mailOptions = {
+    from: constEnv.nodemailerUser,
+    to,
+    subject: "Kết quả bài thi TOEIC",
+    html: resultExamTemplate(data),
+  };
+
+  try {
+    await transport.sendMail(mailOptions);
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+};

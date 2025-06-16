@@ -66,7 +66,7 @@ export function WordResultsCard({ id, results }) {
           className="w-full text-sm sm:text-base"
           variant="outline"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Return to Flashcards
+          <ArrowLeft className="mr-2 h-4 w-4" /> Quay lại Flashcards
         </Button>
       </CardFooter>
     </Card>

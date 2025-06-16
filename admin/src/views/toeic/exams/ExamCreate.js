@@ -20,6 +20,8 @@ import { toast } from 'react-toastify'
 import { useEndpoint } from '../../../wrapper/EndpointContext'
 import instance from '../../../configs/axios.instance'
 import ProtectRouter from '../../../wrapper/ProtectRouter'
+import { useNavigate } from 'react-router-dom'
+
 const ExamCreate = () => {
   const { endpoint } = useEndpoint()
   const [examData, setExamData] = useState({
@@ -27,6 +29,8 @@ const ExamCreate = () => {
     type: '',
     numberOfQuestions: 0,
     difficulty: 'intermediate',
+    duration: 120, // Default duration in minutes
+    status: 'PENDING',
     parts: [],
   })
   const [fileSelected, setFileSelected] = useState(false)
@@ -57,6 +61,8 @@ const ExamCreate = () => {
   const [validationMessage, setValidationMessage] = useState('')
   const [isPublished, setIsPublished] = useState(false)
   const [duration, setDuration] = useState(0)
+  const navigate = useNavigate()
+
   const validateForm = () => {
     const newErrors = {}
 
@@ -291,43 +297,45 @@ const ExamCreate = () => {
       return
     }
 
-    // Prepare form data for submission
-    const formData = new FormData()
-    if (files.images) {
-      for (let i = 0; i < files.images.length; i++) {
-        formData.append('images', files.images[i])
-      }
-    }
-    if (files.audioFiles) {
-      for (let i = 0; i < files.audioFiles.length; i++) {
-        formData.append('audioFiles', files.audioFiles[i])
-      }
-    }
-    if (files.excelFile) {
-      formData.append('excelFile', files.excelFile[0])
-    }
-    formData.append('type', type)
-    formData.append('title', examData.title)
-    formData.append('numberOfQuestions', numberOfQuestions)
-    formData.append('parts', JSON.stringify(parts))
-    formData.append('difficulty', examData.difficulty)
-    formData.append('duration', duration)
-    formData.append('isPublished', isPublished)
-    // Log the submitted data
-
     try {
-      const response = await instance.post(endpoint.test.create, formData, {
+      const formData = new FormData()
+
+      // Append basic exam information
+      formData.append('title', examData.title)
+      formData.append('type', type)
+      formData.append('difficulty', examData.difficulty)
+      formData.append('duration', examData.duration)
+      formData.append('status', examData.status)
+      formData.append('numberOfQuestions', numberOfQuestions)
+      formData.append('parts', JSON.stringify(parts))
+
+      // Append files
+      if (files.images) {
+        for (let i = 0; i < files.images.length; i++) {
+          formData.append('images', files.images[i])
+        }
+      }
+      if (files.audioFiles) {
+        for (let i = 0; i < files.audioFiles.length; i++) {
+          formData.append('audioFiles', files.audioFiles[i])
+        }
+      }
+      if (files.excelFile) {
+        formData.append('excelFile', files.excelFile[0])
+      }
+
+      const response = await instance.post(endpoint.toeicTesting.create, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
-      setValidationMessage('Bài kiểm tra đã được lưu thành công!')
-      toast.success('Bài kiểm tra đã được lưu thành công!')
-      resetForm() // Reset the form after successful submission
+
+      toast.success('Test created successfully!')
+      navigate('/toeic/exams') // Redirect to exam list
     } catch (error) {
-      console.error('Error creating exam:', error)
-      toast.error('Có lỗi xảy ra khi lưu bài kiểm tra.')
-      setValidationMessage('Có lỗi xảy ra khi lưu bài kiểm tra.')
+      console.error('Error creating test:', error)
+      toast.error('Failed to create test. Please try again.')
+      setValidationMessage('Failed to create test. Please check your input and try again.')
     }
   }
 
@@ -347,7 +355,7 @@ const ExamCreate = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Create New Exam</strong>
+            <strong>Create New TOEIC Test</strong>
           </CCardHeader>
           <CCardBody>
             {uploadError && (
@@ -363,14 +371,14 @@ const ExamCreate = () => {
             <CForm onSubmit={handleSubmit}>
               <CRow className="mb-3">
                 <CCol md={6}>
-                  <CFormLabel htmlFor="examTitle">Exam Title</CFormLabel>
+                  <CFormLabel htmlFor="examTitle">Test Title</CFormLabel>
                   <CFormInput
                     id="examTitle"
                     name="title"
                     value={examData.title}
                     onChange={handleInputChange}
                     onBlur={() => handleBlur('title')}
-                    placeholder="Enter exam title"
+                    placeholder="Enter test title"
                     invalid={touched.title && errors.title}
                   />
                   {touched.title && errors.title && (
@@ -381,8 +389,6 @@ const ExamCreate = () => {
                   <CFormLabel htmlFor="difficulty">Difficulty Level</CFormLabel>
                   <CFormSelect
                     id="difficulty"
-                    Test
-                    Type
                     name="difficulty"
                     value={examData.difficulty}
                     onChange={handleInputChange}
@@ -398,25 +404,39 @@ const ExamCreate = () => {
                   )}
                 </CCol>
               </CRow>
+
               <CRow className="mb-3">
                 <CCol md={6}>
                   <CFormLabel htmlFor="testType">Test Type</CFormLabel>
-                  <CFormSelect id="testType" name="type" value={type} onChange={handleTypeChange}>
-                    <option value="" disabled>
-                      Select a test type
-                    </option>
-                    <option value="exam">Exam</option>
+                  <CFormSelect
+                    id="testType"
+                    name="type"
+                    value={type}
+                    onChange={handleTypeChange}
+                    invalid={touched.type && errors.type}
+                  >
+                    <option value="">Select a test type</option>
+                    <option value="exam">Full Test</option>
                     <option value="miniexam">Mini Exam</option>
                   </CFormSelect>
+                  {touched.type && errors.type && (
+                    <CFormFeedback invalid>{errors.type}</CFormFeedback>
+                  )}
                 </CCol>
                 <CCol md={6}>
-                  <CFormLabel htmlFor="testType">Duration (minutes)</CFormLabel>
+                  <CFormLabel htmlFor="duration">Duration (minutes)</CFormLabel>
                   <CFormInput
                     id="duration"
                     name="duration"
-                    value={duration}
-                    onChange={handleDurationChange}
+                    type="number"
+                    value={examData.duration}
+                    onChange={handleInputChange}
+                    onBlur={() => handleBlur('duration')}
+                    invalid={touched.duration && errors.duration}
                   />
+                  {touched.duration && errors.duration && (
+                    <CFormFeedback invalid>{errors.duration}</CFormFeedback>
+                  )}
                 </CCol>
               </CRow>
 
@@ -504,12 +524,16 @@ const ExamCreate = () => {
                   </CFormSelect>
                 </CCol>
               </CRow>
-              <div style={{ marginTop: '10px' }}>
-                <CButton className="me-1" type="button" color="secondary" onClick={handleValidate}>
-                  Check
+              <div className="mt-4">
+                <CButton
+                  className="me-2"
+                  color="secondary"
+                  onClick={() => navigate('/toeic/exams')}
+                >
+                  Cancel
                 </CButton>
                 <CButton type="submit" color="primary" disabled={!isValid}>
-                  Save Exam
+                  Create Test
                 </CButton>
               </div>
             </CForm>

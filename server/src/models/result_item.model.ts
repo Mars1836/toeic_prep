@@ -10,7 +10,8 @@ export interface ResultItemAttr {
   questionNum: string; // Số thứ tự câu hỏi
   testId: PartOfSpeech; // Thay đổi type thành enum PartOfSpeech
   testType: string; // Loại bài kiểm tra
-  resultId: string; // ID kết quả
+  resultId?: string; // ID kết quả
+  examResultId?: string; // ID kết quả
   part: number;
   isReading: boolean;
   timeSecond: number;
@@ -25,7 +26,8 @@ export interface ResultItemDoc extends mongoose.Document {
   questionNum: string; // Số thứ tự câu hỏi
   testId: PartOfSpeech; // Thay đổi type thành enum PartOfSpeech
   testType: string; // Loại bài kiểm tra
-  resultId: string; // ID kết quả
+  resultId?: string; // ID kết quả
+  examResultId?: string; // ID kết quả
   part: number;
   isReading: boolean;
   timeSecond: number;
@@ -49,7 +51,7 @@ const resultItemSchema = new Schema(
     },
     userId: {
       type: Schema.Types.ObjectId, // Mảng chuỗi ID người dùng
-      required: true,
+      required: false,
       ref: "User",
     },
     questionNum: {
@@ -58,17 +60,17 @@ const resultItemSchema = new Schema(
     },
     testId: {
       type: Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: "Test",
     },
     testType: {
       type: String,
       enum: Object.values(TestType),
-      required: true,
+      required: false,
     },
     resultId: {
       type: Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: "Result",
     },
     part: {
@@ -85,6 +87,11 @@ const resultItemSchema = new Schema(
     questionCategory: {
       type: [String], // Đảm bảo đây là một mảng các chuỗi
       default: [], // Giá trị mặc định là một mảng rỗng
+    },
+    examResultId: {
+      required: false,
+      type: Schema.Types.ObjectId,
+      ref: "ExamResult",
     },
   },
   {

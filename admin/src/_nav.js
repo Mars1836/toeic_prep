@@ -21,8 +21,8 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Exam Management',
-    to: '/toeic/exams/list',
+    name: 'Test Management',
+    to: '/toeic/tests/list',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   },
   {
@@ -30,6 +30,12 @@ const _nav = [
     name: 'Blog Management',
     to: '/toeic/blog/posts',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Exam Management',
+    to: '/toeic/exams/list',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavItem,

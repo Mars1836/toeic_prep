@@ -11,7 +11,7 @@ export const useEndpoint = () => {
 export const EndpointProvider = ({ children }) => {
   const [endpoint, setEndpoint] = useState(null)
   useEffect(() => {
-    get(ref(db, 'ngrok/url1')).then((snapshot) => {
+    get(ref(db, 'webclient/server')).then((snapshot) => {
       if (!snapshot.exists()) return
       const endpointInstance = new Endpoint(snapshot.val()) // Tạo instance một lần
       setEndpoint(endpointInstance) // Cập nhật instance vào state
