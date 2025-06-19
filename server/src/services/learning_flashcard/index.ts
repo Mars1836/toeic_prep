@@ -1,4 +1,5 @@
 import { learningFlashcardModel } from "../../models/learning_flashcard";
+import { learningSetModel } from "../../models/learning_set.model";
 import LearningFlashcardRepo from "./repos";
 type DataUpdateScore = {
   id: string;
@@ -43,6 +44,20 @@ namespace LearningFlashcardSrv {
         return LearningFlashcardRepo.updateScore(item);
       })
     );
+    const learningFlashcard = await learningFlashcardModel.findById(data[0].id);
+    if (!learningFlashcard) {
+      throw new Error("Learning flashcard not found");
+    }
+    const set = await learningSetModel.findOneAndUpdate(
+      { _id: learningFlashcard.learningSetId },
+      { lastStudied: new Date() },
+      { new: true }
+    );
+    if (!set) {
+      throw new Error("Learning set not found");
+    }
+    set.lastStudied = new Date();
+    await set.save();
     return a;
   }
 }
