@@ -11,6 +11,10 @@ import { testRegistrationModel } from "../../models/test_registration.model";
 import { toeicTestSessionModel } from "../../models/toeic_test_session.model";
 import { sendResultExam } from "../../configs/nodemailer";
 import { userModel } from "../../models/user.model";
+import {
+  toeicTestSessionStatusModel,
+  ToeicTestSessionStatus,
+} from "../../models/toeic_test_session_status";
 enum Skill {
   Reading = "reading",
   Listening = "listening",
@@ -78,6 +82,26 @@ namespace ExamResultSrv {
     if (!testRegistration) {
       throw new BadRequestError("Bạn chưa đăng ký thi.");
     }
+    await TestRepo.addAttempt(data.rs.testId, data.rs.userId);
+
+    // Tạo status session là FINISHED cho user (đưa lên trước khi gọi tạo chứng chỉ blockchain)
+    await toeicTestSessionStatusModel.findOneAndUpdate(
+      {
+        toeicTestSessionId: data.rs.sessionId,
+        userId: data.rs.userId,
+      },
+      {
+        toeicTestSessionId: data.rs.sessionId,
+        userId: data.rs.userId,
+        status: ToeicTestSessionStatus.FINISHED,
+      },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
+
+    // Gọi tạo chứng chỉ blockchain
     const response = await axios.post(
       `${process.env.BLOCKCHAIN_SERVER_URL}/api/certificates/mint`,
       bodyForCertificate
@@ -110,7 +134,7 @@ namespace ExamResultSrv {
       }) as ResultItemAttr[];
     }
     const newResults = await ResultItemRepo.createMany(rsItems!);
-    await TestRepo.addAttempt(data.rs.testId, data.rs.userId);
+
     return newResult;
   }
   function getNumberOfQuestionCorrectBySkill(

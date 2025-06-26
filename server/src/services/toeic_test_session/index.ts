@@ -17,6 +17,10 @@ import {
   transformId,
   verifyToken,
 } from "../../utils";
+import {
+  toeicTestSessionStatusModel,
+  ToeicTestSessionStatus,
+} from "../../models/toeic_test_session_status";
 
 class ToeicTestSessionSrv {
   private async getRegistrationsByTestCenter(
@@ -196,9 +200,23 @@ class ToeicTestSessionSrv {
       toeicTestSessionModel.countDocuments({ userIds: userId }),
     ]);
 
+    // Lọc bỏ session nếu user đã có status khác pending
+    const filteredSessions = await Promise.all(
+      sessions.map(async (session) => {
+        const statusDoc = await toeicTestSessionStatusModel.findOne({
+          toeicTestSessionId: session._id,
+          userId,
+          status: { $ne: ToeicTestSessionStatus.PENDING },
+        });
+        return statusDoc ? null : session;
+      })
+    );
+    const validSessions = filteredSessions.filter(Boolean);
+
     // Transform the response to rename fields
-    const transformedSessions = sessions.map((session) => {
-      const sessionObj = session.toObject();
+    const transformedSessions = validSessions.map((session) => {
+      const sessionObj = session?.toObject();
+      if (!sessionObj) return null;
       return {
         id: sessionObj._id,
         userIds: sessionObj.userIds,
@@ -208,7 +226,7 @@ class ToeicTestSessionSrv {
       };
     });
 
-    return { sessions: transformedSessions, total };
+    return { sessions: transformedSessions, total: transformedSessions.length };
   }
   async getSessionByUserIdAndId(userId: string, id: string) {
     const session = await toeicTestSessionModel

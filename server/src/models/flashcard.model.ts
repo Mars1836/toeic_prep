@@ -11,7 +11,7 @@ export interface FlashcardAttr {
   definition?: string;
   exampleSentence?: string[];
   note?: string;
-  partOfSpeech?: PartOfSpeech[];
+  partOfSpeech?: string[];
   pronunciation?: string;
 }
 
@@ -58,7 +58,6 @@ const flashcardSchema = new Schema(
     },
     partOfSpeech: {
       type: [String], // Thay đổi thành mảng chuỗi
-      enum: Object.values(PartOfSpeech), // Giới hạn loại từ bằng enum
     },
     pronunciation: {
       type: String,
