@@ -5,7 +5,7 @@ import { genAI } from "./instance";
 class SmartResponseSystem {
   constructor(apiKey) {
     this.genAI = genAI;
-    this.model = "gemini-1.5-flash";
+    this.model = "gemini-1.5-pro";
     this.knowledgeBase = [];
   }
 
