@@ -19,6 +19,7 @@ import testRegistrationRouter from "./toeic_registration";
 import userToeicTestSessionRouter from "./toeic_test_session";
 import userToeicTestingRouter from "./toeic_testing";
 import userExamResultRouter from "./exam_result";
+import bridgeNestRouter from "./bridge_nest";
 const routerU = express.Router();
 
 routerU.use(
@@ -112,5 +113,11 @@ routerU.use(
   handleAsync(requireAuth),
   userExamResultRouter
 );
+routerU.use(
+  '/bridge-nest', 
+  RateLimitInstance.createHighLimitMiddleware(),
+  handleAsync(requireAuth),
+  bridgeNestRouter
+)
 
 export default routerU;

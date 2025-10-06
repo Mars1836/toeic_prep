@@ -211,6 +211,30 @@
     ]
   },
   {
+    "path": "/api/user/ai-chat/session",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/list-sessions",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/send",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/ai-chat/history/:sessionId",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
     "path": "/api/user/ai-chat/get-explanation/json",
     "methods": [
       "POST"

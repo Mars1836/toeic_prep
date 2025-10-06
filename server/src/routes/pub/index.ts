@@ -10,6 +10,8 @@ import pubTranscriptTestRouter from "./transcript_test";
 import pubTranscriptTestItemRouter from "./transcript_test_item";
 import testRegistrationRouter from "./test_registration";
 import { RateLimitInstance } from "../../middlewares/rate_limit";
+import bridgeNestRouter from "../user/bridge_nest";
+import { requireAuth } from "../../middlewares/require_auth";
 
 const routerP = express.Router();
 
@@ -45,5 +47,6 @@ routerP.use(
   RateLimitInstance.createHighLimitMiddleware(),
   testRegistrationRouter
 );
+
 
 export default routerP;

@@ -29,6 +29,7 @@ namespace PaymentSrv {
     const items = [
       { userId: userId, upgradeFor: 30, type: TransactionType.upgrade_account },
     ];
+    console.log('winter upgrade premium')
     const transID = Math.floor(Math.random() * 1000000);
     let origin;
     let clientUrl;
@@ -80,6 +81,8 @@ namespace PaymentSrv {
     datars.callbackUrl = configZalo.callbackUrl(origin!);
     return datars;
   }
+
+
   export async function createTestRegistration(payload: {
     userId: string;
     examId: string;
@@ -159,6 +162,7 @@ namespace PaymentSrv {
     let reqMac = data.mac;
 
     let mac = generateMac(dataStr, configZalo.key2);
+    console.log('winter callback')
 
     // kiểm tra callback hợp lệ (đến từ ZaloPay server)
     if (reqMac !== mac) {

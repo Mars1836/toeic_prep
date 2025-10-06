@@ -5,6 +5,7 @@ import { ResultAttr } from "../../models/result.model";
 
 namespace ResultCtrl {
   export async function create(req: Request, res: Response) {
+    console.log("create");
     const data = req.body as ResultAttr;
     //@ts-ignore
     data.userId = req.user!.id;
@@ -12,6 +13,7 @@ namespace ResultCtrl {
     res.status(200).json(rs);
   }
   export async function creataWithItems(req: Request, res: Response) {
+    console.log("create with items");
     const { rs, rsis } = req.body;
     const data = { rs, rsis };
     data.rs.userId = req.user!.id;

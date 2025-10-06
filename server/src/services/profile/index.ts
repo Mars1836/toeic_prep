@@ -6,6 +6,7 @@ import { calculateAccuracyByPart } from "../../utils/analyst/part_accuracy";
 import { getScoreByAccuracy } from "../../utils/analyst/score";
 import { timeSecondRecommend } from "../../const/toeic";
 import { getLastRecommend } from "../recommend";
+import { userModel } from "../../models/user.model";
 namespace ProfileService {
   export const getAnalyst = async (userId: string) => {
     const rs = await resultItemModel
@@ -18,6 +19,7 @@ namespace ProfileService {
     const categoryAccuracy = calculateCategoryAccuracy(rs);
     const { listenScore, readScore, score } =
       getScoreByAccuracy(accuracyByPart);
+
     return {
       accuracyByPart,
       averageTimeByPart,

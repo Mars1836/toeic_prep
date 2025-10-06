@@ -7,6 +7,7 @@ export const ToeicQuestionCount = {
   6: 16,
   7: 54,
 };
+
 export const readScore = {
   0: 5,
   1: 5,

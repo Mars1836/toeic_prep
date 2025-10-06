@@ -1,10 +1,31 @@
 import express, { Request, Response } from "express";
 
 import { handleAsync } from "../../../middlewares/handle_async";
+import { requireAuth } from "../../../middlewares/require_auth";
 import AiChatSrv from "../../../services/aichat";
 import AiChatCtrl from "../../../controllers/aichat";
 
 const aiChatRouter = express.Router();
+aiChatRouter.post(
+  "/session",
+  requireAuth,
+  handleAsync(AiChatCtrl.startSession)
+);
+aiChatRouter.get(
+  "/list-sessions", 
+  requireAuth, 
+  handleAsync(AiChatCtrl.getListSessions)
+);
+aiChatRouter.post(
+  "/send",
+  requireAuth,
+  handleAsync(AiChatCtrl.sendMessage)
+);
+aiChatRouter.get(
+  "/history/:sessionId",
+  requireAuth,
+  handleAsync(AiChatCtrl.getHistory)
+);
 aiChatRouter.post(
   "/get-explanation/json",
   handleAsync(AiChatCtrl.explainQuestionJson)

@@ -2,9 +2,12 @@ import { BadRequestError } from "../../errors/bad_request_error";
 import { NotFoundError } from "../../errors/not_found_error";
 import { FlashcardAttr, FlashcardModel } from "../../models/flashcard.model";
 import { ResultAttr, resultModel } from "../../models/result.model";
-import { ResultItemAttr } from "../../models/result_item.model";
+import { ResultItemAttr, resultItemModel } from "../../models/result_item.model";
 import { testModel } from "../../models/test.model";
+import { userModel } from "../../models/user.model";
 import { formatDate, getStartOfPeriod } from "../../utils";
+import { calculateAccuracyByPart } from "../../utils/analyst/part_accuracy";
+import { getScoreByAccuracy } from "../../utils/analyst/score";
 import ResultItemRepo from "../result_item/repos";
 import SetFlashcardUtil from "../set_flashcard/repos";
 import TestSrv from "../test";
@@ -47,10 +50,35 @@ namespace ResultSrv {
         };
       }) as ResultItemAttr[];
     }
-    console.log(rsItems);
     const newResults = await ResultItemRepo.createMany(rsItems!);
     await TestRepo.addAttempt(data.rs.testId, data.rs.userId);
-    return newResult;
+
+    // update user actual score
+    const allRsItems = await resultItemModel
+      .find({
+        userId: data.rs.userId,
+      })
+      .lean();
+
+    const accuracyByPart = calculateAccuracyByPart(allRsItems);
+    const {
+      listenScore,
+      readScore,
+    } = getScoreByAccuracy(accuracyByPart);
+
+    await userModel.findByIdAndUpdate(data.rs.userId, {
+      actualScore: {
+        reading: readScore,
+        listening: listenScore,
+      },
+    });
+
+    return {
+      ...newResult.toObject(),
+      id: newResult._id,
+      listenScore,
+      readScore,
+    };
   }
   export async function getByUser(data: {
     userId: string;

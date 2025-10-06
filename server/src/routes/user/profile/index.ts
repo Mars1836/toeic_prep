@@ -15,6 +15,8 @@ const storage = multer.diskStorage({
     let uploadPath;
     if (file.fieldname === "avatar") {
       uploadPath = path.join(uploadsDir, "avatars");
+    } else if (file.fieldname === "file") {
+      uploadPath = path.join(uploadsDir, "files");
     }
     if (!uploadPath) return cb(new Error("Upload path is required"));
     fs.mkdirSync(uploadPath!, { recursive: true }); // Create directory structure
@@ -41,6 +43,18 @@ userProfileRouter.post(
     const avatar = "/uploads/profile/avatars/" + req.files?.avatar[0].filename;
     const updatedUser = await userSrv.updateAvatar(user.id, avatar);
     res.status(200).json(avatar);
+  })
+);
+userProfileRouter.post(
+  "/upload-file",
+  (req: Request, res: Response, next) => {
+    req.randomId = generateOTP().toString(); // Tạo randomId mới
+    next();
+  },
+  upload.fields([{ name: "file" }]),
+  handleAsync(async (req: Request, res: Response) => {
+    const url = "/uploads/profile/files/" + req.files?.file[0].filename;
+    res.status(200).json(url);
   })
 );
 userProfileRouter.post("/update-profile", handleAsync(userCtrl.updateProfile));
