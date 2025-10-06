@@ -62,11 +62,7 @@ const schema = {
   ],
 };
 export const modelAI = genAI.getGenerativeModel({
-<<<<<<< Updated upstream
-  model: "gemini-1.5-pro",
-=======
   model: "gemini-2.5-flash",
->>>>>>> Stashed changes
   generationConfig: {
     responseMimeType: "application/json",
     responseSchema: schema,
