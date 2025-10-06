@@ -80,9 +80,13 @@ namespace AiChatSrv {
   
     // 🔄 Tự động tạo session nếu chưa có
     if (!sessionId) {
+      const derivedTitle = content
+        .trim()
+        .replace(/\s+/g, ' ')
+        .slice(0, 60);
       session = await aiChatSessionModel.create({
         userId,
-        title: content.substring,
+        title: derivedTitle,
       });
       actualSessionId = session.id;
       console.log("Tạo session");
