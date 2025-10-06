@@ -302,6 +302,12 @@
     ]
   },
   {
+    "path": "/api/user/profile/upload-file",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
     "path": "/api/user/profile/update-profile",
     "methods": [
       "POST"
@@ -382,6 +388,30 @@
   },
   {
     "path": "/api/user/exam-result/items",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/bridge-nest/create-room-in-db",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/bridge-nest/:roomId/with-livekit",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/bridge-nest/:roomId/close",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/bridge-nest/:roomName/join",
     "methods": [
       "POST"
     ]

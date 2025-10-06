@@ -1,0 +1,2804 @@
+[
+    {
+        "id": 1,
+        "number": 1,
+        "image": "https://bd46-58-186-128-230.ngrok-free.app/uploads/images/523625/num1.jpg",
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num1.mp3",
+        "paragraph": "Look at the picture and listen to the sentences. Choose the sentence that best describes the picture:",
+        "option1": "All the computer screens are turned on",
+        "option2": "A man is using a computer at his desk",
+        "option3": "The chair is neatly tucked under the desk",
+        "option4": "There are monitors in the room",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "All the computer screens are turned on"
+            },
+            {
+                "id": "B",
+                "content": "A man is using a computer at his desk"
+            },
+            {
+                "id": "C",
+                "content": "The chair is neatly tucked under the desk"
+            },
+            {
+                "id": "D",
+                "content": "There are monitors in the room"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "number": 2,
+        "image": "https://bd46-58-186-128-230.ngrok-free.app/uploads/images/523625/num2.jpg",
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num2.mp3",
+        "option1": "The copy machine is out of order",
+        "option2": "Boxes are stacked on top of each other",
+        "option3": "A man is stocking the boxes in the shelf",
+        "option4": "The copier is being used in the room",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "The copy machine is out of order"
+            },
+            {
+                "id": "B",
+                "content": "Boxes are stacked on top of each other"
+            },
+            {
+                "id": "C",
+                "content": "A man is stocking the boxes in the shelf"
+            },
+            {
+                "id": "D",
+                "content": "The copier is being used in the room"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "number": 3,
+        "image": "https://bd46-58-186-128-230.ngrok-free.app/uploads/images/523625/num3.jpg",
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num3.mp3",
+        "option1": "A man is setting up a stand outdoors",
+        "option2": "People are shopping at an outdoor market",
+        "option3": "The market is ready to close for the day",
+        "option4": "The umbrellas are being folded in half",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "A man is setting up a stand outdoors"
+            },
+            {
+                "id": "B",
+                "content": "People are shopping at an outdoor market"
+            },
+            {
+                "id": "C",
+                "content": "The market is ready to close for the day"
+            },
+            {
+                "id": "D",
+                "content": "The umbrellas are being folded in half"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "number": 4,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num4.mp3",
+        "paragraph": "Listen to the question and the three responses. Choose the response that best answers the question:",
+        "question": "Weren’t you at the regional conference?",
+        "option1": "Let’s meet there",
+        "option2": "No, I couldn’t go",
+        "option3": "I am originally from there",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Let’s meet there"
+            },
+            {
+                "id": "B",
+                "content": "No, I couldn’t go"
+            },
+            {
+                "id": "C",
+                "content": "I am originally from there"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "number": 5,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num5.mp3",
+        "question": "How about going over the report together this afternoon?",
+        "option1": "Sure, let’s meet at 2 o’clock",
+        "option2": "Yes, let’s go over there together",
+        "option3": "This evening at 8 o’clock",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Sure, let’s meet at 2 o’clock"
+            },
+            {
+                "id": "B",
+                "content": "Yes, let’s go over there together"
+            },
+            {
+                "id": "C",
+                "content": "This evening at 8 o’clock"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "number": 6,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num6.mp3",
+        "question": "Would you like some meal or cream with your coffee?",
+        "option1": "Either would be great",
+        "option2": "Sorry, we’re out of milk now",
+        "option3": "I need some copies as well",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Either would be great"
+            },
+            {
+                "id": "B",
+                "content": "Sorry, we’re out of milk now"
+            },
+            {
+                "id": "C",
+                "content": "I need some copies as well"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "number": 7,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num7.mp3",
+        "question": "Aren’t you going away this weekend?",
+        "option1": "He’s away this weekend",
+        "option2": "This Sunday is okay",
+        "option3": "No, next weekend",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "He’s away this weekend"
+            },
+            {
+                "id": "B",
+                "content": "This Sunday is okay"
+            },
+            {
+                "id": "C",
+                "content": "No, next weekend"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "number": 8,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num8.mp3",
+        "question": "Where do I have to go to get my driver’s license?",
+        "option1": "Line up at window 7",
+        "option2": "You shouldn’t drive today",
+        "option3": "I will go with you in a short while",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Line up at window 7"
+            },
+            {
+                "id": "B",
+                "content": "You shouldn’t drive today"
+            },
+            {
+                "id": "C",
+                "content": "I will go with you in a short while"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "number": 9,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num9.mp3",
+        "question": "How long is the drive to the branch office?",
+        "option1": "John is going to drive there",
+        "option2": "Three of us will be going there",
+        "option3": "At least an hour in this traffic",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "John is going to drive there"
+            },
+            {
+                "id": "B",
+                "content": "Three of us will be going there"
+            },
+            {
+                "id": "C",
+                "content": "At least an hour in this traffic"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "number": 10,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num10.mp3",
+        "question": "Would you like to receive a sample of our new product?",
+        "option1": "No, I’ll just take it with me",
+        "option2": "Sorry, I am not interested",
+        "option3": "I’ll send it at the post office",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "No, I’ll just take it with me"
+            },
+            {
+                "id": "B",
+                "content": "Sorry, I am not interested"
+            },
+            {
+                "id": "C",
+                "content": "I’ll send it at the post office"
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "number": 11,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num11.mp3",
+        "question": "What do I have to bring to the interview?",
+        "option1": "The view is quite nice from there",
+        "option2": "I’ll take you to the interview today",
+        "option3": "Just your resume and a cover letter",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "The view is quite nice from there"
+            },
+            {
+                "id": "B",
+                "content": "I’ll take you to the interview today"
+            },
+            {
+                "id": "C",
+                "content": "Just your resume and a cover letter"
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "number": 12,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num12.mp3",
+        "question": "Will the new store open this month or next?",
+        "option1": "Probably next month",
+        "option2": "No, it’s not open yet",
+        "option3": "We store everything there",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Probably next month"
+            },
+            {
+                "id": "B",
+                "content": "No, it’s not open yet"
+            },
+            {
+                "id": "C",
+                "content": "We store everything there"
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "number": 13,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num13.mp3",
+        "question": "Which apartment do you want to see first?",
+        "option1": "How about the one by the beach?",
+        "option2": "Probably at the Sales Department",
+        "option3": "Actually, I saw it earlier",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "How about the one by the beach?"
+            },
+            {
+                "id": "B",
+                "content": "Probably at the Sales Department"
+            },
+            {
+                "id": "C",
+                "content": "Actually, I saw it earlier"
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "number": 14,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num14.mp3",
+        "question": "I got these free tickets to the show tonight. Do you want to check it out?",
+        "option1": "They only accept cash, not checks",
+        "option2": "Thanks, but I’ve got plans this evening",
+        "option3": "I’ll check it over again tonight",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "They only accept cash, not checks"
+            },
+            {
+                "id": "B",
+                "content": "Thanks, but I’ve got plans this evening"
+            },
+            {
+                "id": "C",
+                "content": "I’ll check it over again tonight"
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "number": 15,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num15-16-17.mp3",
+        "paragraph": "Listen to the dialogue. Then read each question and choose the best answer:",
+        "question": "What are they talking about?",
+        "option1": "A new employee",
+        "option2": "A photographer they hired",
+        "option3": "The company anniversary party",
+        "option4": "A new company booklet",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "A new employee"
+            },
+            {
+                "id": "B",
+                "content": "A photographer they hired"
+            },
+            {
+                "id": "C",
+                "content": "The company anniversary party"
+            },
+            {
+                "id": "D",
+                "content": "A new company booklet"
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "number": 16,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num15-16-17.mp3",
+        "question": "Why does the man think the work was done professionally?",
+        "option1": "The photos are good",
+        "option2": "The writing is excellent",
+        "option3": "A lot of money was spent on it",
+        "option4": "He was told by someone",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "The photos are good"
+            },
+            {
+                "id": "B",
+                "content": "The writing is excellent"
+            },
+            {
+                "id": "C",
+                "content": "A lot of money was spent on it"
+            },
+            {
+                "id": "D",
+                "content": "He was told by someone"
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "number": 17,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num15-16-17.mp3",
+        "question": "Why are they complimenting a co-worker?",
+        "option1": "He made a huge sale",
+        "option2": "He took great pictures",
+        "option3": "He has never been late to work",
+        "option4": "He got promoted recently",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "He made a huge sale"
+            },
+            {
+                "id": "B",
+                "content": "He took great pictures"
+            },
+            {
+                "id": "C",
+                "content": "He has never been late to work"
+            },
+            {
+                "id": "D",
+                "content": "He got promoted recently"
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "number": 18,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num18-19-20.mp3",
+        "question": "Why does the man apologize to the woman?",
+        "option1": "He misplaced the projector",
+        "option2": "He went over his allotted time",
+        "option3": "He was late for the meeting",
+        "option4": "He didn’t reserve the room",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "He misplaced the projector"
+            },
+            {
+                "id": "B",
+                "content": "He went over his allotted time"
+            },
+            {
+                "id": "C",
+                "content": "He was late for the meeting"
+            },
+            {
+                "id": "D",
+                "content": "He didn’t reserve the room"
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "number": 19,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num18-19-20.mp3",
+        "question": "What is the marketing manager doing now?",
+        "option1": "Meeting with clients",
+        "option2": "Speaking with an executive",
+        "option3": "Giving a presentation",
+        "option4": "Working on a proposal",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Meeting with clients"
+            },
+            {
+                "id": "B",
+                "content": "Speaking with an executive"
+            },
+            {
+                "id": "C",
+                "content": "Giving a presentation"
+            },
+            {
+                "id": "D",
+                "content": "Working on a proposal"
+            }
+        ]
+    },
+    {
+        "id": 20,
+        "number": 20,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num18-19-20.mp3",
+        "question": "What does the man offer to do?",
+        "option1": "Lend the woman some equipment",
+        "option2": "Look at the schedule",
+        "option3": "Set up the screen",
+        "option4": "Talk with the vice president",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Lend the woman some equipment"
+            },
+            {
+                "id": "B",
+                "content": "Look at the schedule"
+            },
+            {
+                "id": "C",
+                "content": "Set up the screen"
+            },
+            {
+                "id": "D",
+                "content": "Talk with the vice president"
+            }
+        ]
+    },
+    {
+        "id": 21,
+        "number": 21,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num21-22-23.mp3",
+        "question": "What does the woman ask the man to provide?",
+        "option1": "The order number",
+        "option2": "His identification card",
+        "option3": "A proof of purchase",
+        "option4": "The name of the salesperson",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "The order number"
+            },
+            {
+                "id": "B",
+                "content": "His identification card"
+            },
+            {
+                "id": "C",
+                "content": "A proof of purchase"
+            },
+            {
+                "id": "D",
+                "content": "The name of the salesperson"
+            }
+        ]
+    },
+    {
+        "id": 22,
+        "number": 22,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num21-22-23.mp3",
+        "question": "Why is the man calling?",
+        "option1": "To place an order for some items",
+        "option2": "To check on the status of his order",
+        "option3": "To check and see if the delivery has arrived",
+        "option4": "To talk to one of the sales representatives",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "To place an order for some items"
+            },
+            {
+                "id": "B",
+                "content": "To check on the status of his order"
+            },
+            {
+                "id": "C",
+                "content": "To check and see if the delivery has arrived"
+            },
+            {
+                "id": "D",
+                "content": "To talk to one of the sales representatives"
+            }
+        ]
+    },
+    {
+        "id": 23,
+        "number": 23,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num21-22-23.mp3",
+        "question": "Who most likely is the woman?",
+        "option1": "A receptionist",
+        "option2": "A salesperson",
+        "option3": "A telephone operator",
+        "option4": "A customer service representative",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "A receptionist"
+            },
+            {
+                "id": "B",
+                "content": "A salesperson"
+            },
+            {
+                "id": "C",
+                "content": "A telephone operator"
+            },
+            {
+                "id": "D",
+                "content": "A customer service representative"
+            }
+        ]
+    },
+    {
+        "id": 24,
+        "number": 24,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num24-25-26.mp3",
+        "question": "What does the woman ask the man to provide?",
+        "option1": "Photo ID",
+        "option2": "A receipt",
+        "option3": "A discount coupon",
+        "option4": "A parking stub",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Photo ID"
+            },
+            {
+                "id": "B",
+                "content": "A receipt"
+            },
+            {
+                "id": "C",
+                "content": "A discount coupon"
+            },
+            {
+                "id": "D",
+                "content": "A parking stub"
+            }
+        ]
+    },
+    {
+        "id": 25,
+        "number": 25,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num24-25-26.mp3",
+        "question": "How will the man pay for his purchase?",
+        "option1": "With cash",
+        "option2": "With a check",
+        "option3": "With a credit card",
+        "option4": "With coupons",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "With cash"
+            },
+            {
+                "id": "B",
+                "content": "With a check"
+            },
+            {
+                "id": "C",
+                "content": "With a credit card"
+            },
+            {
+                "id": "D",
+                "content": "With coupons"
+            }
+        ]
+    },
+    {
+        "id": 26,
+        "number": 26,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num24-25-26.mp3",
+        "question": "Where is the conversation taking place?",
+        "option1": "In a parking lot",
+        "option2": "In a bank",
+        "option3": "In a picture studio",
+        "option4": "In a supermarket",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "In a parking lot"
+            },
+            {
+                "id": "B",
+                "content": "In a bank"
+            },
+            {
+                "id": "C",
+                "content": "In a picture studio"
+            },
+            {
+                "id": "D",
+                "content": "In a supermarket"
+            }
+        ]
+    },
+    {
+        "id": 27,
+        "number": 27,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num27-28-29.mp3",
+        "question": "When will they get together?",
+        "option1": "During lunch",
+        "option2": "After work",
+        "option3": "Before work",
+        "option4": "On the weekend",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "During lunch"
+            },
+            {
+                "id": "B",
+                "content": "After work"
+            },
+            {
+                "id": "C",
+                "content": "Before work"
+            },
+            {
+                "id": "D",
+                "content": "On the weekend"
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "number": 28,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num27-28-29.mp3",
+        "question": "What does the woman mention about the courses at nearby institutes?",
+        "option1": "They are very difficult",
+        "option2": "They are very expensive",
+        "option3": "They are very dull",
+        "option4": "They are very good",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "They are very difficult"
+            },
+            {
+                "id": "B",
+                "content": "They are very expensive"
+            },
+            {
+                "id": "C",
+                "content": "They are very dull"
+            },
+            {
+                "id": "D",
+                "content": "They are very good"
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "number": 29,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num27-28-29.mp3",
+        "question": "What does the man suggest the woman do?",
+        "option1": "Enroll in a class at an institute",
+        "option2": "Learn about computers",
+        "option3": "Have lunch with him",
+        "option4": "Teach a class at a local college",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Enroll in a class at an institute"
+            },
+            {
+                "id": "B",
+                "content": "Learn about computers"
+            },
+            {
+                "id": "C",
+                "content": "Have lunch with him"
+            },
+            {
+                "id": "D",
+                "content": "Teach a class at a local college"
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "number": 30,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num30-31-32.mp3",
+        "question": "What does the woman recommend the man to do?",
+        "option1": "Take her with him",
+        "option2": "Leave a day earlier",
+        "option3": "Visit the Hong Kong office",
+        "option4": "Go to the conference at another time",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Take her with him"
+            },
+            {
+                "id": "B",
+                "content": "Leave a day earlier"
+            },
+            {
+                "id": "C",
+                "content": "Visit the Hong Kong office"
+            },
+            {
+                "id": "D",
+                "content": "Go to the conference at another time"
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "number": 31,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num30-31-32.mp3",
+        "question": "What did the woman like the most about Hong Kong?",
+        "option1": "The food",
+        "option2": "The shopping",
+        "option3": "The conference",
+        "option4": "The people",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "The food"
+            },
+            {
+                "id": "B",
+                "content": "The shopping"
+            },
+            {
+                "id": "C",
+                "content": "The conference"
+            },
+            {
+                "id": "D",
+                "content": "The people"
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "number": 32,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num30-31-32.mp3",
+        "question": "When will the man leave for Hong Kong?",
+        "option1": "Today",
+        "option2": "Tomorrow",
+        "option3": "Next week",
+        "option4": "Next month",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Today"
+            },
+            {
+                "id": "B",
+                "content": "Tomorrow"
+            },
+            {
+                "id": "C",
+                "content": "Next week"
+            },
+            {
+                "id": "D",
+                "content": "Next month"
+            }
+        ]
+    },
+    {
+        "id": 33,
+        "number": 33,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num33-34-35.mp3",
+        "question": "What does the woman recommend?",
+        "option1": "To exercise less",
+        "option2": "To go on a diet",
+        "option3": "To sleep less",
+        "option4": "To see a doctor",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "To exercise less"
+            },
+            {
+                "id": "B",
+                "content": "To go on a diet"
+            },
+            {
+                "id": "C",
+                "content": "To sleep less"
+            },
+            {
+                "id": "D",
+                "content": "To see a doctor"
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "number": 34,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num33-34-35.mp3",
+        "question": "How has the man been feeling lately?",
+        "option1": "Excited",
+        "option2": "Worn out",
+        "option3": "Energetic",
+        "option4": "Depressed",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Excited"
+            },
+            {
+                "id": "B",
+                "content": "Worn out"
+            },
+            {
+                "id": "C",
+                "content": "Energetic"
+            },
+            {
+                "id": "D",
+                "content": "Depressed"
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "number": 35,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num33-34-35.mp3",
+        "question": "Who most likely is the woman?",
+        "option1": "A doctor",
+        "option2": "A patient",
+        "option3": "A teacher",
+        "option4": "An exercise instructor",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "A doctor"
+            },
+            {
+                "id": "B",
+                "content": "A patient"
+            },
+            {
+                "id": "C",
+                "content": "A teacher"
+            },
+            {
+                "id": "D",
+                "content": "An exercise instructor"
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "number": 36,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num36-37-38.mp3",
+        "paragraph": "Listen to the talk. Then read each question and choose the best answer:",
+        "question": "What does the speaker say is most important in marketing?",
+        "option1": "Having plenty of capital",
+        "option2": "Advertising to the target market",
+        "option3": "Finding the right investors",
+        "option4": "Being aware of the latest trends",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "Having plenty of capital"
+            },
+            {
+                "id": "B",
+                "content": "Advertising to the target market"
+            },
+            {
+                "id": "C",
+                "content": "Finding the right investors"
+            },
+            {
+                "id": "D",
+                "content": "Being aware of the latest trends"
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "number": 37,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num36-37-38.mp3",
+        "question": "According to the speaker, how many conventions has she attended?",
+        "option1": "Two",
+        "option2": "Three",
+        "option3": "Four",
+        "option4": "Five",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Two"
+            },
+            {
+                "id": "B",
+                "content": "Three"
+            },
+            {
+                "id": "C",
+                "content": "Four"
+            },
+            {
+                "id": "D",
+                "content": "Five"
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "number": 38,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num36-37-38.mp3",
+        "question": "What is the speaker doing?",
+        "option1": "Talking about his past memories",
+        "option2": "Making a closing speech",
+        "option3": "Welcoming the guests",
+        "option4": "Discussing the latest marketing trends",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Talking about his past memories"
+            },
+            {
+                "id": "B",
+                "content": "Making a closing speech"
+            },
+            {
+                "id": "C",
+                "content": "Welcoming the guests"
+            },
+            {
+                "id": "D",
+                "content": "Discussing the latest marketing trends"
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "number": 39,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num39-40-41.mp3",
+        "question": "Which of the following people can participate in the competition?",
+        "option1": "Those over the age of 21",
+        "option2": "Those with a recording contract",
+        "option3": "Those who want to be professional songwriters",
+        "option4": "Those who are professional musicians",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Those over the age of 21"
+            },
+            {
+                "id": "B",
+                "content": "Those with a recording contract"
+            },
+            {
+                "id": "C",
+                "content": "Those who want to be professional songwriters"
+            },
+            {
+                "id": "D",
+                "content": "Those who are professional musicians"
+            }
+        ]
+    },
+    {
+        "id": 40,
+        "number": 40,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num39-40-41.mp3",
+        "question": "What is scheduled to happen in Los Angeles?",
+        "option1": "A recording session",
+        "option2": "A signing of a contract",
+        "option3": "A national competition",
+        "option4": "The selection of finalists",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "A recording session"
+            },
+            {
+                "id": "B",
+                "content": "A signing of a contract"
+            },
+            {
+                "id": "C",
+                "content": "A national competition"
+            },
+            {
+                "id": "D",
+                "content": "The selection of finalists"
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "number": 41,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num39-40-41.mp3",
+        "question": "What are performers asked to submit?",
+        "option1": "Their work",
+        "option2": "A job application form",
+        "option3": "An entrance fee",
+        "option4": "Their flight schedule",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Their work"
+            },
+            {
+                "id": "B",
+                "content": "A job application form"
+            },
+            {
+                "id": "C",
+                "content": "An entrance fee"
+            },
+            {
+                "id": "D",
+                "content": "Their flight schedule"
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "number": 42,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num42-43-44.mp3",
+        "question": "What will be set up at the end of Smith Street?",
+        "option1": "Food stalls",
+        "option2": "Musical stages",
+        "option3": "Dance classes",
+        "option4": "Vending machines",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Food stalls"
+            },
+            {
+                "id": "B",
+                "content": "Musical stages"
+            },
+            {
+                "id": "C",
+                "content": "Dance classes"
+            },
+            {
+                "id": "D",
+                "content": "Vending machines"
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "number": 43,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num42-43-44.mp3",
+        "question": "When is the event scheduled to begin?",
+        "option1": "Today",
+        "option2": "Friday",
+        "option3": "Saturday",
+        "option4": "Sunday",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Today"
+            },
+            {
+                "id": "B",
+                "content": "Friday"
+            },
+            {
+                "id": "C",
+                "content": "Saturday"
+            },
+            {
+                "id": "D",
+                "content": "Sunday"
+            }
+        ]
+    },
+    {
+        "id": 44,
+        "number": 44,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num42-43-44.mp3",
+        "question": "What kind of event is being announced?",
+        "option1": "A food fair",
+        "option2": "A dance contest",
+        "option3": "A music competition",
+        "option4": "A multicultural festival",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "A food fair"
+            },
+            {
+                "id": "B",
+                "content": "A dance contest"
+            },
+            {
+                "id": "C",
+                "content": "A music competition"
+            },
+            {
+                "id": "D",
+                "content": "A multicultural festival"
+            }
+        ]
+    },
+    {
+        "id": 45,
+        "number": 45,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num45-46-47.mp3",
+        "question": "What will Danae do next year?",
+        "option1": "Open new clothing stores in Europe",
+        "option2": "Conduct more market studies",
+        "option3": "Increase the salary of its workers",
+        "option4": "Hire more sales staff",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Open new clothing stores in Europe"
+            },
+            {
+                "id": "B",
+                "content": "Conduct more market studies"
+            },
+            {
+                "id": "C",
+                "content": "Increase the salary of its workers"
+            },
+            {
+                "id": "D",
+                "content": "Hire more sales staff"
+            }
+        ]
+    },
+    {
+        "id": 46,
+        "number": 46,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num45-46-47.mp3",
+        "question": "According to the speaker, what have they accomplished this year?",
+        "option1": "They entered the European market.",
+        "option2": "They increased their sales",
+        "option3": "They opened a chain of stores",
+        "option4": "They introduced a new line of products",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "They entered the European market."
+            },
+            {
+                "id": "B",
+                "content": "They increased their sales"
+            },
+            {
+                "id": "C",
+                "content": "They opened a chain of stores"
+            },
+            {
+                "id": "D",
+                "content": "They introduced a new line of products"
+            }
+        ]
+    },
+    {
+        "id": 47,
+        "number": 47,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num45-46-47.mp3",
+        "question": "How often is this event held?",
+        "option1": "Once every six months",
+        "option2": "Once a year",
+        "option3": "Once every two years",
+        "option4": "Once every five years",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Once every six months"
+            },
+            {
+                "id": "B",
+                "content": "Once a year"
+            },
+            {
+                "id": "C",
+                "content": "Once every two years"
+            },
+            {
+                "id": "D",
+                "content": "Once every five years"
+            }
+        ]
+    },
+    {
+        "id": 48,
+        "number": 48,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num48-49-50.mp3",
+        "question": "What will Paula do right after the event comes to a close?",
+        "option1": "Leave for her next show",
+        "option2": "Have something to eat",
+        "option3": "Pose for pictures",
+        "option4": "Take a plane to Philadelphia",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Leave for her next show"
+            },
+            {
+                "id": "B",
+                "content": "Have something to eat"
+            },
+            {
+                "id": "C",
+                "content": "Pose for pictures"
+            },
+            {
+                "id": "D",
+                "content": "Take a plane to Philadelphia"
+            }
+        ]
+    },
+    {
+        "id": 49,
+        "number": 49,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num48-49-50.mp3",
+        "question": "Who is Paula Jennings?",
+        "option1": "A musician",
+        "option2": "An actress",
+        "option3": "A photographer",
+        "option4": "A writer",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "A musician"
+            },
+            {
+                "id": "B",
+                "content": "An actress"
+            },
+            {
+                "id": "C",
+                "content": "A photographer"
+            },
+            {
+                "id": "D",
+                "content": "A writer"
+            }
+        ]
+    },
+    {
+        "id": 50,
+        "number": 50,
+        "audio": "https://bd46-58-186-128-230.ngrok-free.app/uploads/audios/523625/num48-49-50.mp3",
+        "question": "According to the speaker, how did Ms. Jennings spend most of the year?",
+        "option1": "By performing around the globe",
+        "option2": "By playing at one venue",
+        "option3": "By talking pictures in different parts of the world",
+        "option4": "By spending time in her hometown",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "By performing around the globe"
+            },
+            {
+                "id": "B",
+                "content": "By playing at one venue"
+            },
+            {
+                "id": "C",
+                "content": "By talking pictures in different parts of the world"
+            },
+            {
+                "id": "D",
+                "content": "By spending time in her hometown"
+            }
+        ]
+    },
+    {
+        "id": 51,
+        "number": 51,
+        "paragraph": "Choose the word that best completes the sentence:",
+        "question": "The research teams of Tyrell Telecommunications Inc. possess -------- knowledge of many of the products put forth by the competition",
+        "option1": "extend",
+        "option2": "extends",
+        "option3": "extensive",
+        "option4": "extent",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "extend"
+            },
+            {
+                "id": "B",
+                "content": "extends"
+            },
+            {
+                "id": "C",
+                "content": "extensive"
+            },
+            {
+                "id": "D",
+                "content": "extent"
+            }
+        ]
+    },
+    {
+        "id": 52,
+        "number": 52,
+        "question": "Even though construction -------- by unexpected electrical storms, the new office building was still finished in a timely manner.",
+        "option1": "interrupts",
+        "option2": "to interrupt",
+        "option3": "was interrupted",
+        "option4": "be interrupted",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "interrupts"
+            },
+            {
+                "id": "B",
+                "content": "to interrupt"
+            },
+            {
+                "id": "C",
+                "content": "was interrupted"
+            },
+            {
+                "id": "D",
+                "content": "be interrupted"
+            }
+        ]
+    },
+    {
+        "id": 53,
+        "number": 53,
+        "question": "Employees who meet their quotas -------- the last week of the month can expect bonuses.",
+        "option1": "against",
+        "option2": "between",
+        "option3": "by",
+        "option4": "under",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "against"
+            },
+            {
+                "id": "B",
+                "content": "between"
+            },
+            {
+                "id": "C",
+                "content": "by"
+            },
+            {
+                "id": "D",
+                "content": "under"
+            }
+        ]
+    },
+    {
+        "id": 54,
+        "number": 54,
+        "question": "Because of the increase in tourism during the winter months, the Ebony Palms Hotel and Resort plans to -------- additional staff for the next three months.",
+        "option1": "expand",
+        "option2": "recruit",
+        "option3": "revise",
+        "option4": "converse",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "expand"
+            },
+            {
+                "id": "B",
+                "content": "recruit"
+            },
+            {
+                "id": "C",
+                "content": "revise"
+            },
+            {
+                "id": "D",
+                "content": "converse"
+            }
+        ]
+    },
+    {
+        "id": 55,
+        "number": 55,
+        "question": "The overall satisfaction of participants with the workshop is often based on -------- unimportant details such as the ability to park close to the training facility.",
+        "option1": "seems",
+        "option2": "seeming",
+        "option3": "seemingly",
+        "option4": "seemed",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "seems"
+            },
+            {
+                "id": "B",
+                "content": "seeming"
+            },
+            {
+                "id": "C",
+                "content": "seemingly"
+            },
+            {
+                "id": "D",
+                "content": "seemed"
+            }
+        ]
+    },
+    {
+        "id": 56,
+        "number": 56,
+        "question": "The main artists -------- paintings are being sold at the Garrett Gallery are Elaine Crick, Jason Chambers and Sylvia Webb.",
+        "option1": "who",
+        "option2": "whose",
+        "option3": "their",
+        "option4": "they",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "who"
+            },
+            {
+                "id": "B",
+                "content": "whose"
+            },
+            {
+                "id": "C",
+                "content": "their"
+            },
+            {
+                "id": "D",
+                "content": "they"
+            }
+        ]
+    },
+    {
+        "id": 57,
+        "number": 57,
+        "question": "Everett-Buchanan Industries’ research -------- on the newest drug to combat stomach infections recently received a grant from the National Gastrointestinal Medical Research Foundation.",
+        "option1": "project",
+        "option2": "scheme",
+        "option3": "method",
+        "option4": "format",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "project"
+            },
+            {
+                "id": "B",
+                "content": "scheme"
+            },
+            {
+                "id": "C",
+                "content": "method"
+            },
+            {
+                "id": "D",
+                "content": "format"
+            }
+        ]
+    },
+    {
+        "id": 58,
+        "number": 58,
+        "question": "Much of this year’s profits will be used -------- renovation of the textile plant.",
+        "option1": "along",
+        "option2": "for",
+        "option3": "to",
+        "option4": "while",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "along"
+            },
+            {
+                "id": "B",
+                "content": "for"
+            },
+            {
+                "id": "C",
+                "content": "to"
+            },
+            {
+                "id": "D",
+                "content": "while"
+            }
+        ]
+    },
+    {
+        "id": 59,
+        "number": 59,
+        "question": "Arcadia Homes -------- for its commitment to provide customers with quality furniture at competitive prices.",
+        "option1": "is known",
+        "option2": "will know",
+        "option3": "to know",
+        "option4": "has known",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "is known"
+            },
+            {
+                "id": "B",
+                "content": "will know"
+            },
+            {
+                "id": "C",
+                "content": "to know"
+            },
+            {
+                "id": "D",
+                "content": "has known"
+            }
+        ]
+    },
+    {
+        "id": 60,
+        "number": 60,
+        "question": "When oil -------- do occur as a result of accidents, a single incident has the potential to affect very large areas of sea and lengths of coast.",
+        "option1": "spill",
+        "option2": "spills",
+        "option3": "spilled",
+        "option4": "spilling",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "spill"
+            },
+            {
+                "id": "B",
+                "content": "spills"
+            },
+            {
+                "id": "C",
+                "content": "spilled"
+            },
+            {
+                "id": "D",
+                "content": "spilling"
+            }
+        ]
+    },
+    {
+        "id": 61,
+        "number": 61,
+        "question": "The journal is published every four months and -------- available to other member societies under agreement of payment and publication.",
+        "option1": "official",
+        "option2": "officials",
+        "option3": "officially",
+        "option4": "officialize",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "official"
+            },
+            {
+                "id": "B",
+                "content": "officials"
+            },
+            {
+                "id": "C",
+                "content": "officially"
+            },
+            {
+                "id": "D",
+                "content": "officialize"
+            }
+        ]
+    },
+    {
+        "id": 62,
+        "number": 62,
+        "question": "Because of their size, few of our plumbing fixtures are -------- for indoor use.",
+        "option1": "suiting",
+        "option2": "suits",
+        "option3": "suitable",
+        "option4": "suitability",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "suiting"
+            },
+            {
+                "id": "B",
+                "content": "suits"
+            },
+            {
+                "id": "C",
+                "content": "suitable"
+            },
+            {
+                "id": "D",
+                "content": "suitability"
+            }
+        ]
+    },
+    {
+        "id": 63,
+        "number": 63,
+        "question": "Our marketing teams attend -------- regularly to learn new methods and strategies in their field.",
+        "option1": "conferences",
+        "option2": "contributions",
+        "option3": "agendas",
+        "option4": "prescriptions",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "conferences"
+            },
+            {
+                "id": "B",
+                "content": "contributions"
+            },
+            {
+                "id": "C",
+                "content": "agendas"
+            },
+            {
+                "id": "D",
+                "content": "prescriptions"
+            }
+        ]
+    },
+    {
+        "id": 64,
+        "number": 64,
+        "question": "After twenty-three years of --------, Jeffrey Bartlett is retiring from his position as chief accounting officer.",
+        "option1": "service",
+        "option2": "serving",
+        "option3": "server",
+        "option4": "serves",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "service"
+            },
+            {
+                "id": "B",
+                "content": "serving"
+            },
+            {
+                "id": "C",
+                "content": "server"
+            },
+            {
+                "id": "D",
+                "content": "serves"
+            }
+        ]
+    },
+    {
+        "id": 65,
+        "number": 65,
+        "paragraph": "Want to discover the latest trends in International Business? Sign up for our free workshops, to be held October 2-6. Register now online! Starting Sept. 1, employees will \r\nbe able to access a new workshop registration system at www.employeetraining.com. To\r\nenter the site, a staff ID number and password are required. If you don't already have\r\nthese, contact your immediate supervisor.\r\nEmployees are encouraged to sign up early for workshops, as the number .of participants is (65)........ to 50 per session. Provided that seats remain available, employees can easily\r\n\r\nregister for sessions. If a session is (66)........, however, staff can request that they be\r\n\r\nThe upcoming sessions (67)........ on the 5th floor of the Stafford Suite building.",
+        "question": "Choose the word or phrase that best completes the blanks:",
+        "option1": "limiting",
+        "option2": "limited",
+        "option3": "limitedly",
+        "option4": "limitation",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "limiting"
+            },
+            {
+                "id": "B",
+                "content": "limited"
+            },
+            {
+                "id": "C",
+                "content": "limitedly"
+            },
+            {
+                "id": "D",
+                "content": "limitation"
+            }
+        ]
+    },
+    {
+        "id": 66,
+        "number": 66,
+        "option1": "valid",
+        "option2": "full",
+        "option3": "finished",
+        "option4": "over",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "valid"
+            },
+            {
+                "id": "B",
+                "content": "full"
+            },
+            {
+                "id": "C",
+                "content": "finished"
+            },
+            {
+                "id": "D",
+                "content": "over"
+            }
+        ]
+    },
+    {
+        "id": 67,
+        "number": 67,
+        "option1": "will be held",
+        "option2": "have been held",
+        "option3": "are being held",
+        "option4": "were being held",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "will be held"
+            },
+            {
+                "id": "B",
+                "content": "have been held"
+            },
+            {
+                "id": "C",
+                "content": "are being held"
+            },
+            {
+                "id": "D",
+                "content": "were being held"
+            }
+        ]
+    },
+    {
+        "id": 68,
+        "number": 68,
+        "paragraph": "To: Staff\r\nFrom: Payroll Dept.\r\nDate: December 15\r\n\r\nSubject: Bonus Checks\r\n\r\nAs you may have already heard, bonus checks for all staff will soon be available! This year there will be some differences in how your checks are distributed. In past years, we have (68)........ office staff to deliver checks to employee mailboxes. Due to complaints that some checks were being stolen, we have changed this system.\r\n\r\nWe hope that you understand that the security of your funds is important to us (69)........ .\r\n\r\nMonday, employees can retrieve their checks from the secretary in the Payroll Department (70)........ checks will be available starting at noon on Friday. We hope that this new system will ensure that each employee gets his or her due payment. Please contact the Payroll secretary with any questions that you may have. Enjoy the holiday season!\r\n\r\n \r\n\r\nJim Stover, Payroll",
+        "option1": "remain",
+        "option2": "remaining",
+        "option3": "would have remained",
+        "option4": "remained",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "remain"
+            },
+            {
+                "id": "B",
+                "content": "remaining"
+            },
+            {
+                "id": "C",
+                "content": "would have remained"
+            },
+            {
+                "id": "D",
+                "content": "remained"
+            }
+        ]
+    },
+    {
+        "id": 69,
+        "number": 69,
+        "option1": "accessory",
+        "option2": "capacity",
+        "option3": "consumer",
+        "option4": "vendor",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "accessory"
+            },
+            {
+                "id": "B",
+                "content": "capacity"
+            },
+            {
+                "id": "C",
+                "content": "consumer"
+            },
+            {
+                "id": "D",
+                "content": "vendor"
+            }
+        ]
+    },
+    {
+        "id": 70,
+        "number": 70,
+        "option1": "at",
+        "option2": "for",
+        "option3": "on",
+        "option4": "into",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "at"
+            },
+            {
+                "id": "B",
+                "content": "for"
+            },
+            {
+                "id": "C",
+                "content": "on"
+            },
+            {
+                "id": "D",
+                "content": "into"
+            }
+        ]
+    },
+    {
+        "id": 71,
+        "number": 71,
+        "paragraph": "Ann Sloan\r\nCompuServe\r\n\r\nDear Ms. Sloan,\r\n\r\nWe appreciate your time in introducing us to your newest line of keyboards. Your high-quality line of products is of much interest to our staff. Our company has discussed your offer of twelve hand-comfort keyboards (71)........ use in our Human Resources Office.\r\nBecause of our current budget constraints, however, we have decided to buy our keyboards from another (72)........ .\r\n\r\nOur decision for the time being is to go with more cost-effective supplies. I am sure that many of your other items will meet our budget requirements. For this reason, we continue to (73)........ interested in your products, and would like to receive your catalog. If you could mail your monthly catalog to the above address, we would appreciate it.\r\n\r\nSincerely,\r\nJohann Spencer",
+        "option1": "So that",
+        "option2": "Even though",
+        "option3": "As always",
+        "option4": "In that case",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "So that"
+            },
+            {
+                "id": "B",
+                "content": "Even though"
+            },
+            {
+                "id": "C",
+                "content": "As always"
+            },
+            {
+                "id": "D",
+                "content": "In that case"
+            }
+        ]
+    },
+    {
+        "id": 72,
+        "number": 72,
+        "option1": "Beginning",
+        "option2": "The beginning",
+        "option3": "Having begun",
+        "option4": "To begin",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Beginning"
+            },
+            {
+                "id": "B",
+                "content": "The beginning"
+            },
+            {
+                "id": "C",
+                "content": "Having begun"
+            },
+            {
+                "id": "D",
+                "content": "To begin"
+            }
+        ]
+    },
+    {
+        "id": 73,
+        "number": 73,
+        "option1": "relied on",
+        "option2": "stated that",
+        "option3": "informed of",
+        "option4": "directed by",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "relied on"
+            },
+            {
+                "id": "B",
+                "content": "stated that"
+            },
+            {
+                "id": "C",
+                "content": "informed of"
+            },
+            {
+                "id": "D",
+                "content": "directed by"
+            }
+        ]
+    },
+    {
+        "id": 74,
+        "number": 74,
+        "paragraph": "LBA\r\n\r\nLocal Businesses of Albany\r\n121 S. Main St., Albany, NY 12019\r\nNovember 9\r\n\r\nDear Ms. LeChevre,\r\n\r\nWe would like to invite you to participate in our upcoming meeting, to be held on Wednesday, November 17 at 6:00 p.m. at the Hilton Suites. During this meeting we plan to hold an election for the next LBA president, who will serve for the coming year. Past presidents will be present to explain the importance of the position and to help facilitate the voting process. This year we have four members interested in running for this position; please note that their professional profiles are attached. Make sure to review these profiles prior to the meeting. There will be a question-and-answer session with this year's candidates before voting begins. \r\nWe are anticipating a large turnout at this year's election, and hope that you will be able to join us on this important day. If, for some reason, you are unable to attend, we ask that you send in your vote using the attached mail-in ballot. You can send the form to Local Businesses of Albany, 121 S. Main St., Albany, NY 12019. Please make sure that your ballot arrives by November 17.\r\nOur bylaws state that a majority of the LBA's members must vote in the upcoming election in order for us to officially inaugurate a new president. Because of this, we ask that you make voting a priority and either attend the meeting or send in your ballot by mail.\r\nSincerely,\r\nDavid Smith",
+        "question": "Why is the LBA holding a meeting?",
+        "option1": "To review its bylaws",
+        "option2": "To revise its voting procedures",
+        "option3": "To inspire new members to join",
+        "option4": "To choose a new president",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "To review its bylaws"
+            },
+            {
+                "id": "B",
+                "content": "To revise its voting procedures"
+            },
+            {
+                "id": "C",
+                "content": "To inspire new members to join"
+            },
+            {
+                "id": "D",
+                "content": "To choose a new president"
+            }
+        ]
+    },
+    {
+        "id": 75,
+        "number": 75,
+        "question": " If Ms. LeChevre cannot attend the meeting, what should she do?",
+        "option1": "Complete a mail-in ballot",
+        "option2": "Send an apology letter to the president",
+        "option3": "Make a financial contribution to the LBA",
+        "option4": "Run for president",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "Complete a mail-in ballot"
+            },
+            {
+                "id": "B",
+                "content": "Send an apology letter to the president"
+            },
+            {
+                "id": "C",
+                "content": "Make a financial contribution to the LBA"
+            },
+            {
+                "id": "D",
+                "content": "Run for president"
+            }
+        ]
+    },
+    {
+        "id": 76,
+        "number": 76,
+        "question": "What is attached to the letter?",
+        "option1": "LBA's budget status",
+        "option2": "A annual calendar of events",
+        "option3": "Profiles of those running for president",
+        "option4": "A directory of small businesses",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "LBA's budget status"
+            },
+            {
+                "id": "B",
+                "content": "A annual calendar of events"
+            },
+            {
+                "id": "C",
+                "content": "Profiles of those running for president"
+            },
+            {
+                "id": "D",
+                "content": "A directory of small businesses"
+            }
+        ]
+    },
+    {
+        "id": 77,
+        "number": 77,
+        "paragraph": "Passage 1:\r\n\r\nFrom: Lisa Sampson <lisasam@Ind.com>\r\nTo: Renata Biske <renatab@Ind.com>\r\nDate: May 1, 11:58:06\r\nSubject: Train schedule\r\n\r\nAttached is the train schedule leaving Montreal for Toronto on May 18 and returning to Montreal on May 22. Via Rail runs six trains per day from Montreal to Toronto, so you’ll be able to choose the best time for your trip. Your seat will be assigned in advance, and you will be able to work online on your way to Toronto since Wi-Fi Internet is available on board. Let me know which train you want to take, and I’ll reserve your seat.\r\n\r\nBy the way, is Mr. Collins still going with you to the conference in Toronto? I know you asked me to book a ticket for him, but yesterday I was told that he may have to stay here due to the upcoming board meeting. Let me know soon\r\n \r\nMay 18\r\nTrain Number:\t \r\n31\t \r\n33\t \r\n635\t \r\n35\t \r\n37\t \r\n39\r\n \r\nDepart: Montreal\r\nArrive: Toronto\t06:35\r\n08:36\t10:00\r\n11:57\t12:50\r\n14:57\t15:10\r\n17:16\t16:45\r\n18:40\t18:05\r\n21:00\r\nMay 22\r\nTrain Number:\t \r\n30\t \r\n32\t \r\n634\t \r\n32\t \r\n36\t \r\n38\r\nDepart: Toronto\r\nArrive: Montreal\t06:36\r\n08:32\t09:27\r\n11:19\t12:45\r\n14:50\t15:10\r\n17:07\t16:25\r\n18:17\t17:50\r\n19:49\r\n \r\n\r\n ***********\r\nPassage 2:\r\n\r\nFrom: Renata Biske <renatab@Ind.com>\r\nTo: Lisa Sampson <lisasam@Ind.com>\r\nDate: May 1, 17:38:24\r\nSubject: Re: Train schedule\r\n \r\nI was held up in a meeting until four today. Sorry for the late reply.\r\n\r\nThank you for the information. I need to arrive in Toronto by 6 p.m. on May 18 because I have an important meeting scheduled at 6:30 in downtown Toronto. On May 22, the conference ends at noon but I have lunch plans, so I want to take the 15:10 train. If I am back in Montreal by around five, I’ll be able to go to Mike’s retirement party at 7:30! It’s good because I really want to be there.\r\n\r\nOh, I checked with Mr. Collins. What you heard is true. He has to prepare a presentation for the board meeting, and also attend several meetings with board members. So you don’t have to worry about his tickets.\r\n\r\nI have one last favor. Could you please contact Stacie Wallace in Vancouver and find out where Kenji and Nora will be staying during the conference? I need to go over the presentation material with them before the conference and make last-minute changes if necessary, so I want to stay at the same hotel.\r\nThanks for all your hard work.",
+        "question": "What is NOT mentioned in Ms. Biske’s e-mail?",
+        "option1": "The time she wants to arrive in Toronto",
+        "option2": "The name of the hotel she will be staying at",
+        "option3": "The name of colleagues coming from Vancouver",
+        "option4": "The reason she wants to arrive in Montreal by 5 p.m.",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "The time she wants to arrive in Toronto"
+            },
+            {
+                "id": "B",
+                "content": "The name of the hotel she will be staying at"
+            },
+            {
+                "id": "C",
+                "content": "The name of colleagues coming from Vancouver"
+            },
+            {
+                "id": "D",
+                "content": "The reason she wants to arrive in Montreal by 5 p.m."
+            }
+        ]
+    },
+    {
+        "id": 78,
+        "number": 78,
+        "question": "What does Ms. Biske ask Ms. Sampson to do?",
+        "option1": "Make arrangements for Mr. Collins’s trip",
+        "option2": "Arrive in Toronto by 6 p.m. on May 18",
+        "option3": "Contact the Vancouver office",
+        "option4": "Organize a colleague’s retirement party",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Make arrangements for Mr. Collins’s trip"
+            },
+            {
+                "id": "B",
+                "content": "Arrive in Toronto by 6 p.m. on May 18"
+            },
+            {
+                "id": "C",
+                "content": "Contact the Vancouver office"
+            },
+            {
+                "id": "D",
+                "content": "Organize a colleague’s retirement party"
+            }
+        ]
+    },
+    {
+        "id": 79,
+        "number": 79,
+        "question": "What is true about Ms. Biske?",
+        "option1": "She will attend a conference in April",
+        "option2": "She will travel with Mr. Collins to Montreal",
+        "option3": "She has already booked a hotel room",
+        "option4": "She will give a presentation with colleagues",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "She will attend a conference in April"
+            },
+            {
+                "id": "B",
+                "content": "She will travel with Mr. Collins to Montreal"
+            },
+            {
+                "id": "C",
+                "content": "She has already booked a hotel room"
+            },
+            {
+                "id": "D",
+                "content": "She will give a presentation with colleagues"
+            }
+        ]
+    },
+    {
+        "id": 80,
+        "number": 80,
+        "question": " What can be inferred from the e-mail?",
+        "option1": "Ms. Sampson lives in Toronto",
+        "option2": "Ms. Biske asked Ms. Sampson for the train schedule at least two weeks before her trip",
+        "option3": "Mr. Collins will leave Montreal for Toronto on May 22",
+        "option4": "Ms. Biske does not check her e-mail inbox very often",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Ms. Sampson lives in Toronto"
+            },
+            {
+                "id": "B",
+                "content": "Ms. Biske asked Ms. Sampson for the train schedule at least two weeks before her trip"
+            },
+            {
+                "id": "C",
+                "content": "Mr. Collins will leave Montreal for Toronto on May 22"
+            },
+            {
+                "id": "D",
+                "content": "Ms. Biske does not check her e-mail inbox very often"
+            }
+        ]
+    },
+    {
+        "id": 81,
+        "number": 81,
+        "question": " What is the number of the train Ms. Biske wants to take to Toronto?",
+        "option1": 35,
+        "option2": 635,
+        "option3": 33,
+        "option4": 39,
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": 35
+            },
+            {
+                "id": "B",
+                "content": 635
+            },
+            {
+                "id": "C",
+                "content": 33
+            },
+            {
+                "id": "D",
+                "content": 39
+            }
+        ]
+    },
+    {
+        "id": 82,
+        "number": 82,
+        "paragraph": "Dear Mr. Heckelman\r\n\r\nI am a restaurateur in Poland, planning to open a new restaurant Bon Jour in Warsaw, Poland soon. I think your new product line would be good for my kitchen, and would like to obtain more information on it.\r\nI was searching for a reliable and affordable kitchen equipment supplier and the manager of La Fete recommended your company to me because your company is well known for quality products and international shipping service. I need the following items for my kitchen:\r\n\r\n- 10 aluminum sheet pans\r\n- 10 aluminum saucepans\r\n- 5 steamer baskets – 20 qt\r\n- 3 round food warmers – over 10 qt.\r\n\r\nThe restaurant will be open in five months, and I should decide which kitchen equipment supplier to use within two weeks so that I can purchase all the supplies I need in time. Please send me your product list and cost estimate as soon as possible. I would also like to receive information on bulk order discounts and international shipping policy.\r\nBest regards,\r\nHuelle\r\n                   \r\nPassage 2:\r\n\r\nHendrix Restaurant Equipment & Supplies\r\n \r\n* Full-size aluminum sheet pan (12-pack) £68 (£7 ea.)\r\n- Heavy duty 3003 aluminum\r\n- Rolled edge for extra durability\r\n- Restaurant quality\r\n- Great for baking rolls, cookies, brownies, buns or any type of baking use\r\n- Dimensions: 26” x 18” x 1”\r\n* 5.50 qt. aluminum saucepan £6.5 ea.\r\n- Satin finish\r\n- Dent-resistant\r\n- 3mm thickness\r\n- Flat bottom for even heat\r\n- NSF listed\r\n* Aluminum cylindrical steamer basket – 20 qt. £\r\n- Perforated holes\r\n- Fits inside stock pots\r\n- Easy to lift pail handle\r\n- Smooth mirror finish\r\n- Use for seafood, vegetables or deep-fried turkey\r\n\r\n* Wells round countertop food warmers – 11 qt. £100\r\n- Anodized aluminum pot and band heating element\r\n- Efficient heat distribution\r\n- Wet and dry operation\r\n- Thermostatic controls (Temperature range from room to 100oC)\r\n\r\nShipping Rate: Domestic £7, International £15\r\nDiscounts offered for 10 items or more",
+        "question": "What can be inferred from the passages?",
+        "option1": "Hendrix doesn’t have an international shipping policy",
+        "option2": "Ms. Huelle is most likely to choose bulk-order international rates",
+        "option3": "Ms. Huelle will receive free gifts because she buys a total of 28 items",
+        "option4": "Repeat customers will get extra discounts on all items of Hendrix",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Hendrix doesn’t have an international shipping policy"
+            },
+            {
+                "id": "B",
+                "content": "Ms. Huelle is most likely to choose bulk-order international rates"
+            },
+            {
+                "id": "C",
+                "content": "Ms. Huelle will receive free gifts because she buys a total of 28 items"
+            },
+            {
+                "id": "D",
+                "content": "Repeat customers will get extra discounts on all items of Hendrix"
+            }
+        ]
+    },
+    {
+        "id": 83,
+        "number": 83,
+        "question": "According to Ms. Huelle’s e-mail, what is the strength of Hendrix products?",
+        "option1": "Modern design",
+        "option2": "Quality",
+        "option3": "Free shipping",
+        "option4": "Special bonus",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Modern design"
+            },
+            {
+                "id": "B",
+                "content": "Quality"
+            },
+            {
+                "id": "C",
+                "content": "Free shipping"
+            },
+            {
+                "id": "D",
+                "content": "Special bonus"
+            }
+        ]
+    },
+    {
+        "id": 84,
+        "number": 84,
+        "question": "According to the passage, what is NOT true?",
+        "option1": "Hendrix’s steamer baskets can be used for vegetables",
+        "option2": "Ms. Huelle is likely to pay less than £65 for ten aluminum saucepans",
+        "option3": "Mr. Heckelman is the president of Hendrix",
+        "option4": "Hendrix’s round food warmers have thermostatic controls",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Hendrix’s steamer baskets can be used for vegetables"
+            },
+            {
+                "id": "B",
+                "content": "Ms. Huelle is likely to pay less than £65 for ten aluminum saucepans"
+            },
+            {
+                "id": "C",
+                "content": "Mr. Heckelman is the president of Hendrix"
+            },
+            {
+                "id": "D",
+                "content": "Hendrix’s round food warmers have thermostatic controls"
+            }
+        ]
+    },
+    {
+        "id": 85,
+        "number": 85,
+        "question": "Why does Bon Jour need kitchenware?",
+        "option1": "It will be open for business soon",
+        "option2": "It will be renovated in six months",
+        "option3": "Its current equipment is too old",
+        "option4": "It will sell the kitchenware",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "It will be open for business soon"
+            },
+            {
+                "id": "B",
+                "content": "It will be renovated in six months"
+            },
+            {
+                "id": "C",
+                "content": "Its current equipment is too old"
+            },
+            {
+                "id": "D",
+                "content": "It will sell the kitchenware"
+            }
+        ]
+    },
+    {
+        "id": 86,
+        "number": 86,
+        "question": "It will sell the kitchenware",
+        "option1": "They are not available in a local store",
+        "option2": "They were advertised on TV",
+        "option3": "They were recommended by a colleague",
+        "option4": "They are used by famous people",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "They are not available in a local store"
+            },
+            {
+                "id": "B",
+                "content": "They were advertised on TV"
+            },
+            {
+                "id": "C",
+                "content": "They were recommended by a colleague"
+            },
+            {
+                "id": "D",
+                "content": "They are used by famous people"
+            }
+        ]
+    },
+    {
+        "id": 87,
+        "number": 87,
+        "paragraph": "\r\nThe Daily Chronicle, Saturday, April 8\r\nJob Listings\r\nGlobal Technical Organization\r\nWork with industry leaders on exciting and diverse projects!\r\n\r\nThis prestigious organization houses technical specialists and is one of the largest workplace health and safety consultancies in Australia. Due to an ever-expanding workload, this exceptional group is seeking to recruit talented individuals who are looking to build a solid career within a challenging and rewarding workplace.\r\n\r\nAs an international player, this group is dedicated and thrives on being a client-focused organization. They assist and guide clients in a variety of business sectors to identify and solve workplace health and safety problems and implement risk management strategies. As an Environmental Health & Safety consultant you will be joining a fast-paced learning environment where you can and will influence decisions. You will be responsible for environmental risk management, implementing auditing and incident response procedures, environmental reporting and the development of Environmental Management Systems (EMS).\r\n\r\nTo be successful in this role you will have to possess the following: tertiary qualification in environmental science/planning/management or engineering; experience developing EMS; knowledge of environmental industry and statutory requirements, including environmental planning, project/program management, coordination and reporting experience; and excellent communication and presentation skills.\r\n\r\nTo be considered please submit your CV and cover letter to resume@globaltr.com.au. Alternatively, you may contact Bradley Austin for a confidential discussion at 02 9957 1008.",
+        "question": "According to the announcement, what must applicants send to be considered for the job?",
+        "option1": "A resume and a cover letter",
+        "option2": "A recommendation letter",
+        "option3": "A copy of a college transcript",
+        "option4": "System development certificate",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "A resume and a cover letter"
+            },
+            {
+                "id": "B",
+                "content": "A recommendation letter"
+            },
+            {
+                "id": "C",
+                "content": "A copy of a college transcript"
+            },
+            {
+                "id": "D",
+                "content": "System development certificate"
+            }
+        ]
+    },
+    {
+        "id": 88,
+        "number": 88,
+        "question": "According to the announcement, what is NOT part of the responsibility?",
+        "option1": "Risk management",
+        "option2": "Being a media spokesperson",
+        "option3": "Environmental system development",
+        "option4": "Incident report procedure implementation",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Risk management"
+            },
+            {
+                "id": "B",
+                "content": "Being a media spokesperson"
+            },
+            {
+                "id": "C",
+                "content": "Environmental system development"
+            },
+            {
+                "id": "D",
+                "content": "Incident report procedure implementation"
+            }
+        ]
+    },
+    {
+        "id": 89,
+        "number": 89,
+        "question": "For whom is this announcement most likely written?",
+        "option1": "Recruiting agencies",
+        "option2": "Human resources professionals",
+        "option3": "International communications experts",
+        "option4": "Environmental experts",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "Recruiting agencies"
+            },
+            {
+                "id": "B",
+                "content": "Human resources professionals"
+            },
+            {
+                "id": "C",
+                "content": "International communications experts"
+            },
+            {
+                "id": "D",
+                "content": "Environmental experts"
+            }
+        ]
+    },
+    {
+        "id": 90,
+        "number": 90,
+        "paragraph": "APEA (Ames Professional and Entrepreneur Association)\r\n\r\nThe Ames Professional and Entrepreneur Association was founded in 1968 to bring together members of the business community. The Association provides members with a form to deal with issues affecting Ames Township and enhances the relationship between members and the residents of the township.\r\n\r\nAPEA is celebrating its 40th anniversary in 2008 at Brodeurs on State Street. All current members, past members, and guest are welcome to help us celebrate at a dinner on October 15. There will be a raffle and an auction that night. Live entertainment for adults and fun activities for children are also included. Food and drinks will be provided by one of the top caterers in the Ames region. The menu is included in the invitation.\r\n\r\nTickets are available from the APEA office (1 West State St. / 312-554-5055) or via e-mail (ticket@apea.org). The prices are $30 for adults, $18 for children under 15, and $20 for senior citizens. You can also purchase the tickets directly through our website. Please provide your name, address and telephone number and how many tickets you would like. Our reservation staff will contact you for confirmation and credit card information, and mail you the tickets. Tickets will not be sold at the venue on the day of the event. For more information, visit the APEA website at www.apea.org and click on Anniversary Dinner. Please RSVP by October 8.",
+        "question": " How much is the ticket for a fourteen-year-old guest?",
+        "option1": 10,
+        "option2": 18,
+        "option3": 20,
+        "option4": 22,
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": 10
+            },
+            {
+                "id": "B",
+                "content": 18
+            },
+            {
+                "id": "C",
+                "content": 20
+            },
+            {
+                "id": "D",
+                "content": 22
+            }
+        ]
+    },
+    {
+        "id": 91,
+        "number": 91,
+        "question": "How can people purchase tickets for the event?",
+        "option1": "By visiting Brodeurs",
+        "option2": "By calling the catering company",
+        "option3": "By visiting the APEA website",
+        "option4": "By returning the application in the invitation",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "By visiting Brodeurs"
+            },
+            {
+                "id": "B",
+                "content": "By calling the catering company"
+            },
+            {
+                "id": "C",
+                "content": "By visiting the APEA website"
+            },
+            {
+                "id": "D",
+                "content": "By returning the application in the invitation"
+            }
+        ]
+    },
+    {
+        "id": 92,
+        "number": 92,
+        "question": "What is the purpose of the event?",
+        "option1": "To commemorate an anniversary",
+        "option2": "To celebrate an opening of a new restaurant",
+        "option3": "To introduce the new president of APEA",
+        "option4": "To announce the winner of the Entrepreneur of the Year",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "To commemorate an anniversary"
+            },
+            {
+                "id": "B",
+                "content": "To celebrate an opening of a new restaurant"
+            },
+            {
+                "id": "C",
+                "content": "To introduce the new president of APEA"
+            },
+            {
+                "id": "D",
+                "content": "To announce the winner of the Entrepreneur of the Year"
+            }
+        ]
+    },
+    {
+        "id": 93,
+        "number": 93,
+        "question": "To whom are the invitations probably intended?",
+        "option1": "Employers of catering businesses",
+        "option2": "Members of a business organization",
+        "option3": "Newly-elected city council members",
+        "option4": "Children and senior citizens",
+        "correctanswer": "B",
+        "options": [
+            {
+                "id": "A",
+                "content": "Employers of catering businesses"
+            },
+            {
+                "id": "B",
+                "content": "Members of a business organization"
+            },
+            {
+                "id": "C",
+                "content": "Newly-elected city council members"
+            },
+            {
+                "id": "D",
+                "content": "Children and senior citizens"
+            }
+        ]
+    },
+    {
+        "id": 94,
+        "number": 94,
+        "paragraph": "For a honey of a deal, buzz us today!\r\nBusy Bee Movers, Inc.\r\n\r\nBusy Bee Movers has been proud to service the Saint Louis area for 15 years. We take great pride in moving Missouri and Illinois households and offering professional relocation services. When you move to e neighboring state, across the city or down the street, you can depend on Busy Bee Movers to take you there. We operate six days a week with our team of fast, courteous, experienced workers. Our trucks and equipment are well maintained and always clean. We’re licensed and insured, and are members in good standing with the Better Business Bureau and the American Moving & Storage Association.\r\n\r\nWe’re family-owned business with a strong belief in treating our customers like members of the family. We respect your belongings and take steps to be sure that your property is handled with the utmost care. All of our workers are employed directly by Busy Bee, so there are no last-minute contracted laborers showing up for your important move. Busy Bee Movers maintains the highest standards for the people we hire, the equipment we operate and the services we provide. We put everything we have behind every move. We know our reputation depends on it!\r\n\r\nWe’ve got flexible pricing programs to make your move more affordable. We have a menu of services available. We’ll even park and/or unpack the boxes for you; it’s your choice to make. Don’t get stung by high prices. Call Busy Bee today at (212) 555-4314 or visit our website www.busybeemovers.com to get a free quote! We offer senior and veteran discounts. Cash, check and major credit cards are accepted.",
+        "question": "According to the advertisement, how can customers get a free estimate?",
+        "option1": "By visiting the company’s website",
+        "option2": "By contacting the CEO of the company",
+        "option3": "By submitting their moving plan and schedule",
+        "option4": "By presenting a copy of the company’s advertisement",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "By visiting the company’s website"
+            },
+            {
+                "id": "B",
+                "content": "By contacting the CEO of the company"
+            },
+            {
+                "id": "C",
+                "content": "By submitting their moving plan and schedule"
+            },
+            {
+                "id": "D",
+                "content": "By presenting a copy of the company’s advertisement"
+            }
+        ]
+    },
+    {
+        "id": 95,
+        "number": 95,
+        "question": "What can be inferred from the advertisement?",
+        "option1": "It has a variety of services people can choose from",
+        "option2": "People with bad credit must pay by cash",
+        "option3": "Customers have to make money order payable to Busy Bee Movers",
+        "option4": "All the services of the company are cheaper than those of other companies",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "It has a variety of services people can choose from"
+            },
+            {
+                "id": "B",
+                "content": "People with bad credit must pay by cash"
+            },
+            {
+                "id": "C",
+                "content": "Customers have to make money order payable to Busy Bee Movers"
+            },
+            {
+                "id": "D",
+                "content": "All the services of the company are cheaper than those of other companies"
+            }
+        ]
+    },
+    {
+        "id": 96,
+        "number": 96,
+        "question": "According to the advertisement, to which association does this business belong?",
+        "option1": "Best Business Association",
+        "option2": "Wild Life Association",
+        "option3": "American Moving & Storage Association",
+        "option4": "Missouri Advertising Association",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "Best Business Association"
+            },
+            {
+                "id": "B",
+                "content": "Wild Life Association"
+            },
+            {
+                "id": "C",
+                "content": "American Moving & Storage Association"
+            },
+            {
+                "id": "D",
+                "content": "Missouri Advertising Association"
+            }
+        ]
+    },
+    {
+        "id": 97,
+        "number": 97,
+        "question": "What is NOT true about Busy Bee Movers?",
+        "option1": "It is licensed to run the moving business in Illinois",
+        "option2": "It boasts well-maintained equipment and skilled workers.",
+        "option3": "It provides all customers with senior and veteran discounts",
+        "option4": "It has been in operation in Saint Louis for more than 10 years",
+        "correctanswer": "C",
+        "options": [
+            {
+                "id": "A",
+                "content": "It is licensed to run the moving business in Illinois"
+            },
+            {
+                "id": "B",
+                "content": "It boasts well-maintained equipment and skilled workers."
+            },
+            {
+                "id": "C",
+                "content": "It provides all customers with senior and veteran discounts"
+            },
+            {
+                "id": "D",
+                "content": "It has been in operation in Saint Louis for more than 10 years"
+            }
+        ]
+    },
+    {
+        "id": 98,
+        "number": 98,
+        "question": " What kind of service is offered in this advertisement?",
+        "option1": "Janitorial service",
+        "option2": "Real estate sale",
+        "option3": "Overseas travel",
+        "option4": "Relocation service",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "Janitorial service"
+            },
+            {
+                "id": "B",
+                "content": "Real estate sale"
+            },
+            {
+                "id": "C",
+                "content": "Overseas travel"
+            },
+            {
+                "id": "D",
+                "content": "Relocation service"
+            }
+        ]
+    },
+    {
+        "id": 99,
+        "number": 99,
+        "paragraph": "Gen X Telecom\r\n383 Marlee Ave.\r\nToronto, ON M3E 7R3\r\n \r\nAugust 15\r\n \r\nMs. Duncan\r\n788 King St. W.\r\nToronto, ON M5V 1N6\r\n \r\nDear Ms. Duncan:\r\n\r\nThe request for repair that you submitted five days ago has been officially field with our repair department yesterday. We regret that you have been experiencing problems with your phone line and our service has not been satisfactory to you. I would like to express my sincere apology. A repair to your telephone service has been scheduled for August 20. Our repair engineer will contact you to let you know at what time he will be able to visit your home for repair.\r\n\r\nWe do hope that you will continue your business with Gen X Telecom. To express our appreciation for your patience with our service and repair process, we are offering two moths of free phone service which includes local calls, call-waiting and caller ID display services. Long-distance calls will be excluded from this complementary service. We hope you enjoy this free phone service package.\r\n\r\nFor questions or comments, please do not hesitate to call us at (416) 555-3356.\r\n\r\nSincerely,\r\nMundell",
+        "question": "What is implied about Ms. Duncan?",
+        "option1": "She will get free phone service for a limited time only",
+        "option2": "She is a premium customer at Gen X Telecom.",
+        "option3": "She is very happy with the current phone service.",
+        "option4": "She is applying for a job at Gen X Telecom",
+        "correctanswer": "A",
+        "options": [
+            {
+                "id": "A",
+                "content": "She will get free phone service for a limited time only"
+            },
+            {
+                "id": "B",
+                "content": "She is a premium customer at Gen X Telecom."
+            },
+            {
+                "id": "C",
+                "content": "She is very happy with the current phone service."
+            },
+            {
+                "id": "D",
+                "content": "She is applying for a job at Gen X Telecom"
+            }
+        ]
+    },
+    {
+        "id": 100,
+        "number": 100,
+        "question": "What is true about the free services Ms. Duncan was offered?",
+        "option1": "The company wants her to switch to another calling plan",
+        "option2": "She can find out the callers’ addresses by using the services.",
+        "option3": "The free services were offered as a token of appreciation for the repair request",
+        "option4": "The company will change her for making long-distance calls.",
+        "correctanswer": "D",
+        "options": [
+            {
+                "id": "A",
+                "content": "The company wants her to switch to another calling plan"
+            },
+            {
+                "id": "B",
+                "content": "She can find out the callers’ addresses by using the services."
+            },
+            {
+                "id": "C",
+                "content": "The free services were offered as a token of appreciation for the repair request"
+            },
+            {
+                "id": "D",
+                "content": "The company will change her for making long-distance calls."
+            }
+        ]
+    }
+]

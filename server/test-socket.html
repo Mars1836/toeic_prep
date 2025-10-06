@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO Chat Test</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Socket.IO Chat Test</h1>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." />
+    <button onclick="sendMessage()">Gửi</button>
+    
+    <script>
+        // Thay YOUR_NGROK_URL bằng URL ngrok thực tế của bạn
+        // Ví dụ: https://abc123.ngrok.io
+        const NGROK_URL = 'https://b9d286f5658e.ngrok-free.app'; // Thay đổi URL này
+        const socket = io(NGROK_URL);
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        
+        let currentSessionId = null;
+        
+        // Lắng nghe các sự kiện từ server
+        socket.on('connect', () => {
+            console.log('Connected to server:', socket.id);
+            addMessage('Connected to server with ID: ' + socket.id);
+        });
+        s
+        socket.on('session_created', (data) => {
+            console.log('Session created:', data);
+            currentSessionId = data.sessionId;
+            addMessage('Session created: ' + data.sessionId);
+        });
+        
+        socket.on('stream_start', (data) => {
+            console.log('Stream started:', data);
+            addMessage('Stream started for session: ' + data.sessionId);
+        });
+        
+        socket.on('chat_stream', (data) => {
+            console.log('Stream chunk:', data);
+            // Hiển thị chunk text
+            const lastMessage = messagesDiv.lastElementChild;
+            if (lastMessage && lastMessage.classList.contains('streaming')) {
+                lastMessage.textContent += data.chunk;
+            } else {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('streaming');
+                messageDiv.textContent = data.chunk;
+                messagesDiv.appendChild(messageDiv);
+            }
+        });
+        
+        socket.on('stream_complete', (data) => {
+            console.log('Stream completed:', data);
+            const lastMessage = messagesDiv.lastElementChild;
+            if (lastMessage && lastMessage.classList.contains('streaming')) {
+                lastMessage.classList.remove('streaming');
+                lastMessage.classList.add('completed');
+            }
+            addMessage('Stream completed. Message ID: ' + data.messageId);
+        });
+        
+        function addMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.margin = '5px 0';
+            messageDiv.style.padding = '5px';
+            messageDiv.style.border = '1px solid #ccc';
+            messagesDiv.appendChild(messageDiv);
+        }
+        
+        function sendMessage() {
+            const content = messageInput.value.trim();
+            if (!content) return;
+            
+            addMessage('You: ' + content);
+            messageInput.value = '';
+            
+            // Gửi request đến API qua ngrok
+            fetch(NGROK_URL + '/api/user/aichat/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Note: Cần token authentication thực tế
+                },
+                body: JSON.stringify({
+                    content: content,
+                    socketId: socket.id,
+                    sessionId: currentSessionId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+                addMessage('API Response: ' + JSON.stringify(data));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addMessage('Error: ' + error.message);
+            });
+        }
+        
+        // Enter key để gửi tin nhắn
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
