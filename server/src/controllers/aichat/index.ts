@@ -1,7 +1,4 @@
-import { passportA } from "./../../configs/passport";
 import { Request, Response } from "express";
-import { FlashcardAttr, FlashcardModel } from "../../models/flashcard.model";
-import FlashCardSrv from "../../services/flashcard";
 import AiChatSrv from "../../services/aichat";
 
 namespace AiChatCtrl {
@@ -38,6 +35,13 @@ namespace AiChatCtrl {
       limit: limit ? parseInt(limit) : undefined,
     });
     res.status(200).json(rs);
+  }
+  export async function deleteHistory(req: Request, res: Response) {
+    // @ts-ignore
+    const userId = req.user.id;
+    const { sessionId } = req.params as any;
+    await AiChatSrv.deleteHistory({ userId, sessionId });
+    res.status(204).send();
   }
   export async function getFlashcardInfor(req: Request, res: Response) {
     const { prompt } = req.body;

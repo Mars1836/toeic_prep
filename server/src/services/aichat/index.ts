@@ -61,6 +61,22 @@ namespace AiChatSrv {
     return items.map((m) => m.toJSON());
   }
 
+  export async function deleteHistory({
+    userId,
+    sessionId,
+  }: {
+    userId: string;
+    sessionId: string;
+  }) {
+    const session = await aiChatSessionModel.findById(sessionId);
+    if (!session || String(session.userId) !== String(userId)) {
+      throw new BadRequestError("Invalid session");
+    }
+    await aiChatMessageModel.deleteMany({ sessionId });
+    await aiChatSessionModel.deleteOne({ _id: sessionId });
+    return { ok: true };
+  }
+
 
   export async function sendMessage({
     userId,

@@ -26,6 +26,11 @@ aiChatRouter.get(
   requireAuth,
   handleAsync(AiChatCtrl.getHistory)
 );
+aiChatRouter.delete(
+  "/history/:sessionId",
+  requireAuth,
+  handleAsync(AiChatCtrl.deleteHistory)
+);
 aiChatRouter.post(
   "/get-explanation/json",
   handleAsync(AiChatCtrl.explainQuestionJson)
