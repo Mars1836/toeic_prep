@@ -13,7 +13,7 @@ export default class SmartChatbot {
 
   constructor(embedding: TFIDFEmbedding) {
     this.genAI = genAI;
-    this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     this.embedding = embedding;
   }
 

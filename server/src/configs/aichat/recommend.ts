@@ -233,7 +233,7 @@ ________________________________________
   return notHaveTargetScore;
 };
 export const modelAIRecommend = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+  model: "gemini-1.5-pro",
   // generationConfig: {
   //   responseMimeType: "application/json",
   //   responseSchema: schema,
