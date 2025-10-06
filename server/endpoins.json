@@ -231,7 +231,8 @@
   {
     "path": "/api/user/ai-chat/history/:sessionId",
     "methods": [
-      "GET"
+      "GET",
+      "DELETE"
     ]
   },
   {
