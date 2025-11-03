@@ -8,7 +8,9 @@
     "start": "cross-env APP_ENV=prod ENV_FILE=.env.prod ts-node-dev src/index.ts",
     "dev": "cross-env APP_ENV=dev ENV_FILE=.env.dev ts-node-dev src/index.ts",
     "start:docker": "cross-env APP_ENV=docker ENV_FILE=.env ts-node-dev src/index.ts",
-    "build": "tsc",
+    "clean:dist": "rimraf dist",
+    "build": "npm run clean:dist && tsc",
+    "start:prod": "node dist/index.js",
     "build:docker": "docker build -t mars1836/server-toeic:latest . && docker push mars1836/server-toeic:latest"
   },
   "jest": {
@@ -85,6 +87,7 @@
     "@types/serve-index": "^1.9.4",
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
+    "rimraf": "^6.1.0",
     "supertest": "^7.0.0"
   }
 }
