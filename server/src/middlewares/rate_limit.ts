@@ -183,7 +183,12 @@ export class RateLimitFactory {
         res.set("X-RateLimit-Remaining", String(result.remaining));
         next();
       } else {
-        res.set("Retry-After", String(result.retryAfter));
+        // Ensure Retry-After header value is a valid integer string per RFC
+        const retryAfterNum = Number(result.retryAfter);
+        if (Number.isFinite(retryAfterNum)) {
+          const retryAfterSeconds = Math.max(0, Math.ceil(retryAfterNum));
+          res.setHeader("Retry-After", retryAfterSeconds.toString());
+        }
         res.status(429).json({
           error: "Too Many Requests",
           message: `Rate limit exceeded. Try again in ${result.retryAfter} seconds`,

@@ -19,31 +19,13 @@
     ]
   },
   {
-    "path": "/api/user/auth/google-login",
+    "path": "/api/user/auth/refresh",
     "methods": [
-      "GET"
+      "POST"
     ]
   },
   {
-    "path": "/api/user/auth/google-login/callback",
-    "methods": [
-      "GET"
-    ]
-  },
-  {
-    "path": "/api/user/auth/facebook-login",
-    "methods": [
-      "GET"
-    ]
-  },
-  {
-    "path": "/api/user/auth/facebook-login/callback",
-    "methods": [
-      "GET"
-    ]
-  },
-  {
-    "path": "/api/user/auth/login/failed",
+    "path": "/api/user/auth/logout",
     "methods": [
       "POST"
     ]
@@ -52,12 +34,6 @@
     "path": "/api/user/auth/getinfor",
     "methods": [
       "GET"
-    ]
-  },
-  {
-    "path": "/api/user/auth/logout",
-    "methods": [
-      "POST"
     ]
   },
   {

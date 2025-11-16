@@ -18,7 +18,7 @@ export function UserPopup({ user, onLogout, onProfileClick }) {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.avatarUrl} alt={user.name} />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
       </PopoverTrigger>
@@ -27,7 +27,7 @@ export function UserPopup({ user, onLogout, onProfileClick }) {
           <div className="flex items-center space-x-4">
             <Avatar className="h-16 w-16">
               <AvatarImage src={user.avatarUrl} alt={user.name} />
-              {/* <AvatarFallback>{user.name.charAt(0)}</AvatarFallback> */}
+              <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
               <h4

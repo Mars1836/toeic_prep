@@ -3,9 +3,10 @@ import express, { Request, Response } from "express";
 import { userCtrl } from "../../../controllers/user";
 import { handleAsync } from "../../../middlewares/handle_async";
 import { requireAuth } from "../../../middlewares/require_auth";
+import { jwtAuth } from "../../../middlewares/jwt_auth";
 import { BadRequestError } from "../../../errors/bad_request_error";
+import { NotAuthorizedError } from "../../../errors/not_authorized_error";
 import { constEnv } from "../../../configs/const";
-import { passportU } from "../../../configs/passport";
 import { validate_request } from "../../../middlewares/validate_request";
 import { body } from "express-validator";
 import { redis, redisKey } from "../../../connect/redis";
@@ -20,12 +21,32 @@ import { userModel } from "../../../models/user.model";
 
 import mongoose from "mongoose";
 import { hashPassword, userSrv } from "../../../services/user";
+import {
+  generateTokenPair,
+  generateAccessToken,
+  verifyRefreshToken,
+  revokeRefreshToken,
+} from "../../../services/jwt";
+import {
+  setAccessTokenCookie,
+  setRefreshTokenCookie,
+  clearAuthCookies,
+  REFRESH_TOKEN_COOKIE,
+} from "../../../utils/cookie_helper";
 
 const userAuthRouter = express.Router();
 
-userAuthRouter.get("/login", handleAsync(requireAuth), (req, res) => {
-  res.json("Test success");
-});
+// Test endpoint - yêu cầu JWT authentication
+userAuthRouter.get(
+  "/login",
+  handleAsync(jwtAuth),
+  handleAsync(requireAuth),
+  (req, res) => {
+    res.json("Test success");
+  }
+);
+
+// Signup endpoint - tạo user mới và return JWT tokens
 userAuthRouter.post(
   "/signup",
   [
@@ -39,7 +60,26 @@ userAuthRouter.post(
   handleAsync(async function (req: Request, res: Response) {
     const { name, email, password } = req.body;
     const user = await userSrv.localCreate({ name, email, password });
-    res.status(200).json(user);
+
+    // Generate JWT tokens
+    const tokens = await generateTokenPair({
+      id: user.id,
+      email: user.email!,
+    });
+
+    // Set cookies cho client (giống Passport)
+    setAccessTokenCookie(res, tokens.accessToken);
+    setRefreshTokenCookie(res, tokens.refreshToken);
+
+    // Return user info và tokens
+    res.status(201).json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
+      ...tokens,
+    });
   })
 );
 userAuthRouter.post(
@@ -68,6 +108,7 @@ userAuthRouter.post(
     res.status(200).json({ key });
   })
 );
+// Login endpoint - xác thực user và return JWT tokens
 userAuthRouter.post(
   "/login",
   [
@@ -75,56 +116,149 @@ userAuthRouter.post(
     body("password").trim().notEmpty().withMessage("Password is required"),
   ],
   handleAsync(validate_request),
-  passportU.authenticate("local", {
-    failureRedirect: "/failed",
-  }),
-  function (req: Request, res: Response) {
-    res.json(req.user);
-  }
-);
+  handleAsync(async function (req: Request, res: Response) {
+    const { email, password } = req.body;
 
-userAuthRouter.get("/google-login", passportU.authenticate("google"));
+    // Xác thực user
+    const user = await userSrv.localLogin({ email, password });
 
-userAuthRouter.get(
-  "/google-login/callback",
-  passportU.authenticate("google"),
-  function (req: Request, res: Response) {
-    res.redirect(constEnv.clientOrigin!);
-  }
-);
-userAuthRouter.get("/facebook-login", passportU.authenticate("facebook"));
-userAuthRouter.get(
-  "/facebook-login/callback",
-  passportU.authenticate("facebook"),
-  function (req: Request, res: Response) {
-    res.redirect(constEnv.clientOrigin!);
-  }
-);
-userAuthRouter.post(
-  "/login/failed",
-  handleAsync(function (req: Request, res: Response) {
-    throw new BadRequestError("Username or password is wrong");
+    // Generate JWT tokens
+    const tokens = await generateTokenPair({
+      id: user.id,
+      email: user.email!,
+    });
+
+    // Set cookies cho client (giống Passport)
+    setAccessTokenCookie(res, tokens.accessToken);
+    setRefreshTokenCookie(res, tokens.refreshToken);
+
+    // Return user info và tokens (có thể return hoặc không, cookie đã được set)
+    res.status(200).json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+      },
+      ...tokens,
+    });
   })
 );
+
+// Refresh token endpoint - tạo access token mới từ refresh token
+// POST /api/user/auth/refresh
+// Body: { "refreshToken": "..." }
+// Response: { "accessToken": "...", "refreshToken": "..." } (optional new refresh token)
+userAuthRouter.post(
+  "/refresh",
+  // Refresh token có thể từ body hoặc cookie, không bắt buộc validate
+  handleAsync(async function (req: Request, res: Response) {
+    // Lấy refresh token từ body hoặc cookie
+    let refreshToken = req.body.refreshToken;
+
+    // Nếu không có trong body, lấy từ cookie
+    if (!refreshToken && req.cookies && req.cookies[REFRESH_TOKEN_COOKIE]) {
+      refreshToken = req.cookies[REFRESH_TOKEN_COOKIE];
+    }
+
+    if (!refreshToken) {
+      throw new NotAuthorizedError("Refresh token is required");
+    }
+
+    try {
+      // Verify refresh token (kiểm tra trong Redis và JWT)
+      const payload = await verifyRefreshToken(refreshToken);
+
+      // Lấy user từ database để đảm bảo user vẫn tồn tại
+      const user = await userSrv.getById(payload.id);
+      if (!user) {
+        throw new BadRequestError("User not found");
+      }
+
+      // Generate access token mới
+      const newAccessToken = generateAccessToken({
+        id: user.id,
+        email: user.email!,
+      });
+
+      // Set access token cookie mới
+      setAccessTokenCookie(res, newAccessToken);
+      // Giữ nguyên refresh token cookie (không cần set lại)
+
+      // Trả về access token mới
+      res.status(200).json({
+        accessToken: newAccessToken,
+        // refreshToken giữ nguyên, client không cần refresh lại
+      });
+    } catch (error) {
+      // Handle refresh token errors
+      if (error instanceof Error) {
+        if (
+          error.message === "Refresh token expired" ||
+          error.message === "Invalid refresh token" ||
+          error.message === "Refresh token not found or invalid"
+        ) {
+          throw new NotAuthorizedError("Invalid or expired refresh token");
+        }
+      }
+      throw error;
+    }
+  })
+);
+
+// Logout endpoint - revoke refresh token
+userAuthRouter.post(
+  "/logout",
+  handleAsync(jwtAuth),
+  handleAsync(requireAuth),
+  handleAsync(async function (req: Request, res: Response) {
+    // Revoke refresh token trong Redis
+    await revokeRefreshToken(req.user!.id);
+
+    // Clear cookies
+    clearAuthCookies(res);
+
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
+  })
+);
+
+// Google và Facebook login - có thể giữ lại hoặc implement với JWT sau
+// userAuthRouter.get("/google-login", passportU.authenticate("google"));
+// userAuthRouter.get(
+//   "/google-login/callback",
+//   passportU.authenticate("google"),
+//   function (req: Request, res: Response) {
+//     res.redirect(constEnv.clientOrigin!);
+//   }
+// );
+// userAuthRouter.get("/facebook-login", passportU.authenticate("facebook"));
+// userAuthRouter.get(
+//   "/facebook-login/callback",
+//   passportU.authenticate("facebook"),
+//   function (req: Request, res: Response) {
+//     res.redirect(constEnv.clientOrigin!);
+//   }
+// );
+// Get user info - yêu cầu JWT authentication
 userAuthRouter.get(
   "/getinfor",
+  handleAsync(jwtAuth),
   handleAsync(requireAuth),
   handleAsync(async (req: Request, res: Response) => {
-    const user = await userSrv.getById(req.user.id);
+    const user = await userSrv.getById(req.user!.id);
     res.json(user);
   })
 );
-userAuthRouter.post("/logout", function (req: Request, res: Response) {
-  req.session = null;
-  res.json("1");
-});
 
+// Get current user - yêu cầu JWT authentication
 userAuthRouter.get(
   "/current-user",
+  handleAsync(jwtAuth),
   handleAsync(requireAuth),
   handleAsync(userCtrl.getCurrentUser)
 );
-userAuthRouter.post("/logout", handleAsync(userCtrl.logout));
 userAuthRouter.post(
   "/otp/reset-password",
   [body("email").isEmail().withMessage("Email is not provided or valid!")],
@@ -235,15 +369,26 @@ userAuthRouter.post(
     }
     const user = await userModel.create(store);
     redis.client.del(redisKey.verifyEmailKey(email));
-    await new Promise((resolve, reject) => {
-      req.login(user, (err) => {
-        if (err) {
-          return reject(err); // Reject if login fails
-        }
-        resolve(1); // Resolve if login is successful
-      });
+
+    // Generate JWT tokens sau khi verify email thành công
+    const tokens = await generateTokenPair({
+      id: user.id,
+      email: user.email!,
     });
-    res.status(200).json(user);
+
+    // Set cookies cho client (giống Passport)
+    setAccessTokenCookie(res, tokens.accessToken);
+    setRefreshTokenCookie(res, tokens.refreshToken);
+
+    // Return user info và tokens
+    res.status(200).json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
+      ...tokens,
+    });
   })
 );
 export default userAuthRouter;

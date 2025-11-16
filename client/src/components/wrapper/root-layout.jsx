@@ -32,13 +32,18 @@ function RootLayout({ children }) {
         if (!data) return;
         dispatch(setUserState(formatUser(data)));
       } catch (error) {
-        console.log("error: ", error);
+        // 401 là expected behavior khi user chưa login, không cần log error
+        // Chỉ log các error khác (network errors, server errors, etc.)
+        if (error?.response?.status !== 401) {
+          console.log("error fetching user: ", error);
+        }
+        // Set user state thành null khi không authenticated (401 hoặc error khác)
         dispatch(setUserState(null));
       }
     };
 
     fetchData();
-  }, []);
+  }, [endpoint, dispatch]);
 
   return <div>{children}</div>;
 }

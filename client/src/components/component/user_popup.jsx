@@ -29,7 +29,7 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
               src={endpoint.originUrl + user.avatar}
               alt={user.name}
             />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
       </PopoverTrigger>
@@ -41,7 +41,7 @@ export function UserPopup({ user, onProfileClick, handleLogout }) {
                 src={endpoint.originUrl + user.avatar}
                 alt={user.name}
               />
-              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
               <h4

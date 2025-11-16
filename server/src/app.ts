@@ -1,9 +1,10 @@
 import { Response } from "express";
 import cookieSession from "cookie-session";
+import cookieParser from "cookie-parser";
 
 import cors from "cors";
 import { handleError } from "./middlewares/handle_error";
-import { passportA, passportU } from "./configs/passport";
+import { passportA } from "./configs/passport"; // Chỉ giữ passportA cho admin
 import routerU from "./routes/user";
 import routerA from "./routes/admin";
 import routerP from "./routes/pub";
@@ -78,12 +79,14 @@ app.use(
     view: "details", // Hiển thị chi tiết (size, modified date, etc.)
   })
 );
+app.use(cookieParser()); // Parse cookies từ request
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Passport chỉ dùng cho admin, không dùng cho user nữa
 app.use(passportA.initialize({ userProperty: "user" }));
 app.use(passportA.session());
-app.use(passportU.initialize({ userProperty: "user" }));
-app.use(passportU.session());
+
 app.use("/api/user", routerU);
 app.use("/api/admin", routerA);
 app.use("/api/pub", routerP);
