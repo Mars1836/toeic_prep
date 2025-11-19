@@ -26,6 +26,8 @@ import {
   generateAccessToken,
   verifyRefreshToken,
   revokeRefreshToken,
+  markRefreshTokenAsUsed,
+  generateRefreshToken,
 } from "../../../services/jwt";
 import {
   setAccessTokenCookie,
@@ -147,8 +149,12 @@ userAuthRouter.post(
 
 // Refresh token endpoint - tạo access token mới từ refresh token
 // POST /api/user/auth/refresh
-// Body: { "refreshToken": "..." }
-// Response: { "accessToken": "...", "refreshToken": "..." } (optional new refresh token)
+// Body: { "refreshToken": "..." } (optional, có thể lấy từ cookie)
+// Response: { "accessToken": "...", "refreshToken": "..." }
+//
+// **SECURITY: Token Rotation**
+// - Mỗi lần refresh, tạo refresh token MỚI và revoke token cũ
+// - Nếu token cũ được dùng lại => Token theft detected => Revoke ALL tokens
 userAuthRouter.post(
   "/refresh",
   // Refresh token có thể từ body hoặc cookie, không bắt buộc validate
@@ -166,7 +172,7 @@ userAuthRouter.post(
     }
 
     try {
-      // Verify refresh token (kiểm tra trong Redis và JWT)
+      // Verify refresh token (kiểm tra trong Redis, JWT, và reuse detection)
       const payload = await verifyRefreshToken(refreshToken);
 
       // Lấy user từ database để đảm bảo user vẫn tồn tại
@@ -175,20 +181,36 @@ userAuthRouter.post(
         throw new BadRequestError("User not found");
       }
 
-      // Generate access token mới
+      // **CRITICAL STEP: Mark token as used TRƯỚC KHI generate token mới**
+      // Nếu có attacker cùng lúc gửi request với cùng token, một trong hai sẽ fail
+      await markRefreshTokenAsUsed(payload.id, payload.jti);
+
+      // **TOKEN ROTATION: Generate NEW refresh token**
+      const newRefreshToken = await generateRefreshToken({
+        id: user.id,
+        email: user.email!,
+      });
+
+      // Generate access token mới với parentRefreshJti để tracking
+      // (Cần decode new refresh token để lấy jti, hoặc return jti từ generateRefreshToken)
+      // Để đơn giản, tạm thời không pass parentRefreshJti cho access token khi refresh
+      // (Chỉ track access tokens tạo lúc login/signup)
       const newAccessToken = generateAccessToken({
         id: user.id,
         email: user.email!,
       });
 
-      // Set access token cookie mới
-      setAccessTokenCookie(res, newAccessToken);
-      // Giữ nguyên refresh token cookie (không cần set lại)
+      // Revoke OLD refresh token (đã dùng xong)
+      await revokeRefreshToken(payload.id, payload.jti);
 
-      // Trả về access token mới
+      // Set cookies mới cho client
+      setAccessTokenCookie(res, newAccessToken);
+      setRefreshTokenCookie(res, newRefreshToken);
+
+      // Trả về tokens mới
       res.status(200).json({
         accessToken: newAccessToken,
-        // refreshToken giữ nguyên, client không cần refresh lại
+        refreshToken: newRefreshToken,
       });
     } catch (error) {
       // Handle refresh token errors
@@ -196,8 +218,12 @@ userAuthRouter.post(
         if (
           error.message === "Refresh token expired" ||
           error.message === "Invalid refresh token" ||
-          error.message === "Refresh token not found or invalid"
+          error.message === "Refresh token not found or expired" ||
+          error.message === "Refresh token not found or invalid" ||
+          error.message.includes("Refresh token reuse detected")
         ) {
+          // Clear cookies vì token không còn valid
+          clearAuthCookies(res);
           throw new NotAuthorizedError("Invalid or expired refresh token");
         }
       }
@@ -207,13 +233,33 @@ userAuthRouter.post(
 );
 
 // Logout endpoint - revoke refresh token
+// NOTE: Với system mới, một user có thể có nhiều refresh tokens (multi-device)
+// Hiện tại chỉ revoke token hiện tại. Để logout all devices, cần implement riêng.
 userAuthRouter.post(
   "/logout",
   handleAsync(jwtAuth),
   handleAsync(requireAuth),
   handleAsync(async function (req: Request, res: Response) {
-    // Revoke refresh token trong Redis
-    await revokeRefreshToken(req.user!.id);
+    // Lấy refresh token từ cookie hoặc body để revoke
+    let refreshToken = req.body.refreshToken;
+    if (!refreshToken && req.cookies && req.cookies[REFRESH_TOKEN_COOKIE]) {
+      refreshToken = req.cookies[REFRESH_TOKEN_COOKIE];
+    }
+
+    // Nếu có refresh token, revoke nó
+    if (refreshToken) {
+      try {
+        // Decode để lấy jti (không verify, chỉ decode)
+        const jwt = require("jsonwebtoken");
+        const decoded = jwt.decode(refreshToken) as any;
+        if (decoded && decoded.jti) {
+          await revokeRefreshToken(req.user!.id, decoded.jti);
+        }
+      } catch (error) {
+        // Ignore errors - user đang logout anyway
+        console.log("Error revoking refresh token on logout:", error);
+      }
+    }
 
     // Clear cookies
     clearAuthCookies(res);

@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { verifyAccessToken, UserPayload } from "../services/jwt";
+import {
+  verifyAccessToken,
+  AccessTokenPayload,
+  isAccessTokenBlacklisted,
+} from "../services/jwt";
 import { NotAuthorizedError } from "../errors/not_authorized_error";
 
 // UserPayload tương thích với Express.User (có id)
@@ -12,6 +16,8 @@ import { ACCESS_TOKEN_COOKIE } from "../utils/cookie_helper";
  * Ưu tiên lấy từ Authorization header, nếu không có thì lấy từ cookie
  * Format header: Authorization: Bearer <token>
  * Cookie name: access_token
+ *
+ * Security: Kiểm tra blacklist để prevent sử dụng token đã bị revoke
  */
 export async function jwtAuth(req: Request, res: Response, next: NextFunction) {
   try {
@@ -33,7 +39,15 @@ export async function jwtAuth(req: Request, res: Response, next: NextFunction) {
     }
 
     // Verify token
-    const decoded = verifyAccessToken(token);
+    const decoded = verifyAccessToken(token) as AccessTokenPayload;
+
+    // **SECURITY CHECK: Kiểm tra xem token có bị blacklist không**
+    // (Xảy ra khi detect refresh token reuse hoặc user logout all devices)
+    if (decoded.jti && (await isAccessTokenBlacklisted(decoded.jti))) {
+      throw new NotAuthorizedError(
+        "Token has been revoked. Please login again."
+      );
+    }
 
     // Attach user info vào request (UserPayload có id, tương thích với Express.User)
     req.user = decoded as any;
