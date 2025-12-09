@@ -3,6 +3,10 @@ import { constEnv } from "./const";
 import { changePwMailTemp } from "../utils/mail_temp/mail.change-pw.temp";
 import { verifyMailTemp } from "../utils/mail_temp/mail.verify.temp";
 import { resultExamTemplate } from "../utils/mail_temp/mail.result-exam.temp";
+import {
+  securityAlertTemplate,
+  SecurityAlertData,
+} from "../utils/mail_temp/mail.security-alert.temp";
 
 export const transport = nodemailer.createTransport({
   service: "gmail",
@@ -75,3 +79,26 @@ export const sendResultExam = async ({
     throw error;
   }
 };
+
+/**
+ * Send security alert email khi phát hiện login bất thường
+ */
+export async function sendSecurityAlertEmail(
+  to: string,
+  data: SecurityAlertData
+): Promise<void> {
+  try {
+    const info = await transport.sendMail({
+      from: constEnv.nodemailerUser,
+      to,
+      subject: "🔒 Security Alert - Unusual Login Activity Detected",
+      html: securityAlertTemplate(data),
+      priority: "high", // Mark as high priority
+    });
+
+    console.log("[Security Alert Email] Sent to %s: %s", to, info.messageId);
+  } catch (error) {
+    console.error("[Security Alert Email] Error sending to %s:", to, error);
+    // Không throw error để không block login flow
+  }
+}

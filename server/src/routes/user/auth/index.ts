@@ -16,6 +16,7 @@ import bcrypt from "bcryptjs";
 import {
   sendMailChangePW,
   sendMailVerifyEmail,
+  sendSecurityAlertEmail,
 } from "../../../configs/nodemailer";
 import { userModel } from "../../../models/user.model";
 
@@ -28,6 +29,10 @@ import {
   revokeRefreshToken,
   markRefreshTokenAsUsed,
   generateRefreshToken,
+  saveSuspiciousToken,
+  activateSuspiciousToken,
+  blacklistSuspiciousToken,
+  getSuspiciousToken,
 } from "../../../services/jwt";
 import {
   setAccessTokenCookie,
@@ -35,6 +40,16 @@ import {
   clearAuthCookies,
   REFRESH_TOKEN_COOKIE,
 } from "../../../utils/cookie_helper";
+import {
+  generateDeviceFingerprint,
+  formatDeviceInfo,
+} from "../../../services/device_fingerprint";
+import {
+  saveLoginRecord,
+  detectAnomalousLogin,
+  trustDevice,
+} from "../../../services/login_history";
+import jwt from "jsonwebtoken";
 
 const userAuthRouter = express.Router();
 
@@ -63,6 +78,9 @@ userAuthRouter.post(
     const { name, email, password } = req.body;
     const user = await userSrv.localCreate({ name, email, password });
 
+    // Generate device fingerprint
+    const deviceInfo = generateDeviceFingerprint(req);
+
     // Generate JWT tokens
     const tokens = await generateTokenPair({
       id: user.id,
@@ -72,6 +90,9 @@ userAuthRouter.post(
     // Set cookies cho client (giống Passport)
     setAccessTokenCookie(res, tokens.accessToken);
     setRefreshTokenCookie(res, tokens.refreshToken);
+
+    // Save login history (first login for new user)
+    await saveLoginRecord(user.id, deviceInfo, true);
 
     // Return user info và tokens
     res.status(201).json({
@@ -124,17 +145,78 @@ userAuthRouter.post(
     // Xác thực user
     const user = await userSrv.localLogin({ email, password });
 
+    // **SECURITY: Device fingerprinting & anomaly detection**
+    const deviceInfo = generateDeviceFingerprint(req);
+    const anomalyResult = await detectAnomalousLogin(user.id, deviceInfo);
+
     // Generate JWT tokens
     const tokens = await generateTokenPair({
       id: user.id,
       email: user.email!,
     });
 
+    // **SECURITY: Nếu login bất thường, lưu token dạng suspicious**
+    if (anomalyResult.isAnomalous) {
+      // Lưu token vào Redis dạng suspicious (chờ xác nhận từ email)
+      const tokenId = await saveSuspiciousToken(
+        user.id,
+        user.email!,
+        tokens,
+        deviceInfo
+      );
+
+      // KHÔNG set cookies - token chưa được kích hoạt
+      // KHÔNG save login record - chờ xác nhận
+
+      // Gửi email với tokenId để user có thể xác nhận
+      sendSecurityAlertEmail(user.email!, {
+        userName: user.name || "User",
+        loginTime: new Date().toLocaleString("en-US", {
+          timeZone: "Asia/Ho_Chi_Minh",
+          dateStyle: "full",
+          timeStyle: "long",
+        }),
+        location: deviceInfo.ip,
+        device: deviceInfo.device,
+        browser: deviceInfo.browser,
+        os: deviceInfo.os,
+        ip: deviceInfo.ip,
+        reasons: anomalyResult.reasons,
+        riskLevel: anomalyResult.riskLevel,
+        tokenId, // Token ID để xác nhận
+      }).catch((err) => {
+        console.error("[Login] Failed to send security alert email:", err);
+      });
+
+      // Return response với thông báo cần xác nhận email
+      return res.status(200).json({
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          avatar: user.avatar,
+        },
+        // KHÔNG return tokens - chờ xác nhận
+        requiresEmailConfirmation: true,
+        message:
+          "We detected unusual login activity. Please check your email to confirm this login.",
+        securityAlert: {
+          message:
+            "We detected unusual activity. Please check your email for details.",
+          riskLevel: anomalyResult.riskLevel,
+        },
+      });
+    }
+
+    // Login bình thường (không có anomaly)
     // Set cookies cho client (giống Passport)
     setAccessTokenCookie(res, tokens.accessToken);
     setRefreshTokenCookie(res, tokens.refreshToken);
 
-    // Return user info và tokens (có thể return hoặc không, cookie đã được set)
+    // Save login record to history
+    await saveLoginRecord(user.id, deviceInfo, true);
+
+    // Return user info và tokens
     res.status(200).json({
       user: {
         id: user.id,
@@ -437,4 +519,118 @@ userAuthRouter.post(
     });
   })
 );
+
+// ==================== SECURITY ENDPOINTS ====================
+
+/**
+ * Confirm suspicious login (user clicks "Yes, this was me" in email)
+ * POST /api/user/auth/security/confirm-login
+ * Body: { tokenId: string }
+ */
+userAuthRouter.post(
+  "/security/confirm-login",
+  [
+    body("tokenId").notEmpty().withMessage("Token ID is required"),
+  ],
+  handleAsync(validate_request),
+  handleAsync(async function (req: Request, res: Response) {
+    const { tokenId } = req.body;
+
+    // Lấy suspicious token data để lấy userId
+    // Cần tìm trong Redis bằng cách scan pattern (vì không biết userId)
+    // Hoặc yêu cầu user đăng nhập trước (nhưng user chưa có token active)
+    // Giải pháp: Lưu thêm mapping tokenId -> userId hoặc yêu cầu email trong body
+
+    // Tạm thời: yêu cầu email để tìm userId
+    const { email } = req.body;
+    if (!email) {
+      throw new BadRequestError("Email is required to confirm login");
+    }
+
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      throw new BadRequestError("User not found");
+    }
+
+    // Kích hoạt suspicious token
+    const tokens = await activateSuspiciousToken(user.id, tokenId);
+
+    // Trust device (lưu vào login history)
+    const suspiciousData = await getSuspiciousToken(user.id, tokenId);
+    if (suspiciousData?.deviceInfo) {
+      await trustDevice(user.id, suspiciousData.deviceInfo);
+    }
+
+    // Set cookies cho client
+    setAccessTokenCookie(res, tokens.accessToken);
+    setRefreshTokenCookie(res, tokens.refreshToken);
+
+    res.status(200).json({
+      message: "Login confirmed successfully",
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+      },
+      ...tokens,
+    });
+  })
+);
+
+/**
+ * Reject suspicious login (user clicks "No, secure my account" in email)
+ * POST /api/user/auth/security/reject-login
+ * Body: { tokenId: string, email?: string }
+ */
+userAuthRouter.post(
+  "/security/reject-login",
+  [
+    body("tokenId").notEmpty().withMessage("Token ID is required"),
+  ],
+  handleAsync(validate_request),
+  handleAsync(async function (req: Request, res: Response) {
+    const { tokenId, email } = req.body;
+
+    // Tìm user từ email hoặc từ tokenId
+    let userId: string | null = null;
+
+    if (email) {
+      const user = await userModel.findOne({ email });
+      if (user) {
+        userId = user.id;
+      }
+    }
+
+    // Nếu không có email, scan Redis để tìm (chậm hơn nhưng vẫn work)
+    if (!userId) {
+      const pattern = `suspicious_token:*:${tokenId}`;
+      const keys = await redis.client.keys(pattern);
+      if (keys.length > 0) {
+        const parts = keys[0].split(":");
+        if (parts.length === 3) {
+          userId = parts[1]; // suspicious_token:{userId}:{tokenId}
+        }
+      }
+    }
+
+    if (!userId) {
+      throw new BadRequestError("Token not found or already expired");
+    }
+
+    // Blacklist suspicious token
+    await blacklistSuspiciousToken(userId, tokenId);
+
+    // Revoke all user tokens (bảo mật tài khoản)
+    const { revokeAllUserTokens } = await import("../../../services/jwt");
+    await revokeAllUserTokens(userId);
+
+    res.status(200).json({
+      message:
+        "Login rejected. All sessions have been revoked. Please change your password immediately.",
+      requiresPasswordChange: true,
+    });
+  })
+);
+
 export default userAuthRouter;

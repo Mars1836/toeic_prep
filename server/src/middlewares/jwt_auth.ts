@@ -3,6 +3,7 @@ import {
   verifyAccessToken,
   AccessTokenPayload,
   isAccessTokenBlacklisted,
+  isAccessTokenSuspicious,
 } from "../services/jwt";
 import { NotAuthorizedError } from "../errors/not_authorized_error";
 
@@ -41,7 +42,15 @@ export async function jwtAuth(req: Request, res: Response, next: NextFunction) {
     // Verify token
     const decoded = verifyAccessToken(token) as AccessTokenPayload;
 
-    // **SECURITY CHECK: Kiểm tra xem token có bị blacklist không**
+    // **SECURITY CHECK 1: Kiểm tra xem token có phải là suspicious không**
+    // (Token đang chờ xác nhận từ email)
+    if (decoded.jti && (await isAccessTokenSuspicious(decoded.jti))) {
+      throw new NotAuthorizedError(
+        "Token is pending email confirmation. Please check your email and confirm the login."
+      );
+    }
+
+    // **SECURITY CHECK 2: Kiểm tra xem token có bị blacklist không**
     // (Xảy ra khi detect refresh token reuse hoặc user logout all devices)
     if (decoded.jti && (await isAccessTokenBlacklisted(decoded.jti))) {
       throw new NotAuthorizedError(

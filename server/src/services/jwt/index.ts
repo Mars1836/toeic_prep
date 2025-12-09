@@ -392,3 +392,246 @@ export async function revokeAllUserTokens(userId: string): Promise<void> {
     `[SECURITY] Revoked all tokens for user ${userId}. Total refresh tokens: ${keys.length}`
   );
 }
+
+// ==================== SUSPICIOUS TOKEN MANAGEMENT ====================
+
+/**
+ * Suspicious token data structure
+ * Lưu thông tin về token đang chờ xác nhận từ user
+ */
+export interface SuspiciousTokenData {
+  userId: string;
+  email: string;
+  accessJti: string;
+  refreshJti: string;
+  accessToken: string;
+  refreshToken: string;
+  deviceInfo: any; // DeviceInfo từ device fingerprinting
+  createdAt: string;
+  expiresAt: number; // Unix timestamp in seconds
+}
+
+// Suspicious token TTL: 30 phút (user phải xác nhận trong 30 phút)
+const SUSPICIOUS_TOKEN_TTL_SECONDS = 30 * 60; // 30 minutes
+
+/**
+ * Lưu token pair vào Redis dạng "suspicious" (chờ xác nhận từ email)
+ * @param userId - User ID
+ * @param tokens - Token pair (access + refresh)
+ * @param deviceInfo - Device information
+ * @returns Token ID để gửi trong email
+ */
+export async function saveSuspiciousToken(
+  userId: string,
+  email: string,
+  tokens: TokenPair,
+  deviceInfo: any
+): Promise<string> {
+  // Decode tokens để lấy JTI
+  const accessDecoded = jwt.decode(tokens.accessToken) as AccessTokenPayload;
+  const refreshDecoded = jwt.decode(tokens.refreshToken) as RefreshTokenPayload;
+
+  if (!accessDecoded?.jti || !refreshDecoded?.jti) {
+    throw new Error("Failed to decode token JTI");
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  const expiresAt = now + SUSPICIOUS_TOKEN_TTL_SECONDS;
+
+  const suspiciousData: SuspiciousTokenData = {
+    userId,
+    email,
+    accessJti: accessDecoded.jti,
+    refreshJti: refreshDecoded.jti,
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
+    deviceInfo,
+    createdAt: new Date().toISOString(),
+    expiresAt,
+  };
+
+  // Lưu với key: suspicious_token:{userId}:{refreshJti}
+  const redisKey = `suspicious_token:${userId}:${refreshDecoded.jti}`;
+  await redis.client.set(redisKey, JSON.stringify(suspiciousData), {
+    EX: SUSPICIOUS_TOKEN_TTL_SECONDS,
+  });
+
+  // Tạo một key mapping từ accessJti để dễ lookup
+  const accessJtiKey = `suspicious_access_jti:${accessDecoded.jti}`;
+  await redis.client.set(accessJtiKey, refreshDecoded.jti, {
+    EX: SUSPICIOUS_TOKEN_TTL_SECONDS,
+  });
+
+  console.log(
+    `[Suspicious Token] Saved for user ${userId}, refreshJti: ${refreshDecoded.jti}`
+  );
+
+  // Return refreshJti làm tokenId để gửi trong email
+  return refreshDecoded.jti;
+}
+
+/**
+ * Lấy suspicious token data từ Redis
+ * @param userId - User ID
+ * @param tokenId - Refresh JTI (token ID)
+ */
+export async function getSuspiciousToken(
+  userId: string,
+  tokenId: string
+): Promise<SuspiciousTokenData | null> {
+  const redisKey = `suspicious_token:${userId}:${tokenId}`;
+  const data = await redis.client.get(redisKey);
+
+  if (!data) {
+    return null;
+  }
+
+  return JSON.parse(data) as SuspiciousTokenData;
+}
+
+/**
+ * Kích hoạt suspicious token (user xác nhận "Yes, this was me")
+ * - Chuyển refresh token từ suspicious sang active
+ * - Trust device
+ * - Xóa suspicious token record
+ */
+export async function activateSuspiciousToken(
+  userId: string,
+  tokenId: string
+): Promise<TokenPair> {
+  const suspiciousData = await getSuspiciousToken(userId, tokenId);
+
+  if (!suspiciousData) {
+    throw new Error("Suspicious token not found or expired");
+  }
+
+  // Lưu refresh token vào Redis như token bình thường
+  const refreshRedisKey = `refreshtoken:${userId}:${suspiciousData.refreshJti}`;
+  const now = Math.floor(Date.now() / 1000);
+  const exp = now + REFRESH_TOKEN_EXPIRE_SECONDS;
+
+  const refreshTokenData: RefreshTokenData = {
+    userId: suspiciousData.userId,
+    email: suspiciousData.email,
+    jti: suspiciousData.refreshJti,
+    iat: now,
+    exp,
+    usedCount: 0,
+    createdAt: new Date().toISOString(),
+  };
+
+  await redis.client.set(refreshRedisKey, JSON.stringify(refreshTokenData), {
+    EX: REFRESH_TOKEN_EXPIRE_SECONDS,
+  });
+
+  // Xóa suspicious token records
+  const suspiciousKey = `suspicious_token:${userId}:${tokenId}`;
+  const accessJtiKey = `suspicious_access_jti:${suspiciousData.accessJti}`;
+  await redis.client.del(suspiciousKey);
+  await redis.client.del(accessJtiKey);
+
+  console.log(
+    `[Suspicious Token] Activated for user ${userId}, tokenId: ${tokenId}`
+  );
+
+  return {
+    accessToken: suspiciousData.accessToken,
+    refreshToken: suspiciousData.refreshToken,
+  };
+}
+
+/**
+ * Blacklist suspicious token (user xác nhận "No, secure my account")
+ * - Blacklist cả access và refresh token
+ * - Xóa suspicious token record
+ */
+export async function blacklistSuspiciousToken(
+  userId: string,
+  tokenId: string
+): Promise<void> {
+  const suspiciousData = await getSuspiciousToken(userId, tokenId);
+
+  if (!suspiciousData) {
+    // Token đã hết hạn hoặc không tồn tại, không cần làm gì
+    return;
+  }
+
+  // Blacklist access token
+  const accessTokenDecoded = jwt.decode(suspiciousData.accessToken) as jwt.JwtPayload & { exp?: number };
+  if (accessTokenDecoded?.exp) {
+    const expiresIn = accessTokenDecoded.exp - Math.floor(Date.now() / 1000);
+    if (expiresIn > 0) {
+      await blacklistAccessToken(suspiciousData.accessJti, expiresIn);
+    }
+  }
+
+  // Blacklist refresh token bằng cách không lưu vào Redis (đã không lưu rồi)
+  // Chỉ cần đảm bảo không lưu vào refreshtoken:*
+
+  // Xóa suspicious token records
+  const suspiciousKey = `suspicious_token:${userId}:${tokenId}`;
+  const accessJtiKey = `suspicious_access_jti:${suspiciousData.accessJti}`;
+  await redis.client.del(suspiciousKey);
+  await redis.client.del(accessJtiKey);
+
+  console.log(
+    `[Suspicious Token] Blacklisted for user ${userId}, tokenId: ${tokenId}`
+  );
+}
+
+/**
+ * Kiểm tra xem access token có phải là suspicious không
+ * @param accessJti - Access token JTI
+ */
+export async function isAccessTokenSuspicious(
+  accessJti: string
+): Promise<boolean> {
+  const accessJtiKey = `suspicious_access_jti:${accessJti}`;
+  const exists = await redis.client.exists(accessJtiKey);
+  return exists === 1;
+}
+
+/**
+ * Auto-blacklist suspicious tokens khi hết hạn
+ * Được gọi bởi scheduled job hoặc khi check token
+ */
+export async function cleanupExpiredSuspiciousTokens(): Promise<void> {
+  // Tìm tất cả suspicious tokens
+  const pattern = `suspicious_token:*`;
+  const keys = await redis.client.keys(pattern);
+
+  let blacklistedCount = 0;
+
+  for (const key of keys) {
+    const data = await redis.client.get(key);
+    if (!data) continue;
+
+    const suspiciousData: SuspiciousTokenData = JSON.parse(data);
+
+    // Kiểm tra xem đã hết hạn chưa
+    const now = Math.floor(Date.now() / 1000);
+    if (suspiciousData.expiresAt <= now) {
+      // Auto-blacklist
+      const accessTokenDecoded = jwt.decode(suspiciousData.accessToken) as jwt.JwtPayload & { exp?: number };
+      if (accessTokenDecoded?.exp) {
+        const expiresIn = accessTokenDecoded.exp - now;
+        if (expiresIn > 0) {
+          await blacklistAccessToken(suspiciousData.accessJti, expiresIn);
+        }
+      }
+
+      // Xóa records
+      await redis.client.del(key);
+      const accessJtiKey = `suspicious_access_jti:${suspiciousData.accessJti}`;
+      await redis.client.del(accessJtiKey);
+
+      blacklistedCount++;
+    }
+  }
+
+  if (blacklistedCount > 0) {
+    console.log(
+      `[Suspicious Token] Auto-blacklisted ${blacklistedCount} expired tokens`
+    );
+  }
+}

@@ -67,6 +67,18 @@
     ]
   },
   {
+    "path": "/api/user/auth/security/confirm-login",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/user/auth/security/reject-login",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
     "path": "/api/user/flashcard",
     "methods": [
       "POST",
