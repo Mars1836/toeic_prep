@@ -16,3 +16,6 @@ dist
 *.ogg
 *.flac
 *.aac
+uploads/audios/
+uploads/images/
+uploads/excels/
