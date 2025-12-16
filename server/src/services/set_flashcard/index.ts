@@ -20,7 +20,7 @@ namespace SetFlashcardSrv {
   export async function getByUser(userId: string) {
     const rs = await setFlashcardModel.find({
       userId: userId,
-    });
+    }).sort({ createdAt: -1 });
     return rs;
   }
   export async function getPublic() {

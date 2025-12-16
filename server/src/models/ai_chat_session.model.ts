@@ -34,7 +34,7 @@ const aiChatSessionSchema = new Schema(
     },
     modelName: {
       type: String,
-      default: "gemini-2.5-flash",
+      default: "gemini-flash-lite-latest",
     },
     lastMessageAt: {
       type: Date,

@@ -62,7 +62,7 @@ const schema = {
   ],
 };
 export const modelAI = genAI.getGenerativeModel({
-  model: "gemini-2.5-flash",
+  model: "gemini-flash-lite-latest",
   generationConfig: {
     responseMimeType: "application/json",
     responseSchema: schema,

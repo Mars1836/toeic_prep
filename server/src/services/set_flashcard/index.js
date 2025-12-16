@@ -32,7 +32,7 @@ var SetFlashcardSrv;
         return __awaiter(this, void 0, void 0, function* () {
             const rs = yield set_flashcard_model_1.setFlashcardModel.find({
                 userId: userId,
-            });
+            }).sort({ createdAt: -1 });
             return rs;
         });
     }

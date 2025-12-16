@@ -234,7 +234,7 @@ ________________________________________
 };
 exports.recommendPrompt = recommendPrompt;
 exports.modelAIRecommend = instance_1.genAI.getGenerativeModel({
-    model: "gemini-2.5-pro",
+    model: "gemini-flash-lite-latest",
     // generationConfig: {
     //   responseMimeType: "application/json",
     //   responseSchema: schema,

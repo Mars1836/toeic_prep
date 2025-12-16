@@ -48,7 +48,7 @@ const schema = {
     required: ["correctAnswer", "options", "explanation"],
 };
 exports.explainAIModel = instance_1.genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+    model: "gemini-flash-lite-latest",
     generationConfig: {
         responseMimeType: "application/json",
         responseSchema: schema,
