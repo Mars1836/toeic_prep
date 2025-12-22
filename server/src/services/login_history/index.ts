@@ -5,9 +5,10 @@
  * - Login từ device mới
  * - Login từ IP mới
  * - Login từ location mới
+ * 
+ * STORAGE: MongoDB (unlimited history)
  */
 
-import { redis } from "../../connect/redis";
 import {
   DeviceInfo,
   formatDeviceInfo,
@@ -15,6 +16,7 @@ import {
   isSimilarIP,
 } from "../device_fingerprint";
 import geoip from "geoip-lite";
+import { LoginHistory, LoginHistoryAttr } from "../../models/login_history.model";
 
 // Simple logger wrapper (using console for now)
 const logger = {
@@ -41,11 +43,12 @@ export interface AnomalyDetectionResult {
   shouldRequireVerification: boolean;
 }
 
-const MAX_LOGIN_HISTORY = 10; // Giữ 10 login gần nhất
-const LOGIN_HISTORY_KEY_PREFIX = "login_history:";
+// Configuration
+const HISTORY_QUERY_LIMIT = 50; // Query 50 recent logins for anomaly detection
+const HISTORY_DAYS_BACK = 90; // Look back 90 days for history
 
 /**
- * Lưu login record vào Redis (LPUSH + LTRIM để giữ N records gần nhất)
+ * Lưu login record vào MongoDB
  */
 export async function saveLoginRecord(
   userId: string,
@@ -54,28 +57,20 @@ export async function saveLoginRecord(
 ): Promise<void> {
   const location = getLocationFromIP(device.ip);
 
-  const record: LoginRecord = {
+  const record: LoginHistoryAttr = {
+    userId,
     fingerprint: device.fingerprint,
     ip: device.ip,
     location,
     browser: device.browser,
     os: device.os,
     device: device.device,
-    timestamp: Date.now(),
     success,
+    timestamp: new Date(),
   };
 
-  const key = `${LOGIN_HISTORY_KEY_PREFIX}${userId}`;
-
   try {
-    // LPUSH: Thêm vào đầu list (newest first)
-    await redis.client.lPush(key, JSON.stringify(record));
-
-    // LTRIM: Chỉ giữ MAX_LOGIN_HISTORY records gần nhất
-    await redis.client.lTrim(key, 0, MAX_LOGIN_HISTORY - 1);
-
-    // Set TTL 90 ngày
-    await redis.client.expire(key, 90 * 24 * 60 * 60);
+    await LoginHistory.create(record);
 
     logger.info(`[Login History] Saved for user ${userId}:`, {
       device: formatDeviceInfo(device),
@@ -89,16 +84,77 @@ export async function saveLoginRecord(
 }
 
 /**
- * Lấy lịch sử login của user
+ * Lấy lịch sử login của user (recent logins)
+ * @param userId User ID
+ * @param limit Number of records to fetch (default: 50)
+ * @param daysBack Number of days to look back (default: 90)
  */
-export async function getLoginHistory(userId: string): Promise<LoginRecord[]> {
-  const key = `${LOGIN_HISTORY_KEY_PREFIX}${userId}`;
-
+export async function getLoginHistory(
+  userId: string,
+  limit: number = HISTORY_QUERY_LIMIT,
+  daysBack: number = HISTORY_DAYS_BACK
+): Promise<LoginRecord[]> {
   try {
-    const records = await redis.client.lRange(key, 0, -1);
-    return records.map((r: string) => JSON.parse(r) as LoginRecord);
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - daysBack);
+
+    const records = await LoginHistory.find({
+      userId,
+      timestamp: { $gte: startDate },
+    })
+      .sort({ timestamp: -1 }) // Newest first
+      .limit(limit)
+      .lean();
+
+    return records.map((r) => ({
+      fingerprint: r.fingerprint,
+      ip: r.ip,
+      location: r.location,
+      browser: r.browser,
+      os: r.os,
+      device: r.device,
+      timestamp: r.timestamp.getTime(),
+      success: r.success,
+    }));
   } catch (error) {
     logger.error("[Login History] Error getting history:", error);
+    return [];
+  }
+}
+
+/**
+ * Lấy recent successful logins (for anomaly detection)
+ */
+export async function getRecentSuccessfulLogins(
+  userId: string,
+  limit: number = HISTORY_QUERY_LIMIT,
+  daysBack: number = HISTORY_DAYS_BACK
+): Promise<LoginRecord[]> {
+  try {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - daysBack);
+
+    const records = await LoginHistory.find({
+      userId,
+      success: true,
+      timestamp: { $gte: startDate },
+    })
+      .sort({ timestamp: -1 })
+      .limit(limit)
+      .lean();
+
+    return records.map((r) => ({
+      fingerprint: r.fingerprint,
+      ip: r.ip,
+      location: r.location,
+      browser: r.browser,
+      os: r.os,
+      device: r.device,
+      timestamp: r.timestamp.getTime(),
+      success: r.success,
+    }));
+  } catch (error) {
+    logger.error("[Login History] Error getting successful logins:", error);
     return [];
   }
 }
@@ -110,10 +166,11 @@ export async function detectAnomalousLogin(
   userId: string,
   currentDevice: DeviceInfo
 ): Promise<AnomalyDetectionResult> {
-  const history = await getLoginHistory(userId);
+  // Query successful logins from history
+  const successfulLogins = await getRecentSuccessfulLogins(userId);
 
   // Nếu chưa có lịch sử (user mới), không coi là anomaly
-  if (history.length === 0) {
+  if (successfulLogins.length === 0) {
     return {
       isAnomalous: false,
       reasons: [],
@@ -124,19 +181,6 @@ export async function detectAnomalousLogin(
 
   const reasons: string[] = [];
   let riskLevel: "low" | "medium" | "high" = "low";
-
-  // Lọc ra các successful logins để compare
-  const successfulLogins = history.filter((h) => h.success);
-
-  if (successfulLogins.length === 0) {
-    // Nếu chưa có successful login nào, không check anomaly
-    return {
-      isAnomalous: false,
-      reasons: [],
-      riskLevel: "low",
-      shouldRequireVerification: false,
-    };
-  }
 
   // Check 1: Device fingerprint mới (chưa từng thấy)
   const knownFingerprints = new Set(successfulLogins.map((h) => h.fingerprint));
@@ -199,6 +243,7 @@ export async function detectAnomalousLogin(
     riskLevel,
     currentDevice: formatDeviceInfo(currentDevice),
     currentLocation,
+    historyCount: successfulLogins.length,
   });
 
   if (isAnomalous) {
@@ -246,9 +291,12 @@ function getLocationFromIP(ip: string): string {
  * Clear login history (dùng khi user đổi password hoặc revoke all sessions)
  */
 export async function clearLoginHistory(userId: string): Promise<void> {
-  const key = `${LOGIN_HISTORY_KEY_PREFIX}${userId}`;
-  await redis.client.del(key);
-  logger.info(`[Login History] Cleared for user ${userId}`);
+  try {
+    const result = await LoginHistory.deleteMany({ userId });
+    logger.info(`[Login History] Cleared ${result.deletedCount} records for user ${userId}`);
+  } catch (error) {
+    logger.error("[Login History] Error clearing history:", error);
+  }
 }
 
 /**
@@ -263,4 +311,61 @@ export async function trustDevice(
   logger.info(`[Login History] Device trusted for user ${userId}:`, {
     device: formatDeviceInfo(device),
   });
+}
+
+/**
+ * Get login statistics for user
+ */
+export async function getLoginStats(userId: string, daysBack: number = 30) {
+  try {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - daysBack);
+
+    const stats = await LoginHistory.aggregate([
+      {
+        $match: {
+          userId,
+          timestamp: { $gte: startDate },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalLogins: { $sum: 1 },
+          successfulLogins: {
+            $sum: { $cond: [{ $eq: ["$success", true] }, 1, 0] },
+          },
+          failedLogins: {
+            $sum: { $cond: [{ $eq: ["$success", false] }, 1, 0] },
+          },
+          uniqueDevices: { $addToSet: "$fingerprint" },
+          uniqueIPs: { $addToSet: "$ip" },
+          uniqueLocations: { $addToSet: "$location" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalLogins: 1,
+          successfulLogins: 1,
+          failedLogins: 1,
+          uniqueDeviceCount: { $size: "$uniqueDevices" },
+          uniqueIPCount: { $size: "$uniqueIPs" },
+          uniqueLocationCount: { $size: "$uniqueLocations" },
+        },
+      },
+    ]);
+
+    return stats[0] || {
+      totalLogins: 0,
+      successfulLogins: 0,
+      failedLogins: 0,
+      uniqueDeviceCount: 0,
+      uniqueIPCount: 0,
+      uniqueLocationCount: 0,
+    };
+  } catch (error) {
+    logger.error("[Login History] Error getting stats:", error);
+    return null;
+  }
 }
