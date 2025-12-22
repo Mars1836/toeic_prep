@@ -108,7 +108,10 @@ export function SignIn({ setShowSignUp }) {
     body: { email: email.value, password: password.value },
     onSuccess: (data) => {
       toast.success("Login successfull");
-      dispatch(setUserState(formatUser(data)));
+      // Login response có structure: { user: {...}, accessToken: "...", refreshToken: "..." }
+      // Lấy user object từ response (cookies đã được set tự động bởi server)
+      const userData = data.user || data; // Fallback nếu response structure khác
+      dispatch(setUserState(formatUser(userData)));
       router.push(redirect ? redirect : "/");
     },
   });

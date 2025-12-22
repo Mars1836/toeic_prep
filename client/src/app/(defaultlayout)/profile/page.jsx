@@ -64,7 +64,7 @@ function Profile() {
               src={endpoint.originUrl + user.avatar}
               alt={user.name}
             />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
           <CardTitle className="text-2xl font-bold">{user.name}</CardTitle>
         </CardHeader>

@@ -3,7 +3,7 @@ import { UserType } from "../../configs/interface";
 import userAuthRouter from "./auth";
 import userFlashcardRouter from "./flashcard";
 import { handleAsync } from "../../middlewares/handle_async";
-import { requireAuth } from "../../middlewares/require_auth";
+import { requireAuth } from "../../middlewares/require_auth"; // requireAuth tự động verify JWT
 import userSetFlashcardRouter from "./set_flashcard";
 import testRouter from "./test";
 import userResultRouter from "./result";

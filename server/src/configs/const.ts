@@ -2,6 +2,9 @@ export interface ConstType {
   mongoUrl?: string;
   passwordSalt?: string;
   jwtSecret?: string;
+  jwtRefreshSecret?: string;
+  jwtAccessTokenTTL?: string; // Access token TTL (e.g., "15m", "1h")
+  jwtRefreshTokenTTL?: string; // Refresh token TTL (e.g., "7d", "1h", "30m", "90s")
   redisUrl?: string;
   googleClientId?: string;
   googleClientSecret?: string;
@@ -16,6 +19,9 @@ export const envMappingLocal: Record<ConstKey, string> = {
   mongoUrl: "MONGO_LOCAL_URL",
   passwordSalt: "PASSWORD_SALTROUND",
   jwtSecret: "JWT_SECRET_LOCAL",
+  jwtRefreshSecret: "JWT_REFRESH_SECRET_LOCAL",
+  jwtAccessTokenTTL: "JWT_ACCESS_TOKEN_TTL",
+  jwtRefreshTokenTTL: "JWT_REFRESH_TOKEN_TTL",
   redisUrl: "NAT_LOCAL_REDIS",
   googleClientId: "GOOGLE_CLIENT_ID",
   googleClientSecret: "GOOGLE_CLIENT_SECRET",
@@ -52,6 +58,9 @@ export class ConstEnv {
 }
 const constIns = new ConstEnv();
 constIns.setKey("jwtSecret");
+constIns.setKey("jwtRefreshSecret");
+constIns.setKey("jwtAccessTokenTTL");
+constIns.setKey("jwtRefreshTokenTTL");
 constIns.setKey("mongoUrl");
 constIns.setKey("passwordSalt");
 constIns.setKey("googleClientId");
