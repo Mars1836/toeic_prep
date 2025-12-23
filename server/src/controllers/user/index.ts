@@ -80,3 +80,5 @@ export const userCtrl = {
   getUpgradeUserAnalyst,
   getUserProgressAnalyst,
 };
+
+export { userAuthCtrl } from "./user.auth.controller";

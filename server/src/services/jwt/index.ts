@@ -254,6 +254,14 @@ export async function verifyRefreshToken(
       );
     }
 
+    // **SECURITY: Check if token is suspicious (pending verification)**
+    const isSuspicious = await isRefreshTokenSuspicious(decoded.id, decoded.jti);
+    if (isSuspicious) {
+      // Import dynamically to avoid circular dependency if needed, or assume it's available
+      const { PendingVerificationError } = require("../../errors/pending_verification_error");
+      throw new PendingVerificationError();
+    }
+
     // Token hợp lệ và chưa được sử dụng
     return decoded;
   } catch (error) {
@@ -409,6 +417,7 @@ export interface SuspiciousTokenData {
   deviceInfo: any; // DeviceInfo từ device fingerprinting
   createdAt: string;
   expiresAt: number; // Unix timestamp in seconds
+  activated?: boolean;
 }
 
 // Suspicious token TTL: 30 phút (user phải xác nhận trong 30 phút)
@@ -448,6 +457,7 @@ export async function saveSuspiciousToken(
     deviceInfo,
     createdAt: new Date().toISOString(),
     expiresAt,
+    activated: false
   };
 
   // Lưu với key: suspicious_token:{userId}:{refreshJti}
@@ -505,24 +515,8 @@ export async function activateSuspiciousToken(
     throw new Error("Suspicious token not found or expired");
   }
 
-  // Lưu refresh token vào Redis như token bình thường
-  const refreshRedisKey = `refreshtoken:${userId}:${suspiciousData.refreshJti}`;
-  const now = Math.floor(Date.now() / 1000);
-  const exp = now + REFRESH_TOKEN_EXPIRE_SECONDS;
-
-  const refreshTokenData: RefreshTokenData = {
-    userId: suspiciousData.userId,
-    email: suspiciousData.email,
-    jti: suspiciousData.refreshJti,
-    iat: now,
-    exp,
-    usedCount: 0,
-    createdAt: new Date().toISOString(),
-  };
-
-  await redis.client.set(refreshRedisKey, JSON.stringify(refreshTokenData), {
-    EX: REFRESH_TOKEN_EXPIRE_SECONDS,
-  });
+  // Token đã được tạo sẵn trong Redis bởi generateTokenPair rồi
+  // Chúng ta chỉ cần xóa flag suspicious thôi
 
   // Xóa suspicious token records
   const suspiciousKey = `suspicious_token:${userId}:${tokenId}`;
@@ -565,8 +559,13 @@ export async function blacklistSuspiciousToken(
     }
   }
 
-  // Blacklist refresh token bằng cách không lưu vào Redis (đã không lưu rồi)
-  // Chỉ cần đảm bảo không lưu vào refreshtoken:*
+  // Blacklist refresh token bằng cách XÓA khỏi Redis (vì verifyRefreshToken check Redis)
+  const refreshRedisKey = `refreshtoken:${userId}:${suspiciousData.refreshJti}`;
+  await redis.client.del(refreshRedisKey);
+
+  // Xóa tracking for refresh token
+  const trackingKey = `access_tokens:${userId}:${suspiciousData.refreshJti}`;
+  await redis.client.del(trackingKey);
 
   // Xóa suspicious token records
   const suspiciousKey = `suspicious_token:${userId}:${tokenId}`;
@@ -592,46 +591,15 @@ export async function isAccessTokenSuspicious(
 }
 
 /**
- * Auto-blacklist suspicious tokens khi hết hạn
- * Được gọi bởi scheduled job hoặc khi check token
+ * Kiểm tra xem refresh token có phải là suspicious không
+ * @param refreshJti - Refresh token JTI
  */
-export async function cleanupExpiredSuspiciousTokens(): Promise<void> {
-  // Tìm tất cả suspicious tokens
-  const pattern = `suspicious_token:*`;
-  const keys = await redis.client.keys(pattern);
-
-  let blacklistedCount = 0;
-
-  for (const key of keys) {
-    const data = await redis.client.get(key);
-    if (!data) continue;
-
-    const suspiciousData: SuspiciousTokenData = JSON.parse(data);
-
-    // Kiểm tra xem đã hết hạn chưa
-    const now = Math.floor(Date.now() / 1000);
-    if (suspiciousData.expiresAt <= now) {
-      // Auto-blacklist
-      const accessTokenDecoded = jwt.decode(suspiciousData.accessToken) as jwt.JwtPayload & { exp?: number };
-      if (accessTokenDecoded?.exp) {
-        const expiresIn = accessTokenDecoded.exp - now;
-        if (expiresIn > 0) {
-          await blacklistAccessToken(suspiciousData.accessJti, expiresIn);
-        }
-      }
-
-      // Xóa records
-      await redis.client.del(key);
-      const accessJtiKey = `suspicious_access_jti:${suspiciousData.accessJti}`;
-      await redis.client.del(accessJtiKey);
-
-      blacklistedCount++;
-    }
-  }
-
-  if (blacklistedCount > 0) {
-    console.log(
-      `[Suspicious Token] Auto-blacklisted ${blacklistedCount} expired tokens`
-    );
-  }
+export async function isRefreshTokenSuspicious(
+  userId: string,
+  refreshJti: string
+): Promise<boolean> {
+  const redisKey = `suspicious_token:${userId}:${refreshJti}`;
+  const exists = await redis.client.exists(redisKey);
+  return exists === 1;
 }
+

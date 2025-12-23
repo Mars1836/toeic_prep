@@ -40,10 +40,10 @@ function getCookieOptions() {
 
   return {
     httpOnly: true, // Prevent XSS attacks
-    secure: isProduction, // Only send over HTTPS in production
-    sameSite: isProduction ? ("none" as const) : ("lax" as const), // CSRF protection
+    secure: true, // Only send over HTTPS in production (but required true for SameSite=None on Chrome)
+    sameSite: "none" as const, // Allow cross-site on dev (ports)
     // domain: undefined, // Use default domain
-    // path: "/", // Available for all paths
+    path: "/", // Available for all paths
   };
 }
 
@@ -57,6 +57,8 @@ export function setAccessTokenCookie(res: Response, token: string): void {
   // Access token TTL từ config (default: "15m")
   const accessTokenTTL = constEnv.jwtAccessTokenTTL || "15m";
   const maxAge = parseTimeToMilliseconds(accessTokenTTL);
+  
+  console.log(`[CookieHelper] Setting Access Token Cookie: options=`, options, `maxAge=`, maxAge);
 
   res.cookie(ACCESS_TOKEN_COOKIE, token, {
     ...options,

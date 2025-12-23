@@ -45,9 +45,9 @@ export async function jwtAuth(req: Request, res: Response, next: NextFunction) {
     // **SECURITY CHECK 1: Kiểm tra xem token có phải là suspicious không**
     // (Token đang chờ xác nhận từ email)
     if (decoded.jti && (await isAccessTokenSuspicious(decoded.jti))) {
-      throw new NotAuthorizedError(
-        "Token is pending email confirmation. Please check your email and confirm the login."
-      );
+      // Import dynamically to avoid circular dependency if needed, or assume it's available
+      const { PendingVerificationError } = require("../errors/pending_verification_error");
+      throw new PendingVerificationError();
     }
 
     // **SECURITY CHECK 2: Kiểm tra xem token có bị blacklist không**
@@ -67,6 +67,18 @@ export async function jwtAuth(req: Request, res: Response, next: NextFunction) {
       throw error;
     }
 
+    // Check for PendingVerificationError (dynamic import check not ideal for instanceof, better check error name or code)
+    // Or better: Check if it's a CustomError
+    if (error instanceof Error && (error as any).statusCode === 403 && (error as any).serializeError) {
+       throw error;
+    }
+    
+    // Better approach: Import CustomError and check
+    const { CustomError } = require("../errors/custom_error");
+    if (error instanceof CustomError) {
+        throw error;
+    }
+
     // Handle JWT errors
     if (error instanceof Error) {
       if (error.message === "Access token expired") {
@@ -76,7 +88,7 @@ export async function jwtAuth(req: Request, res: Response, next: NextFunction) {
         throw new NotAuthorizedError("Invalid token");
       }
     }
-
+    
     throw new NotAuthorizedError("Authentication failed");
   }
 }

@@ -11,9 +11,7 @@ function handleError(
   if (err instanceof CustomError) {
     return res.status(err.statusCode).json({ errors: err.serializeError() });
   }
-
-  console.error(err);
-  console.log(err.message);
+  console.log(err);
   return res.status(400).json({
     errors: [{ message: err.message }],
   });

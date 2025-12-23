@@ -107,6 +107,13 @@ export function SignIn({ setShowSignUp }) {
     method: "post",
     body: { email: email.value, password: password.value },
     onSuccess: (data) => {
+      if (data.requiresEmailConfirmation) {
+        toast.info(
+          "Unusual login detected. Please check your email to verify your account."
+        );
+        router.push("/verify-login");
+        return;
+      }
       toast.success("Login successfull");
       // Login response có structure: { user: {...}, accessToken: "...", refreshToken: "..." }
       // Lấy user object từ response (cookies đã được set tự động bởi server)

@@ -36,6 +36,8 @@ export class Endpoint {
       sendVerifyEmail: this.originUrl + "/api/user/auth/otp/verify-email",
       requestVerifyEmail:
         this.originUrl + "/api/user/auth/request/verify-email",
+      confirmLogin: this.originUrl + "/api/user/auth/security/confirm-login",
+      rejectLogin: this.originUrl + "/api/user/auth/security/reject-login",
     };
   }
   handleTest() {
