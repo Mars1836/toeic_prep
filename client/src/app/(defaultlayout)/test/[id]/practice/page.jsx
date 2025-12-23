@@ -69,8 +69,16 @@ function TestPage({ params }) {
 
     try {
       const response = await fetch(
-        getExcel(endpoint, testData.fileName, testData.code)
+        getExcel(endpoint, testData.fileName, testData.code),
+        {
+          credentials: 'include'  // Send cookies for authentication
+        }
       );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const arrayBuffer = await response.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer, { type: "array" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -80,6 +88,7 @@ function TestPage({ params }) {
       });
       setData(jsonData);
     } catch (err) {
+      console.error("Error loading Excel file:", err);
       setError(
         "Error parsing Excel file. Please make sure it's a valid .xlsx file."
       );

@@ -4,12 +4,13 @@ import cookieParser from "cookie-parser";
 
 import cors from "cors";
 import { handleError } from "./middlewares/handle_error";
+import { staticFileAuth } from "./middlewares/static_file_auth";
+import { handleAsync } from "./middlewares/handle_async";
 import { passportA } from "./configs/passport"; // Chỉ giữ passportA cho admin
 import routerU from "./routes/user";
 import routerA from "./routes/admin";
 import routerP from "./routes/pub";
 import path from "path";
-import serveIndex from "serve-index";
 const express = require("express");
 const app = express();
 // Lấy môi trường từ process.env.NODE_ENV
@@ -72,17 +73,44 @@ app.use(
   cookieSession(adminCookieConfig)
 );
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(
-  "/uploads",
-  serveIndex(path.join(__dirname, "uploads"), {
-    icons: true, // Hiển thị icon cho các file
-    view: "details", // Hiển thị chi tiết (size, modified date, etc.)
-  })
-);
+// IMPORTANT: Parse cookies BEFORE static file auth
 app.use(cookieParser()); // Parse cookies từ request
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ============================================
+// STATIC FILE SERVING - UPLOADS
+// ============================================
+
+// Protected uploads (require authentication)
+const protectedUploads = [
+  "excels",
+  "audios",
+  "transcript-test",
+  "profile"
+];
+
+protectedUploads.forEach(dir => {
+  app.use(
+    `/uploads/${dir}`,
+    staticFileAuth,
+    express.static(path.join(__dirname, "uploads", dir))
+  );
+});
+
+// Public uploads (no authentication required)
+const publicUploads = [
+  "images",
+  "blog"
+];
+
+publicUploads.forEach(dir => {
+  app.use(
+    `/uploads/${dir}`,
+    express.static(path.join(__dirname, "uploads", dir))
+  );
+});
+
 
 // Passport chỉ dùng cho admin, không dùng cho user nữa
 app.use(passportA.initialize({ userProperty: "user" }));
