@@ -22,12 +22,15 @@ export interface Bucket {
 export type LimitLevel = "LOW" | "MEDIUM" | "HIGH" | "UNLIMITED";
 
 export class RateLimitFactory {
-  private readonly limitLevels: Record<LimitLevel, RateLimit>;
+  private readonly ipLimitLevels: Record<LimitLevel, RateLimit>;
+  private readonly userLimitLevels: Record<LimitLevel, RateLimit>;
   redis: any;
 
   constructor() {
     this.redis = redis.client;
-    this.limitLevels = {
+    
+    // IP-based rate limits (stricter)
+    this.ipLimitLevels = {
       LOW: {
         tokensPerInterval: 10,
         interval: 60000,
@@ -42,6 +45,30 @@ export class RateLimitFactory {
         tokensPerInterval: 100,
         interval: 60000,
         bucketSize: 100,
+      },
+      UNLIMITED: {
+        tokensPerInterval: 1000,
+        interval: 60000,
+        bucketSize: 1000,
+      },
+    };
+    
+    // User-based rate limits (more generous)
+    this.userLimitLevels = {
+      LOW: {
+        tokensPerInterval: 30,    // 3x IP limit
+        interval: 60000,
+        bucketSize: 30,
+      },
+      MEDIUM: {
+        tokensPerInterval: 100,   // ~3x IP limit
+        interval: 60000,
+        bucketSize: 100,
+      },
+      HIGH: {
+        tokensPerInterval: 300,   // 3x IP limit
+        interval: 60000,
+        bucketSize: 300,
       },
       UNLIMITED: {
         tokensPerInterval: 1000,
@@ -199,23 +226,113 @@ export class RateLimitFactory {
   }
 
   public createLowLimitMiddleware() {
-    return this.createMiddleware(this.limitLevels.LOW);
+    return this.createMiddleware(this.ipLimitLevels.LOW);
   }
 
   public createMediumLimitMiddleware() {
-    return this.createMiddleware(this.limitLevels.MEDIUM);
+    return this.createMiddleware(this.ipLimitLevels.MEDIUM);
   }
 
   public createHighLimitMiddleware() {
-    return this.createMiddleware(this.limitLevels.HIGH);
+    return this.createMiddleware(this.ipLimitLevels.HIGH);
   }
 
   public createUnlimitedMiddleware() {
-    return this.createMiddleware(this.limitLevels.UNLIMITED);
+    return this.createMiddleware(this.ipLimitLevels.UNLIMITED);
   }
 
   public createCustomLimitMiddleware(limit: RateLimit) {
     return this.createMiddleware(limit);
+  }
+
+  /**
+   * Create middleware that checks BOTH IP and User rate limits
+   * Both limits must pass for the request to succeed
+   * 
+   * @param ipLimit - Rate limit config for IP-based limiting
+   * @param userLimit - Rate limit config for user-based limiting
+   */
+  public createDualLimitMiddleware(ipLimit: RateLimit, userLimit: RateLimit) {
+    return async (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ): Promise<void> => {
+      const now = Date.now();
+
+      // Check 1: IP-based rate limit
+      const ipKey = `ratelimit:ip:${req.ip}:${req.method}:${req.path}`;
+      const ipResult = await this.handleRateLimitLua(ipKey, ipLimit, now);
+
+      if (!ipResult.success) {
+        const retryAfterNum = Number(ipResult.retryAfter);
+        if (Number.isFinite(retryAfterNum)) {
+          const retryAfterSeconds = Math.max(0, Math.ceil(retryAfterNum));
+          res.setHeader("Retry-After", retryAfterSeconds.toString());
+        }
+        res.status(429).json({
+          error: "Too Many Requests",
+          message: `IP rate limit exceeded. Try again in ${ipResult.retryAfter} seconds`,
+          retryAfter: ipResult.retryAfter,
+          limitType: "ip"
+        });
+        return;
+      }
+
+      // Check 2: User-based rate limit (if authenticated)
+      if (req.user?.id) {
+        const userKey = `ratelimit:user:${req.user.id}:${req.method}:${req.path}`;
+        const userResult = await this.handleRateLimitLua(userKey, userLimit, now);
+
+        if (!userResult.success) {
+          const retryAfterNum = Number(userResult.retryAfter);
+          if (Number.isFinite(retryAfterNum)) {
+            const retryAfterSeconds = Math.max(0, Math.ceil(retryAfterNum));
+            res.setHeader("Retry-After", retryAfterSeconds.toString());
+          }
+          res.status(429).json({
+            error: "Too Many Requests",
+            message: `User rate limit exceeded. Try again in ${userResult.retryAfter} seconds`,
+            retryAfter: userResult.retryAfter,
+            limitType: "user"
+          });
+          return;
+        }
+
+        // Both limits passed
+        res.set("X-RateLimit-IP-Remaining", String(ipResult.remaining));
+        res.set("X-RateLimit-User-Remaining", String(userResult.remaining));
+      } else {
+        // Only IP limit (user not authenticated)
+        res.set("X-RateLimit-Remaining", String(ipResult.remaining));
+      }
+
+      next();
+    };
+  }
+
+  /**
+   * Preset dual limit middlewares
+   */
+  public createDualLowMediumMiddleware() {
+    return this.createDualLimitMiddleware(
+      this.ipLimitLevels.LOW,      // IP: 10/min
+      this.userLimitLevels.LOW     // User: 30/min
+    );
+  }
+
+  public createDualMediumHighMiddleware() {
+    return this.createDualLimitMiddleware(
+      this.ipLimitLevels.MEDIUM,   // IP: 30/min
+      this.userLimitLevels.MEDIUM  // User: 100/min
+    );
+  }
+  
+  public createDualLowHighMiddleware() {
+    return this.createDualLimitMiddleware(
+      this.ipLimitLevels.LOW,      // IP: 10/min
+      this.userLimitLevels.HIGH    // User: 300/min
+    );
   }
 }
 
