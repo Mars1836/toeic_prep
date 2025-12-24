@@ -58,6 +58,7 @@
     "firebase-admin": "^13.0.2",
     "geoip-lite": "^1.4.10",
     "google-auth-library": "^9.14.1",
+    "helmet": "^8.1.0",
     "https": "^1.0.0",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
@@ -79,7 +80,8 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4",
     "ua-parser-js": "^2.0.6",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "xss": "^1.0.15"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
