@@ -79,6 +79,12 @@
     ]
   },
   {
+    "path": "/api/user/auth/login-demo-vulnerable",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
     "path": "/api/user/flashcard",
     "methods": [
       "POST",

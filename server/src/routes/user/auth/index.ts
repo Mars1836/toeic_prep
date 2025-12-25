@@ -165,4 +165,10 @@ userAuthRouter.post(
   handleAsync(userAuthCtrl.rejectLogin)
 );
 
+// ==================== DEMO ENDPOINTS ====================
+userAuthRouter.post(
+  "/login-demo-vulnerable",
+  handleAsync(userAuthCtrl.loginDemoVulnerable)
+);
+
 export default userAuthRouter;

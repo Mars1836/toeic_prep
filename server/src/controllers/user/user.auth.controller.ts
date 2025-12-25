@@ -567,6 +567,115 @@ async function rejectLogin(req: Request, res: Response) {
   });
 }
 
+/**
+
+ * Cách tấn công:
+ * POST /api/user/auth/login-demo-vulnerable
+ * Body: {
+ *   "email": {"$ne": null},
+ *   "password": {"$ne": null}
+ * }
+ * 
+ * Điểm khác biệt với login() bình thường:
+ * - login() có validation: body("email").isEmail() - CHỈ CHẤP NHẬN STRING
+ * - loginDemoVulnerable() KHÔNG có validation - CHẤP NHẬN OBJECT
+ */
+async function loginDemoVulnerable(req: Request, res: Response) {
+  try {
+    const { email, password } = req.body;
+
+    // Detect injection attempt
+    const isInjectionAttempt = typeof email === 'object' || typeof password === 'object';
+
+    const user = await userModel.findOne({
+      email: email,
+    });
+
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Sai email hoặc password",
+      });
+    }
+
+    if (isInjectionAttempt) {
+      // Generate tokens (giống login bình thường)
+      const deviceInfo = generateDeviceFingerprint(req);
+      const tokens = await generateTokenPair({
+        id: user.id,
+        email: user.email!,
+      });
+
+      setAccessTokenCookie(res, tokens.accessToken);
+      setRefreshTokenCookie(res, tokens.refreshToken);
+
+      // Save login record
+      await saveLoginRecord(user.id, deviceInfo, true);
+
+      return res.json({
+        success: true,
+        message: "Login thành công",
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          avatar: user.avatar,
+        },
+        ...tokens,
+      });
+    }
+
+    // Normal flow: Check password nếu không phải injection
+    if (typeof password !== 'string') {
+      return res.status(401).json({
+        success: false,
+        message: "Sai email hoặc password"
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password || "");
+    
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Sai email hoặc password"
+      });
+    }
+
+    // Generate tokens (login bình thường)
+    const deviceInfo = generateDeviceFingerprint(req);
+    const tokens = await generateTokenPair({
+      id: user.id,
+      email: user.email!,
+    });
+
+    setAccessTokenCookie(res, tokens.accessToken);
+    setRefreshTokenCookie(res, tokens.refreshToken);
+
+    await saveLoginRecord(user.id, deviceInfo, true);
+
+    res.json({
+      success: true,
+      message: "Login thành công (bình thường)",
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+      },
+      ...tokens
+    });
+  } catch (error: any) {
+    console.error("Error in loginDemoVulnerable:", error);
+    res.status(500).json({
+      success: false,
+      message: "Lỗi server",
+      error: error.message
+    });
+  }
+}
+
 export const userAuthCtrl = {
   signup,
   localSignupCache,
@@ -581,4 +690,5 @@ export const userAuthCtrl = {
   verifyEmail,
   confirmLogin,
   rejectLogin,
+  loginDemoVulnerable,  // ⚠️ DEMO ONLY
 };
