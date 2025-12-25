@@ -8,6 +8,7 @@ import { handleError } from "./middlewares/handle_error";
 import { staticFileAuth } from "./middlewares/static_file_auth";
 import { handleAsync } from "./middlewares/handle_async";
 import { sanitizeInput } from "./middlewares/sanitize.middleware";
+import { preventNoSqlInjection } from "./middlewares/prevent_nosql_injection.middleware";
 import { passportA } from "./configs/passport"; // Chỉ giữ passportA cho admin
 import routerU from "./routes/user";
 import routerA from "./routes/admin";
@@ -105,6 +106,15 @@ app.use(
 app.use(cookieParser()); // Parse cookies từ request
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// NOSQL INJECTION PROTECTION
+
+app.use(
+  preventNoSqlInjection({
+    mode: 'block', // Chặn hoàn toàn injection attempts
+    logAttempts: true, // Log tất cả attempts để monitor
+  })
+);
 
 // ============================================
 // XSS PROTECTION - SANITIZE INPUT
