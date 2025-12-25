@@ -36,12 +36,7 @@ export const sanitizeXss: CustomSanitizer = (value) => {
 
 /**
  * Custom validator: Kiểm tra HTML sạch (chỉ cho phép một số tags an toàn)
- * 
- * @param allowedTags - Mảng các tag được phép
- * @returns Custom validator function
- * 
- * @example
- * body('content').custom(isCleanHtml(['p', 'br', 'strong', 'em']))
+ *
  */
 export const isCleanHtml = (allowedTags: string[] = []): CustomValidator => {
   return (value) => {

@@ -1,21 +1,3 @@
-/**
- * NoSQL Injection Protection Utilities
- * Các hàm tiện ích để bảo vệ chống tấn công NoSQL Injection
- */
-
-/**
- * Kiểm tra xem object có chứa keys nguy hiểm không
- * Keys nguy hiểm: chứa '$' (MongoDB operators) hoặc '.' (dot notation)
- * 
- * @param obj - Object cần kiểm tra
- * @param path - Đường dẫn hiện tại (dùng cho recursive)
- * @returns true nếu phát hiện injection pattern
- * 
- * @example
- * hasNoSqlInjectionInKeys({ email: { $ne: null } }) // true
- * hasNoSqlInjectionInKeys({ "user.role": "admin" }) // true
- * hasNoSqlInjectionInKeys({ email: "test@test.com" }) // false
- */
 export function hasNoSqlInjectionInKeys(
   obj: any,
   path: string = ''
@@ -106,17 +88,6 @@ export function getInjectionDetails(
 
 /**
  * Sanitize object bằng cách loại bỏ tất cả keys nguy hiểm
- * Keys nguy hiểm: chứa '$' hoặc '.'
- * 
- * @param obj - Object cần sanitize
- * @returns Object đã được làm sạch
- * 
- * @example
- * sanitizeNoSqlObject({ email: { $ne: null }, name: "John" })
- * // Returns: { name: "John" }
- * 
- * sanitizeNoSqlObject({ "user.role": "admin", email: "test@test.com" })
- * // Returns: { email: "test@test.com" }
  */
 export function sanitizeNoSqlObject(obj: any): any {
   if (obj === null || obj === undefined) {
