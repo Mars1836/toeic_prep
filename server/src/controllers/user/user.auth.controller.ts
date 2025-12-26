@@ -187,13 +187,10 @@ async function login(req: Request, res: Response) {
   await saveLoginRecord(user.id, deviceInfo, true);
 
   // Return user info và tokens
+  const userRes = user.toObject();
+  delete userRes.password;
   res.status(200).json({
-    user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      avatar: user.avatar,
-    },
+    user: userRes,
     ...tokens,
   });
 }
