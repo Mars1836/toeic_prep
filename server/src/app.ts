@@ -25,27 +25,27 @@ app.set("trust proxy", true);
 // ============================================
 // SECURITY HEADERS - HELMET
 // ============================================
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Cho phép inline scripts (cần thiết cho một số frameworks)
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        imgSrc: ["'self'", "data:", "https:", "blob:"],
-        connectSrc: ["'self'"],
-        mediaSrc: ["'self'", "blob:"],
-        objectSrc: ["'none'"],
-        frameSrc: ["'none'"],
-        baseUri: ["'self'"],
-        formAction: ["'self'"],
-      },
-    },
-    crossOriginEmbedderPolicy: false, // Tắt để tránh conflict với CORS
-    crossOriginResourcePolicy: { policy: "cross-origin" }, // Cho phép cross-origin requests
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Cho phép inline scripts (cần thiết cho một số frameworks)
+//         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+//         fontSrc: ["'self'", "https://fonts.gstatic.com"],
+//         imgSrc: ["'self'", "data:", "https:", "blob:"],
+//         connectSrc: ["'self'"],
+//         mediaSrc: ["'self'", "blob:"],
+//         objectSrc: ["'none'"],
+//         frameSrc: ["'none'"],
+//         baseUri: ["'self'"],
+//         formAction: ["'self'"],
+//       },
+//     },
+//     crossOriginEmbedderPolicy: false, // Tắt để tránh conflict với CORS
+//     crossOriginResourcePolicy: { policy: "cross-origin" }, // Cho phép cross-origin requests
+//   })
+// );
 
 const corsOptions = {
   origin: (
@@ -128,6 +128,25 @@ app.use(
       // Ví dụ: 'blogContent', 'htmlDescription'
     ],
     logSanitized: process.env.APP_ENV === 'dev', // Chỉ log trong môi trường dev
+  })
+);
+
+// ============================================
+// CSRF PROTECTION - DOUBLE SUBMIT COOKIE
+// ============================================
+import { csrfProtection } from "./middlewares/csrf.middleware";
+
+app.use(
+  csrfProtection({
+    whitelist: [
+      '/api/user/auth/login',
+      '/api/admin/auth/login',
+      '/api/pub', // Partner API có authentication riêng (HMAC-SHA256)
+      '/api/pub/partner', // Partner API có authentication riêng (HMAC-SHA256)
+      '/api/pub/csrf-token', // Endpoint để lấy CSRF token
+    ],
+    cookieName: 'XSRF-TOKEN',
+    headerName: 'x-csrf-token',
   })
 );
 

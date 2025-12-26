@@ -778,6 +778,12 @@
     ]
   },
   {
+    "path": "/api/pub/csrf-token",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
     "path": "/api/pub/test",
     "methods": [
       "GET"

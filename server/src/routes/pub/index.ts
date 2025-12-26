@@ -12,8 +12,12 @@ import testRegistrationRouter from "./test_registration";
 import { RateLimitInstance } from "../../middlewares/rate_limit";
 import bridgeNestRouter from "../user/bridge_nest";
 import { requireAuth } from "../../middlewares/require_auth";
+import csrfRouter from "./csrf.routes";
 
 const routerP = express.Router();
+
+// CSRF Token endpoint (không cần rate limit vì chỉ generate token)
+routerP.use("/csrf-token", csrfRouter);
 
 routerP.use("/test", RateLimitInstance.createHighLimitMiddleware(), testRouter);
 routerP.use(
@@ -50,3 +54,4 @@ routerP.use(
 
 
 export default routerP;
+
