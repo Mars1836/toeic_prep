@@ -57,6 +57,37 @@ userProfileRouter.post(
     res.status(200).json(url);
   })
 );
+
+// ============================================
+// CSRF DEMO ENDPOINT - VULNERABLE (NO CSRF PROTECTION)
+// ============================================
+// Endpoint này cố tình KHÔNG có CSRF protection để demo tấn công
+// Sau khi demo thành công, chúng ta sẽ thêm CSRF middleware để chặn
+userProfileRouter.post(
+  "/update-name",
+  handleAsync(async (req: Request, res: Response) => {
+    // @ts-ignore
+    const userId = req.user?.id!;
+    const { name } = req.body;
+    
+    // Chỉ update name, không cần validation phức tạp
+    const updatedUser = await userSrv.updateProfile(userId, {
+      name,
+      bio: req.user?.bio || "", // Giữ nguyên bio
+    });
+    
+    res.status(200).json({
+      success: true,
+      message: "Name updated successfully",
+      user: {
+        id: updatedUser?.id,
+        name: updatedUser?.name,
+        email: updatedUser?.email,
+      },
+    });
+  })
+);
+
 userProfileRouter.post("/update-profile", handleAsync(userCtrl.updateProfile));
 userProfileRouter.get("/analysis", handleAsync(ProfileCtrl.getAnalyst));
 userProfileRouter.post(

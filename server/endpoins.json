@@ -327,6 +327,12 @@
     ]
   },
   {
+    "path": "/api/user/profile/update-name",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
     "path": "/api/user/profile/update-profile",
     "methods": [
       "POST"
