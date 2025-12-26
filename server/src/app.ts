@@ -22,30 +22,6 @@ const app = express();
 
 app.set("trust proxy", true);
 
-// ============================================
-// SECURITY HEADERS - HELMET
-// ============================================
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'"],
-//         scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Cho phép inline scripts (cần thiết cho một số frameworks)
-//         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-//         fontSrc: ["'self'", "https://fonts.gstatic.com"],
-//         imgSrc: ["'self'", "data:", "https:", "blob:"],
-//         connectSrc: ["'self'"],
-//         mediaSrc: ["'self'", "blob:"],
-//         objectSrc: ["'none'"],
-//         frameSrc: ["'none'"],
-//         baseUri: ["'self'"],
-//         formAction: ["'self'"],
-//       },
-//     },
-//     crossOriginEmbedderPolicy: false, // Tắt để tránh conflict với CORS
-//     crossOriginResourcePolicy: { policy: "cross-origin" }, // Cho phép cross-origin requests
-//   })
-// );
 
 const corsOptions = {
   origin: (
@@ -59,7 +35,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const env = process.env.APP_ENV;
-console.log(env);
 const userCookieConfig =
   env === "prod" || env === "docker" 
     ? { name: "user-session", sameSite: "none", httpOnly: true, signed: false }
@@ -139,11 +114,22 @@ import { csrfProtection } from "./middlewares/csrf.middleware";
 app.use(
   csrfProtection({
     whitelist: [
+      // Authentication endpoints - không cần CSRF token
       '/api/user/auth/login',
+      '/api/user/auth/register',
+      '/api/user/auth/logout',
+      '/api/user/auth/refresh',
+      '/api/user/auth/google',
+      '/api/user/auth/facebook',
       '/api/admin/auth/login',
-      '/api/pub', // Partner API có authentication riêng (HMAC-SHA256)
-      '/api/pub/partner', // Partner API có authentication riêng (HMAC-SHA256)
-      '/api/pub/csrf-token', // Endpoint để lấy CSRF token
+      '/api/admin/auth/logout',
+      '/api/admin/auth/refresh',
+      
+      // Public endpoints
+      '/api/pub', // Tất cả public routes
+      
+      // CSRF token endpoint
+      '/api/pub/csrf-token',
     ],
     cookieName: 'XSRF-TOKEN',
     headerName: 'x-csrf-token',

@@ -21,12 +21,10 @@ export function setCsrfCookie(
   token: string,
   cookieName: string = 'XSRF-TOKEN'
 ): void {
-  const env = process.env.APP_ENV;
-  
   res.cookie(cookieName, token, {
     httpOnly: false, // JavaScript cần đọc được để gửi qua header
-    secure: env === 'prod', // HTTPS only trong production
-    sameSite: env === 'prod' ? 'none' : 'lax', // Cross-origin support
+    secure: true, // HTTPS only (ngrok luôn dùng HTTPS)
+    sameSite: 'none' as const, // Cross-origin support (client khác domain)
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 }
