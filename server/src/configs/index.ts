@@ -1,2 +1,2 @@
-export const ORIGIN = "https://43ce2be38cd9.ngrok-free.app";
+export const ORIGIN = "https://c3f5202fe0cf.ngrok-free.app"
 

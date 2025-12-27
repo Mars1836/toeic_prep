@@ -73,7 +73,15 @@ export const verifyMailTemp = (otp: string, email: string) => {
 <body>
   <div class="email-container">
     <h1>Toeic Journey</h1>
-    <p>Thank you for registering with us! To complete your registration and verify your email, please click the button below.</p>
+    <p>Thank you for registering with us! To complete your registration and verify your email, please use the OTP code below or click the button.</p>
+    
+    <div style="background-color: #f0f4f8; border: 2px solid #3498db; border-radius: 8px; padding: 20px; margin: 30px 0; text-align: center;">
+      <p style="margin: 0 0 10px 0; font-size: 14px; color: #666; font-weight: 500;">Your Verification Code</p>
+      <div style="font-size: 32px; font-weight: bold; color: #2c3e50; letter-spacing: 8px; font-family: 'Courier New', monospace;">
+        ${otp}
+      </div>
+      <p style="margin: 10px 0 0 0; font-size: 12px; color: #999;">This code will expire in 5 minutes</p>
+    </div>
     
     <div class="button-container">
       <a href="${constEnv.clientOrigin}/mail/verify/handle?otp=${otp}&email=${email}">Verify Email</a>

@@ -8,39 +8,41 @@ import adminUserRouter from "./user";
 import adminTestRouter from "./test";
 import adminResultRouter from "./result";
 import adminCloudinaryRouter from "./cloudinary";
-import { requireAuth } from "../../middlewares/require_auth";
+import { requireAdmin } from "../../middlewares/require_admin";
 import { handleAsync } from "../../middlewares/handle_async";
 import adminTestCertificateRouter from "./test_certificate";
 import adminToeicTestingRouter from "./toeic_testing";
 import adminTestRegistrationRouter from "./toeic_registration";
 import adminToeicTestSessionRouter from "./toeic_test_session";
+
 const routerA = express.Router();
+
 routerA.use("/auth", adminAuthRouter);
-routerA.use("/transaction", handleAsync(requireAuth), adminTransactionRouter);
-routerA.use("/blog", handleAsync(requireAuth), adminBlogRouter);
-routerA.use("/analysis", handleAsync(requireAuth), adminAnalysisRouter);
-routerA.use("/user", handleAsync(requireAuth), adminUserRouter);
-routerA.use("/test", handleAsync(requireAuth), adminTestRouter);
-routerA.use("/result", handleAsync(requireAuth), adminResultRouter);
-routerA.use("/cloudinary", handleAsync(requireAuth), adminCloudinaryRouter);
+routerA.use("/transaction", handleAsync(requireAdmin), adminTransactionRouter);
+routerA.use("/blog", handleAsync(requireAdmin), adminBlogRouter);
+routerA.use("/analysis", handleAsync(requireAdmin), adminAnalysisRouter);
+routerA.use("/user", handleAsync(requireAdmin), adminUserRouter);
+routerA.use("/test", handleAsync(requireAdmin), adminTestRouter);
+routerA.use("/result", handleAsync(requireAdmin), adminResultRouter);
+routerA.use("/cloudinary", handleAsync(requireAdmin), adminCloudinaryRouter);
 routerA.use(
   "/test-certificate",
-  handleAsync(requireAuth),
+  handleAsync(requireAdmin),
   adminTestCertificateRouter
 );
 routerA.use(
   "/toeic-testing",
-  handleAsync(requireAuth),
+  handleAsync(requireAdmin),
   adminToeicTestingRouter
 );
 routerA.use(
   "/test-registration",
-  handleAsync(requireAuth),
+  handleAsync(requireAdmin),
   adminTestRegistrationRouter
 );
 routerA.use(
   "/toeic-test-session",
-  handleAsync(requireAuth),
+  handleAsync(requireAdmin),
   adminToeicTestSessionRouter
 );
 

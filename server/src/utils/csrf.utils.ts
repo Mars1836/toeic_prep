@@ -1,13 +1,60 @@
 import crypto from 'crypto';
 import { Request, Response } from 'express';
+import { constEnv } from '../configs/const';
 
 /**
- * Generate a random CSRF token
+ * Get CSRF secret from environment or use default
+ */
+function getCsrfSecret(): string {
+  return process.env.CSRF_SECRET || 'default-csrf-secret-change-in-production';
+}
+
+/**
+ * Generate a signed CSRF token with HMAC signature
+ * Format: {randomToken}.{signature}
  * @param length - Token length in bytes (default: 32)
- * @returns Hex string token
+ * @returns Signed token string
  */
 export function generateCsrfToken(length: number = 32): string {
-  return crypto.randomBytes(length).toString('hex');
+  const token = crypto.randomBytes(length).toString('hex');
+  const signature = crypto
+    .createHmac('sha256', getCsrfSecret())
+    .update(token)
+    .digest('hex');
+  
+  return `${token}.${signature}`;
+}
+
+/**
+ * Verify CSRF token signature
+ * @param signedToken - Token with signature (format: token.signature)
+ * @returns true if signature is valid, false otherwise
+ */
+export function verifyCsrfToken(signedToken: string): boolean {
+  if (!signedToken || typeof signedToken !== 'string') {
+    return false;
+  }
+
+  const parts = signedToken.split('.');
+  if (parts.length !== 2) {
+    return false;
+  }
+
+  const [token, signature] = parts;
+  if (!token || !signature) {
+    return false;
+  }
+
+  const expectedSignature = crypto
+    .createHmac('sha256', getCsrfSecret())
+    .update(token)
+    .digest('hex');
+
+  // Timing-safe comparison to prevent timing attacks
+  return crypto.timingSafeEqual(
+    Buffer.from(signature, 'hex'),
+    Buffer.from(expectedSignature, 'hex')
+  );
 }
 
 /**

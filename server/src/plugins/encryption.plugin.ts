@@ -98,6 +98,36 @@ export function encryptionPlugin(schema: Schema, options: EncryptionPluginOption
       console.error('[Encryption Plugin] Error in post-findOneAndUpdate hook:', error);
     }
   });
+
+  /**
+   * Post-insertMany hook: Decrypt sau khi insert nhiều documents
+   */
+  schema.post('insertMany', function(docs: any[]) {
+    if (!docs || docs.length === 0) return;
+    
+    try {
+      for (const doc of docs) {
+        decryptDocument(doc, fields, debug);
+      }
+    } catch (error) {
+      console.error('[Encryption Plugin] Error in post-insertMany hook:', error);
+    }
+  });
+  
+  /**
+   * Post-aggregate hook: Decrypt sau khi aggregate
+   */
+  schema.post('aggregate', function(docs: any[]) {
+    if (!docs || docs.length === 0) return;
+    
+    try {
+      for (const doc of docs) {
+        decryptDocument(doc, fields, debug);
+      }
+    } catch (error) {
+      console.error('[Encryption Plugin] Error in post-aggregate hook:', error);
+    }
+  });
 }
 
 /**

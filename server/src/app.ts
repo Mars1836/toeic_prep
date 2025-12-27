@@ -1,19 +1,19 @@
-import { Response } from "express";
+import { Response, Request, NextFunction } from "express";
 import cookieSession from "cookie-session";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 
 import cors from "cors";
 import { handleError } from "./middlewares/handle_error";
-import { staticFileAuth } from "./middlewares/static_file_auth";
+import { requireAuth } from "./middlewares/require_auth";
 import { handleAsync } from "./middlewares/handle_async";
 import { sanitizeInput } from "./middlewares/sanitize.middleware";
 import { preventNoSqlInjection } from "./middlewares/prevent_nosql_injection.middleware";
-import { passportA } from "./configs/passport"; // Chỉ giữ passportA cho admin
 import routerU from "./routes/user";
 import routerA from "./routes/admin";
 import routerP from "./routes/pub";
 import path from "path";
+import { csrfProtection } from "./middlewares/csrf.middleware";
 const express = require("express");
 const app = express();
 // Lấy môi trường từ process.env.NODE_ENV
@@ -35,29 +35,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const env = process.env.APP_ENV;
-const userCookieConfig =
-  env === "prod" || env === "docker" 
-    ? { name: "user-session", sameSite: "none", httpOnly: true, signed: false }
-    : {
-        name: "user-session",
-        sameSite: "lax",
-        httpOnly: true,
-        signed: false,
-      };
-const adminCookieConfig =
-  env === "prod" || env === "docker"
-    ? {
-        name: "admin-session",
-        sameSite: "none",
-        httpOnly: true,
-        signed: false,
-      }
-    : {
-        name: "admin-session",
-        sameSite: "lax",
-        httpOnly: true,
-        signed: false,
-      };
+
+// Public session (for legacy support)
 app.use(
   "/",
   cookieSession({
@@ -66,16 +45,12 @@ app.use(
     // secure: true, // must be connect in https connection
   })
 );
-app.use(
-  "/api/user",
-  // @ts-ignore
-  cookieSession(userCookieConfig)
-);
-app.use(
-  "/api/admin",
-  // @ts-ignore
-  cookieSession(adminCookieConfig)
-);
+
+// ============================================
+// NOTE: Admin và User đã chuyển sang JWT
+// Không cần cookie session nữa, chỉ cần cookieParser
+// JWT tokens được lưu trong cookies: access_token, refresh_token
+// ============================================
 
 // IMPORTANT: Parse cookies BEFORE static file auth
 app.use(cookieParser()); // Parse cookies từ request
@@ -109,8 +84,6 @@ app.use(
 // ============================================
 // CSRF PROTECTION - DOUBLE SUBMIT COOKIE
 // ============================================
-import { csrfProtection } from "./middlewares/csrf.middleware";
-
 app.use(
   csrfProtection({
     whitelist: [
@@ -151,7 +124,7 @@ const protectedUploads = [
 protectedUploads.forEach(dir => {
   app.use(
     `/uploads/${dir}`,
-    staticFileAuth,
+   handleAsync(requireAuth),
     express.static(path.join(__dirname, "uploads", dir))
   );
 });
@@ -169,10 +142,9 @@ publicUploads.forEach(dir => {
   );
 });
 
-
-// Passport chỉ dùng cho admin, không dùng cho user nữa
-app.use(passportA.initialize({ userProperty: "user" }));
-app.use(passportA.session());
+// ============================================
+// ROUTES
+// ============================================
 
 app.use("/api/user", routerU);
 app.use("/api/admin", routerA);

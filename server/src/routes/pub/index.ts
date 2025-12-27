@@ -19,7 +19,7 @@ const routerP = express.Router();
 // CSRF Token endpoint (không cần rate limit vì chỉ generate token)
 routerP.use("/csrf-token", csrfRouter);
 
-routerP.use("/test", RateLimitInstance.createHighLimitMiddleware(), testRouter);
+routerP.use("/test", RateLimitInstance.createDualLowMediumMiddleware(), testRouter);
 routerP.use(
   "/payment",
   RateLimitInstance.createHighLimitMiddleware(),

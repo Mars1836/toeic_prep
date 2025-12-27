@@ -2,15 +2,18 @@ import jwt from "jsonwebtoken";
 import { constEnv } from "../../configs/const";
 import { redis } from "../../connect/redis";
 import { v4 as uuidv4 } from "uuid";
+import { RefreshTokenReuseError } from "../../errors/refresh_token_reuse_error";
 
 export interface UserPayload {
   id: string;
   email: string;
+  role?: string; // 'admin' | 'user'
   jti?: string; // JWT ID - unique identifier for each token
 }
 
 export interface RefreshTokenPayload extends UserPayload {
   jti: string; // Required for refresh tokens
+  role?: string; // 'admin' | 'user'
 }
 
 export interface AccessTokenPayload extends UserPayload {
@@ -23,7 +26,6 @@ export interface TokenPair {
   refreshToken: string;
 }
 
-// Redis storage structure for refresh token
 interface RefreshTokenData {
   userId: string;
   email: string;
@@ -34,19 +36,10 @@ interface RefreshTokenData {
   createdAt: string;
 }
 
-// Access token TTL - default 15 minutes if not configured
-// jsonwebtoken đã hỗ trợ format s/m/h/d sẵn, không cần parse
 const ACCESS_TOKEN_EXPIRE = constEnv.jwtAccessTokenTTL || "15m";
 
-// Refresh token TTL string - default 7 days if not configured
-// jsonwebtoken đã hỗ trợ format s/m/h/d sẵn (e.g., "7d", "1h", "30m", "90s")
 const REFRESH_TOKEN_TTL_STRING = constEnv.jwtRefreshTokenTTL || "7d";
 
-/**
- * Parse time format string (e.g., "7d", "1h", "30m", "90s") to seconds
- * Chỉ cần parse cho Redis vì Redis EX chỉ nhận số seconds, không nhận format string
- * jsonwebtoken đã hỗ trợ format này sẵn, không cần parse cho JWT
- */
 function parseTimeToSeconds(timeStr: string): number {
   const match = timeStr.match(/^(\d+)([smhd])$/i);
   if (!match) {
@@ -111,6 +104,9 @@ export function generateAccessToken(
     trackAccessToken(payload.id, parentRefreshJti, jti).catch((err) => {
       console.error("Failed to track access token:", err);
     });
+    console.log(`[JWT] Tracking access token ${jti} for refresh token ${parentRefreshJti}`);
+  } else {
+    console.log(`[JWT] Access token ${jti} created WITHOUT parent refresh token tracking`);
   }
 
   return token;
@@ -216,7 +212,6 @@ export async function verifyRefreshToken(
   if (!constEnv.jwtRefreshSecret) {
     throw new Error("JWT_REFRESH_SECRET is not configured");
   }
-
   try {
     const decoded = jwt.verify(token, constEnv.jwtRefreshSecret, {
       issuer: "toeic-prep-server",
@@ -237,22 +232,8 @@ export async function verifyRefreshToken(
 
     const tokenData: RefreshTokenData = JSON.parse(storedData);
 
-    // **CRITICAL SECURITY CHECK: Reuse Detection**
-    if (tokenData.usedCount > 0) {
-      // Token đã được sử dụng rồi mà lại được dùng lần nữa
-      // => Có thể token bị đánh cắp (token theft)
-      // => Revoke TẤT CẢ tokens của user này
-      console.error(
-        `[SECURITY ALERT] Refresh token reuse detected! UserId: ${decoded.id}, JTI: ${decoded.jti}`
-      );
-
-      // Revoke all tokens của user ngay lập tức
-      await revokeAllUserTokens(decoded.id);
-
-      throw new Error(
-        "Refresh token reuse detected. All tokens have been revoked for security."
-      );
-    }
+    // Note: Reuse detection được xử lý bởi atomic Lua script trong markRefreshTokenAsUsed()
+    // Không cần check usedCount ở đây vì có race condition risk
 
     // **SECURITY: Check if token is suspicious (pending verification)**
     const isSuspicious = await isRefreshTokenSuspicious(decoded.id, decoded.jti);
@@ -276,35 +257,115 @@ export async function verifyRefreshToken(
 }
 
 /**
- * Mark refresh token as used (increment usedCount)
- * Sau khi verify thành công, mark token as used trước khi generate token mới
+ * Mark refresh token as used - Atomic operation với Lua script
+ * Nếu token đã used (usedCount > 0) → detect reuse → blacklist toàn bộ token family
  */
 export async function markRefreshTokenAsUsed(
   userId: string,
-  jti: string
+  jti: string,
+  childRefreshJti?: string
 ): Promise<void> {
   const redisKey = `refreshtoken:${userId}:${jti}`;
-  const storedData = await redis.client.get(redisKey);
 
-  if (!storedData) {
-    throw new Error("Refresh token not found");
+  if (childRefreshJti) {
+    const tokenData = await redis.client.get(redisKey);
+    if (tokenData) {
+      const parsed: RefreshTokenData = JSON.parse(tokenData);
+      const familyId = (parsed as any).familyId || jti;
+      
+      const familyKey = `token_family:${userId}:${familyId}`;
+      await redis.client.sAdd(familyKey, childRefreshJti);
+      await redis.client.expire(familyKey, REFRESH_TOKEN_EXPIRE_SECONDS);
+      
+      const childKey = `refreshtoken:${userId}:${childRefreshJti}`;
+      const childData = await redis.client.get(childKey);
+      if (childData) {
+        const childParsed = JSON.parse(childData);
+        (childParsed as any).familyId = familyId;
+        const ttl = await redis.client.ttl(childKey);
+        if (ttl > 0) {
+          await redis.client.set(childKey, JSON.stringify(childParsed), { EX: ttl });
+        }
+      }
+      
+      console.log(`[JWT] Added child token ${childRefreshJti} to family ${familyId}`);
+    }
   }
 
-  const tokenData: RefreshTokenData = JSON.parse(storedData);
-  tokenData.usedCount += 1;
+  // Atomic check-and-increment
+  const luaScript = `
+    local key = KEYS[1]
+    local data = redis.call('GET', key)
+    
+    if not data then
+      return -1
+    end
+    
+    local tokenData = cjson.decode(data)
+    
+    -- Check if already used
+    if tokenData.usedCount > 0 then
+      return 0
+    end
+    
+    -- Mark as used
+    tokenData.usedCount = tokenData.usedCount + 1
+    
+    -- Get TTL and update
+    local ttl = redis.call('TTL', key)
+    if ttl > 0 then
+      redis.call('SET', key, cjson.encode(tokenData), 'EX', ttl)
+      return 1
+    else
+      return -1
+    end
+  `;
 
-  // Update Redis với usedCount mới
-  const ttl = await redis.client.ttl(redisKey);
-  if (ttl > 0) {
-    await redis.client.set(redisKey, JSON.stringify(tokenData), {
-      EX: ttl, // Giữ nguyên TTL
-    });
+  // Execute Lua script
+  const result = await redis.client.eval(luaScript, {
+    keys: [redisKey],
+    arguments: [],
+  }) as number;
+
+  if (result === -1) {
+    throw new Error("Refresh token not found or expired");
   }
+
+  if (result === 0) {
+    // REUSE DETECTED
+    console.error(
+      `[SECURITY ALERT] Refresh token reuse detected during mark! UserId: ${userId}, JTI: ${jti}`
+    );
+    
+    const tokenData = await redis.client.get(redisKey);
+    if (tokenData) {
+      const parsed: RefreshTokenData = JSON.parse(tokenData);
+      const familyId = (parsed as any).familyId || jti;
+      
+      console.log(`[SECURITY] Token family ${familyId} compromised, blacklisting all tokens in family`);
+      
+      const familyKey = `token_family:${userId}:${familyId}`;
+      const familyTokens = await redis.client.sMembers(familyKey);
+      
+      console.log(`[SECURITY] Found ${familyTokens.length} token(s) in family:`, familyTokens);
+      for (const refreshJti of familyTokens) {
+        await blacklistAccessTokensByRefreshToken(userId, refreshJti);
+      }
+      
+
+      await redis.client.del(familyKey);
+    } else {
+      console.log(`[SECURITY] Token data not found for ${jti}`);
+    }
+    
+    throw new RefreshTokenReuseError(userId, jti);
+  }
+
+
+  console.log(`[JWT] Refresh token marked as used: ${jti}`);
 }
 
-/**
- * Revoke specific refresh token (xóa khỏi Redis)
- */
+/** Revoke refresh token */
 export async function revokeRefreshToken(
   userId: string,
   jti: string
@@ -312,10 +373,44 @@ export async function revokeRefreshToken(
   const redisKey = `refreshtoken:${userId}:${jti}`;
   await redis.client.del(redisKey);
 
-  // Xóa luôn access tokens tracking
+
   const trackingKey = `access_tokens:${userId}:${jti}`;
   await redis.client.del(trackingKey);
 }
+
+/** Blacklist access tokens của một refresh token */
+async function blacklistAccessTokensByRefreshToken(
+  userId: string,
+  refreshJti: string
+): Promise<void> {
+  console.log(`[SECURITY] Attempting to blacklist access tokens for refresh token ${refreshJti}`);
+  
+  const trackingKey = `access_tokens:${userId}:${refreshJti}`;
+  const accessJtis = await redis.client.sMembers(trackingKey);
+
+  console.log(`[SECURITY] Found ${accessJtis.length} access token(s) to blacklist:`, accessJtis);
+
+  if (accessJtis.length === 0) {
+    console.log(
+      `[JWT] No access tokens found for refresh token ${refreshJti}`
+    );
+    return;
+  }
+
+
+  for (const accessJti of accessJtis) {
+    await blacklistAccessToken(accessJti, REFRESH_TOKEN_EXPIRE_SECONDS);
+    console.log(`[SECURITY] Blacklisted access token: ${accessJti}`);
+  }
+
+
+  await redis.client.del(trackingKey);
+
+  console.log(
+    `[SECURITY] Blacklisted ${accessJtis.length} access token(s) for refresh token ${refreshJti}`
+  );
+}
+
 
 /**
  * Track access token được generate từ refresh token

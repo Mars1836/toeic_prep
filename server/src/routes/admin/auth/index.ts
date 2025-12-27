@@ -1,42 +1,42 @@
 import express, { NextFunction, Request, Response } from "express";
-import { passportA } from "../../../configs/passport";
 import { handleAsync } from "../../../middlewares/handle_async";
 import { BadRequestError } from "../../../errors/bad_request_error";
 import { requireAuth } from "../../../middlewares/require_auth";
-import { userCtrl } from "../../../controllers/user";
 import { AdminCtrl } from "../../../controllers/admin";
+import { body } from "express-validator";
+import { validate_request } from "../../../middlewares/validate_request";
 
 const adminAuthRouter = express.Router();
-adminAuthRouter.get("/login", (req, res) => {
-  res.json("Test success");
-});
+
+// Login với JWT (giống user)
 adminAuthRouter.post(
   "/login",
-  passportA.authenticate("local", {
-    failureRedirect: "/api/admin/login/failed",
-  }),
-  function (req: Request, res: Response) {
-    res.json(req.user);
-  }
+  [
+    body("email").isEmail().withMessage("Email must be valid"),
+    body("password").trim().notEmpty().withMessage("Password is required"),
+  ],
+  handleAsync(validate_request),
+  handleAsync(AdminCtrl.login)
 );
 
-adminAuthRouter.get(
-  "/login/failed",
-  handleAsync(function (req: Request, res: Response) {
-    throw new BadRequestError("Username or password is wrong");
-  })
+// Refresh token
+adminAuthRouter.post("/refresh", handleAsync(AdminCtrl.refreshToken));
+
+// Logout
+adminAuthRouter.post(
+  "/logout",
+  handleAsync(requireAuth),
+  handleAsync(AdminCtrl.logout)
 );
 
-adminAuthRouter.get("/getinfor", function (req: Request, res: Response) {
-  res.json(req.user);
-});
-adminAuthRouter.post("/signup", handleAsync(AdminCtrl.localRegister));
-
+// Get current admin
 adminAuthRouter.get(
   "/current-user",
   handleAsync(requireAuth),
   handleAsync(AdminCtrl.getCurrentUser)
 );
-adminAuthRouter.post("/logout", handleAsync(AdminCtrl.logout));
+
+// Register admin
+adminAuthRouter.post("/signup", handleAsync(AdminCtrl.localRegister));
 
 export default adminAuthRouter;

@@ -444,24 +444,17 @@
   {
     "path": "/api/admin/auth/login",
     "methods": [
-      "GET",
       "POST"
     ]
   },
   {
-    "path": "/api/admin/auth/login/failed",
+    "path": "/api/admin/auth/refresh",
     "methods": [
-      "GET"
+      "POST"
     ]
   },
   {
-    "path": "/api/admin/auth/getinfor",
-    "methods": [
-      "GET"
-    ]
-  },
-  {
-    "path": "/api/admin/auth/signup",
+    "path": "/api/admin/auth/logout",
     "methods": [
       "POST"
     ]
@@ -473,7 +466,7 @@
     ]
   },
   {
-    "path": "/api/admin/auth/logout",
+    "path": "/api/admin/auth/signup",
     "methods": [
       "POST"
     ]

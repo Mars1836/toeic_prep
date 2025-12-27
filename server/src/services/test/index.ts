@@ -6,6 +6,8 @@ import * as XLSX from "xlsx";
 import { cleanNullFieldObject } from "../../utils";
 import { ORIGIN } from "../../configs";
 import { userModel } from "../../models/user.model";
+import * as fs from "fs";
+import * as path from "path";
 function getImage(name: string, code: string) {
   if (!name || name === "") {
     return null;
@@ -202,10 +204,18 @@ namespace TestSrv {
     if (!rs) {
       throw new Error("Test not found");
     }
-    const linkExcel = `http://localhost:4000/uploads/excels/${rs.code}/${rs.fileName}`;
-    const response = await fetch(linkExcel);
-    const arrayBuffer = await response.arrayBuffer();
-    const workbook = XLSX.read(arrayBuffer, { type: "array" });
+    
+    // Đọc file Excel trực tiếp từ filesystem thay vì fetch qua HTTP
+    const filePath = path.join(__dirname, "..", "..", "uploads", "excels", rs.code, rs.fileName);
+    
+    // Kiểm tra file có tồn tại không
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Excel file not found: ${filePath}`);
+    }
+    
+    // Đọc file
+    const fileBuffer = fs.readFileSync(filePath);
+    const workbook = XLSX.read(fileBuffer, { type: "buffer" });
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
       header: 1,

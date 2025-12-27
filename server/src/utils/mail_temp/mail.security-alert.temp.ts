@@ -15,302 +15,297 @@ export interface SecurityAlertData {
 }
 
 export const securityAlertTemplate = (data: SecurityAlertData) => {
-  const riskColors = {
-    low: "#4CAF50",
-    medium: "#FF9800",
-    high: "#F44336",
-  };
-
-  const riskLabels = {
-    low: "Low Risk",
-    medium: "Medium Risk",
-    high: "High Risk",
-  };
-
   return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Security Alert - Unusual Login Activity</title>
+  <title>Security Alert</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f5f5f5;
       margin: 0;
-      padding: 0;
-    }
-    .email-container {
-      max-width: 600px;
-      margin: 50px auto;
-      background-color: #fff;
       padding: 20px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-    }
-    .alert-header {
-      background-color: #ff5252;
-      color: white;
-      padding: 15px;
-      border-radius: 5px 5px 0 0;
-      text-align: center;
-    }
-    .alert-header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-    .risk-badge {
-      display: inline-block;
-      padding: 5px 15px;
-      border-radius: 20px;
-      color: white;
-      font-weight: bold;
-      font-size: 14px;
-      margin: 10px 0;
-    }
-    .content {
-      padding: 20px;
-    }
-    p {
-      font-size: 16px;
-      color: #555;
       line-height: 1.6;
     }
-    .info-box {
-      background-color: #f9f9f9;
-      border-left: 4px solid #2196F3;
-      padding: 15px;
-      margin: 20px 0;
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
     }
-    .info-box h3 {
-      margin-top: 0;
-      color: #333;
-      font-size: 18px;
+    .header {
+      background-color: #2c3e50;
+      color: #ffffff;
+      padding: 30px 40px;
+      border-radius: 4px 4px 0 0;
     }
-    .info-item {
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .header p {
+      margin: 8px 0 0 0;
+      font-size: 14px;
+      color: #ecf0f1;
+    }
+    .content {
+      padding: 40px;
+      color: #333333;
+    }
+    .greeting {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .section {
+      margin: 30px 0;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #555555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 8px;
+    }
+    .info-grid {
+      background-color: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      padding: 20px;
+    }
+    .info-row {
       display: flex;
-      margin: 8px 0;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .info-row:last-child {
+      border-bottom: none;
     }
     .info-label {
-      font-weight: bold;
-      color: #333;
-      min-width: 120px;
+      font-weight: 500;
+      color: #666666;
+      min-width: 100px;
+      font-size: 14px;
     }
     .info-value {
-      color: #555;
-      flex: 1;
+      color: #333333;
+      font-size: 14px;
     }
-    .warning-box {
-      background-color: #fff3cd;
-      border-left: 4px solid #ffc107;
-      padding: 15px;
-      margin: 20px 0;
-    }
-    .warning-box ul {
-      margin: 10px 0;
-      padding-left: 20px;
-    }
-    .warning-box li {
-      color: #856404;
-      margin: 5px 0;
-    }
-    .verification-box {
-      background-color: #e3f2fd;
-      border: 2px solid #2196F3;
-      padding: 20px;
-      margin: 20px 0;
-      text-align: center;
-      border-radius: 5px;
-    }
-    .verification-code {
-      font-size: 32px;
-      font-weight: bold;
-      color: #2196F3;
-      letter-spacing: 5px;
+    .reasons-list {
+      background-color: #fafafa;
+      border-left: 3px solid #95a5a6;
+      padding: 15px 20px;
       margin: 15px 0;
     }
-    .button-container {
+    .reasons-list ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .reasons-list li {
+      color: #555555;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    .action-section {
+      margin: 40px 0;
       text-align: center;
-      margin: 20px 0;
+    }
+    .action-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333333;
+      margin-bottom: 20px;
+    }
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
     .button {
       display: inline-block;
       padding: 12px 30px;
       text-decoration: none;
-      border-radius: 5px;
-      font-size: 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    .button-confirm {
+      background-color: #34495e;
+      color: #ffffff;
+      border: 1px solid #2c3e50;
+    }
+    .button-reject {
+      background-color: #ffffff;
+      color: #e74c3c;
+      border: 1px solid #e74c3c;
+    }
+    .tips {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .tips-title {
+      font-size: 14px;
       font-weight: 600;
-      margin: 5px;
+      color: #555555;
+      margin: 0 0 12px 0;
     }
-    .button-primary {
-      background-color: #4CAF50;
-      color: white;
-    }
-    .button-primary:hover {
-      background-color: #45a049;
-    }
-    .button-danger {
-      background-color: #f44336;
-      color: white;
-    }
-    .button-danger:hover {
-      background-color: #da190b;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 12px;
-      color: #777;
-      border-top: 1px solid #e0e0e0;
-      padding-top: 15px;
-    }
-    .footer a {
-      color: #2196F3;
-      text-decoration: none;
-    }
-    .security-tips {
-      background-color: #f5f5f5;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 5px;
-    }
-    .security-tips h4 {
-      margin-top: 0;
-      color: #333;
-    }
-    .security-tips ul {
-      margin: 10px 0;
+    .tips ul {
+      margin: 0;
       padding-left: 20px;
     }
-    .security-tips li {
-      color: #666;
-      margin: 5px 0;
-      font-size: 14px;
+    .tips li {
+      color: #666666;
+      font-size: 13px;
+      margin: 6px 0;
+    }
+    .footer {
+      background-color: #f8f9fa;
+      padding: 25px 40px;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+      border-radius: 0 0 4px 4px;
+    }
+    .footer p {
+      margin: 8px 0;
+      font-size: 12px;
+      color: #777777;
+    }
+    .footer a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .divider {
+      height: 1px;
+      background-color: #e0e0e0;
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
-  <div class="email-container">
-    <div class="alert-header">
-      <h1>🔒 Security Alert</h1>
-      <p style="margin: 5px 0;">Unusual Login Activity Detected</p>
+  <div class="container">
+    <div class="header">
+      <h1>Security Alert</h1>
+      <p>Unusual login activity detected on your account</p>
     </div>
     
     <div class="content">
-      <div style="text-align: center;">
-        <span class="risk-badge" style="background-color: ${riskColors[data.riskLevel]}">
-          ${riskLabels[data.riskLevel]}
-        </span>
+      <div class="greeting">
+        Hello <strong>${data.userName}</strong>,
       </div>
-
-      <p>Hello <strong>${data.userName}</strong>,</p>
       
       <p>We detected a login to your TOEIC Prep account from a device or location we don't recognize.</p>
 
-      <div class="info-box">
-        <h3>📍 Login Details</h3>
-        <div class="info-item">
-          <span class="info-label">Time:</span>
-          <span class="info-value">${data.loginTime}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Location:</span>
-          <span class="info-value">${data.location}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">IP Address:</span>
-          <span class="info-value">${data.ip}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Device:</span>
-          <span class="info-value">${data.device}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Browser:</span>
-          <span class="info-value">${data.browser}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">OS:</span>
-          <span class="info-value">${data.os}</span>
+      <div class="section">
+        <div class="section-title">Login Details</div>
+        <div class="info-grid">
+          <div class="info-row">
+            <span class="info-label">Time:</span>
+            <span class="info-value">${data.loginTime}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Location:</span>
+            <span class="info-value">${data.location}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">IP Address:</span>
+            <span class="info-value">${data.ip}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Device:</span>
+            <span class="info-value">${data.device}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Browser:</span>
+            <span class="info-value">${data.browser}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">OS:</span>
+            <span class="info-value">${data.os}</span>
+          </div>
         </div>
       </div>
 
       ${
         data.reasons.length > 0
           ? `
-      <div class="warning-box">
-        <h3>⚠️ Why This Login Looks Suspicious:</h3>
-        <ul>
-          ${data.reasons.map((reason) => `<li>${reason}</li>`).join("")}
-        </ul>
+      <div class="section">
+        <div class="section-title">Why This Login Looks Suspicious</div>
+        <div class="reasons-list">
+          <ul>
+            ${data.reasons.map((reason) => `<li>${reason}</li>`).join("")}
+          </ul>
+        </div>
       </div>
       `
           : ""
       }
 
-      ${
-        data.verificationCode
-          ? `
-      <div class="verification-box">
-        <h3>🔐 Verification Required</h3>
-        <p>To confirm this login, please use the following verification code:</p>
-        <div class="verification-code">${data.verificationCode}</div>
-        <p style="font-size: 14px; color: #666;">This code will expire in 10 minutes.</p>
-      </div>
-      `
-          : ""
-      }
+      <div class="divider"></div>
 
-      <h3 style="color: #333; margin-top: 30px;">Was this you?</h3>
-      
-      <div class="button-container">
-        ${
-          data.tokenId
-            ? `
-        <a href="${constEnv.clientOrigin}/account/security/confirm?tokenId=${data.tokenId}" class="button button-primary">
-          ✓ Yes, this was me
-        </a>
-        <a href="${constEnv.clientOrigin}/account/security/reject?tokenId=${data.tokenId}" class="button button-danger">
-          ✗ No, secure my account
-        </a>
-        `
-            : `
-        <a href="${constEnv.clientOrigin}/account/security" class="button button-primary">
-          ✓ Yes, this was me
-        </a>
-        <a href="${constEnv.clientOrigin}/account/security/secure-account" class="button button-danger">
-          ✗ No, secure my account
-        </a>
-        `
-        }
+      <div class="action-section">
+        <div class="action-title">Was this you?</div>
+        <div class="button-group">
+          ${
+            data.tokenId
+              ? `
+          <a href="${constEnv.clientOrigin}/account/security/confirm?tokenId=${data.tokenId}" class="button button-confirm">
+            Yes, this was me
+          </a>
+          <a href="${constEnv.clientOrigin}/account/security/reject?tokenId=${data.tokenId}" class="button button-reject">
+            No, secure my account
+          </a>
+          `
+              : `
+          <a href="${constEnv.clientOrigin}/account/security" class="button button-confirm">
+            Yes, this was me
+          </a>
+          <a href="${constEnv.clientOrigin}/account/security/secure-account" class="button button-reject">
+            No, secure my account
+          </a>
+          `
+          }
+        </div>
       </div>
 
-      <div class="security-tips">
-        <h4>🛡️ Security Tips:</h4>
+      <div class="tips">
+        <div class="tips-title">Security Recommendations</div>
         <ul>
           <li>Never share your password with anyone</li>
           <li>Use a strong, unique password for your account</li>
-          <li>Enable Two-Factor Authentication (2FA) for extra security</li>
-          <li>Be cautious of phishing emails asking for your credentials</li>
+          <li>Enable Two-Factor Authentication for extra security</li>
+          <li>Be cautious of phishing emails</li>
           <li>Review your login history regularly</li>
         </ul>
       </div>
 
-      <p style="margin-top: 20px; font-size: 14px; color: #666;">
+      <p style="font-size: 13px; color: #777777; margin-top: 30px;">
         If you didn't attempt to log in, please change your password immediately and contact our support team.
       </p>
     </div>
 
     <div class="footer">
-      <p>This is an automated security alert from <strong>TOEIC Prep</strong></p>
+      <p><strong>TOEIC Prep</strong> - Automated Security Alert</p>
       <p>
         <a href="${constEnv.clientOrigin}/account/security">Security Settings</a> | 
         <a href="${constEnv.clientOrigin}/support">Contact Support</a> | 
         <a href="${constEnv.clientOrigin}/privacy">Privacy Policy</a>
       </p>
-      <p style="margin-top: 10px;">
+      <p style="margin-top: 15px;">
         © ${new Date().getFullYear()} TOEIC Prep. All rights reserved.
       </p>
     </div>

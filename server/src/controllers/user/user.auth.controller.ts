@@ -25,7 +25,9 @@ import {
   activateSuspiciousToken,
   blacklistSuspiciousToken,
   getSuspiciousToken,
+  RefreshTokenPayload,
 } from "../../services/jwt";
+import { RefreshTokenReuseError } from "../../errors/refresh_token_reuse_error";
 import {
   setAccessTokenCookie,
   setRefreshTokenCookie,
@@ -188,6 +190,8 @@ async function login(req: Request, res: Response) {
 
   // Return user info và tokens
   const userRes = user.toObject();
+  userRes.id = userRes._id;
+  delete userRes._id;
   delete userRes.password;
   res.status(200).json({
     user: userRes,
@@ -202,10 +206,10 @@ async function login(req: Request, res: Response) {
  * - Nếu token cũ được dùng lại => Token theft detected => Revoke ALL tokens
  */
 async function refreshToken(req: Request, res: Response) {
-  // Lấy refresh token từ body hoặc cookie
+  // Lấy refresh token từ body trước, nếu không có thì lấy từ cookie
   let refreshToken = req.body.refreshToken;
 
-  // Nếu không có trong body, lấy từ cookie
+  // Fallback: Nếu không có trong body, lấy từ cookie
   if (!refreshToken && req.cookies && req.cookies[REFRESH_TOKEN_COOKIE]) {
     refreshToken = req.cookies[REFRESH_TOKEN_COOKIE];
   }
@@ -214,9 +218,13 @@ async function refreshToken(req: Request, res: Response) {
     throw new NotAuthorizedError("Refresh token is required");
   }
 
+  console.log(`[Refresh] Token preview: ${refreshToken.substring(0, 20)}...`);
+
   try {
     // Verify refresh token (kiểm tra trong Redis, JWT, và reuse detection)
     const payload = await verifyRefreshToken(refreshToken);
+    
+    console.log(`[Refresh] Token JTI: ${payload.jti}, User: ${payload.id}`);
 
     // Lấy user từ database để đảm bảo user vẫn tồn tại
     const user = await userSrv.getById(payload.id);
@@ -224,27 +232,31 @@ async function refreshToken(req: Request, res: Response) {
       throw new BadRequestError("User not found");
     }
 
-    // **CRITICAL STEP: Mark token as used TRƯỚC KHI generate token mới**
-    // Nếu có attacker cùng lúc gửi request với cùng token, một trong hai sẽ fail
-    await markRefreshTokenAsUsed(payload.id, payload.jti);
-
-    // **TOKEN ROTATION: Generate NEW refresh token**
+    // **TOKEN ROTATION: Generate NEW refresh token TRƯỚC**
     const newRefreshToken = await generateRefreshToken({
       id: user.id,
       email: user.email!,
     });
 
-    // Generate access token mới với parentRefreshJti để tracking
-    // (Cần decode new refresh token để lấy jti, hoặc return jti từ generateRefreshToken)
-    // Để đơn giản, tạm thời không pass parentRefreshJti cho access token khi refresh
-    // (Chỉ track access tokens tạo lúc login/signup)
-    const newAccessToken = generateAccessToken({
-      id: user.id,
-      email: user.email!,
-    });
+    // Decode refresh token mới để lấy JTI cho tracking
+    const newRefreshDecoded = jwt.decode(newRefreshToken) as RefreshTokenPayload;
+    
+    await markRefreshTokenAsUsed(payload.id, payload.jti, newRefreshDecoded.jti);
+    
+    const newAccessToken = generateAccessToken(
+      {
+        id: user.id,
+        email: user.email!,
+      },
+      newRefreshDecoded.jti // ← Pass JTI của refresh token mới
+    );
 
-    // Revoke OLD refresh token (đã dùng xong)
-    await revokeRefreshToken(payload.id, payload.jti);
+
+    // **IMPORTANT: KHÔNG revoke token ngay lập tức**
+    // Token vẫn tồn tại trong Redis với usedCount = 1
+    // Nếu token bị dùng lại → Lua script sẽ detect và revoke ALL tokens
+    // Token sẽ tự expire theo TTL ban đầu
+
 
     // Set cookies mới cho client
     setAccessTokenCookie(res, newAccessToken);
@@ -256,20 +268,19 @@ async function refreshToken(req: Request, res: Response) {
       refreshToken: newRefreshToken,
     });
   } catch (error) {
-    // Handle refresh token errors
-    if (error instanceof Error) {
-      if (
-        error.message === "Refresh token expired" ||
-        error.message === "Invalid refresh token" ||
-        error.message === "Refresh token not found or expired" ||
-        error.message === "Refresh token not found or invalid" ||
-        error.message.includes("Refresh token reuse detected")
-      ) {
-        // Clear cookies vì token không còn valid
-        clearAuthCookies(res);
-        throw new NotAuthorizedError("Invalid or expired refresh token");
-      }
+    // Handle refresh token reuse detection
+    if (error instanceof RefreshTokenReuseError) {
+      console.error(
+        `[SECURITY] Refresh token reuse detected for user ${error.userId}. All tokens revoked.`
+      );
+      
+      // Throw error để error handler middleware xử lý
+      // KHÔNG clear cookies - để client tự xử lý
+      throw error;
     }
+    
+    // Handle other refresh token errors
+    // KHÔNG clear cookies - để client tự xử lý
     throw error;
   }
 }
@@ -437,6 +448,7 @@ async function verifyEmail(req: Request, res: Response) {
       id: user.id,
       email: user.email,
       name: user.name,
+      ...user.toObject(),
     },
     ...tokens,
   });
@@ -549,7 +561,6 @@ async function rejectLogin(req: Request, res: Response) {
   if (!userId) {
     throw new BadRequestError("Token not found or already expired");
   }
-
   // Blacklist suspicious token
   await blacklistSuspiciousToken(userId, tokenId);
 
