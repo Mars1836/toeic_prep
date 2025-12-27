@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { encryptionPlugin } from "../plugins/encryption.plugin";
 const { Schema } = mongoose;
 
 export interface TestRegistrationAttr {
@@ -51,6 +52,20 @@ const testRegistrationSchema = new Schema(
     },
   }
 );
+
+// ============================================
+// ENCRYPTION PLUGIN
+// ============================================
+// Mã hóa thông tin cá nhân CỰC KỲ NHẠY CẢM
+testRegistrationSchema.plugin(encryptionPlugin, {
+  fields: [
+    'personalInfo.phone',      // Số điện thoại
+    'personalInfo.idNumber',   // Số CMND/CCCD - CỰC KỲ NHẠY CẢM
+    'personalInfo.email',      // Email
+    'personalInfo.dateOfBirth' // Ngày sinh
+  ],
+  debug: process.env.APP_ENV === 'dev'
+});
 
 export const testRegistrationModel = mongoose.model<
   TestRegistrationDoc,

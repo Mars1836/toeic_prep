@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { AccountType, Role, UserStatus } from "../configs/enum";
+import { encryptionPlugin } from "../plugins/encryption.plugin";
 const { Schema } = mongoose;
 
 interface UserScore {
@@ -118,4 +119,14 @@ userSchema.methods.isExpiredUpgrade = function () {
   const currentDate = new Date();
   return currentDate > this.upgradeExpiredDate;
 };
+
+// ============================================
+// ENCRYPTION PLUGIN
+// ============================================
+// Tự động encrypt/decrypt các fields nhạy cảm
+userSchema.plugin(encryptionPlugin, {
+  fields: ['email', 'name', 'bio'],
+  debug: process.env.APP_ENV === 'dev'
+});
+
 export const userModel = mongoose.model<UserDoc, UserModel>("User", userSchema);
