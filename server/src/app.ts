@@ -16,13 +16,14 @@ import path from "path";
 import { csrfProtection } from "./middlewares/csrf.middleware";
 const express = require("express");
 const app = express();
-// Lấy môi trường từ process.env.NODE_ENV
-
-// Load file env tương ứng
 
 app.set("trust proxy", true);
 
 
+// CORS Configuration
+
+//  Cho phép tất cả origins 
+/*
 const corsOptions = {
   origin: (
     origin: string | undefined,
@@ -33,6 +34,17 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+*/
+
+// OPTION 3: Multiple origins (array)
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://vercel.codelife138.io.vn'
+  ],
+  credentials: true
+}));
 
 const env = process.env.APP_ENV;
 
@@ -46,72 +58,48 @@ app.use(
   })
 );
 
-// ============================================
-// NOTE: Admin và User đã chuyển sang JWT
-// Không cần cookie session nữa, chỉ cần cookieParser
-// JWT tokens được lưu trong cookies: access_token, refresh_token
-// ============================================
-
-// IMPORTANT: Parse cookies BEFORE static file auth
-app.use(cookieParser()); // Parse cookies từ request
+app.use(cookieParser()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// NOSQL INJECTION PROTECTION
-
+// NoSQL Injection Protection
 app.use(
   preventNoSqlInjection({
-    mode: 'block', // Chặn hoàn toàn injection attempts
-    logAttempts: true, // Log tất cả attempts để monitor
+    mode: 'block',
+    logAttempts: true,
   })
 );
 
-// ============================================
-// XSS PROTECTION - SANITIZE INPUT
-// ============================================
-// Tự động sanitize tất cả input từ req.body, req.query, req.params
-// Whitelist: các trường không cần sanitize (giữ nguyên HTML)
+// XSS Protection - Sanitize Input
 app.use(
   sanitizeInput({
-    whitelist: [
-      // Thêm các trường cần giữ nguyên HTML vào đây
-      // Ví dụ: 'blogContent', 'htmlDescription'
-    ],
-    logSanitized: process.env.APP_ENV === 'dev', // Chỉ log trong môi trường dev
+    whitelist: [],
+    logSanitized: process.env.APP_ENV === 'dev',
   })
 );
 
-// ============================================
-// CSRF PROTECTION - DOUBLE SUBMIT COOKIE
-// ============================================
-app.use(
-  csrfProtection({
-    whitelist: [
-      // Authentication endpoints - không cần CSRF token
-      '/api/user/auth/login',
-      '/api/user/auth/register',
-      '/api/user/auth/logout',
-      '/api/user/auth/refresh',
-      '/api/user/auth/google',
-      '/api/user/auth/facebook',
-      '/api/admin/auth/login',
-      '/api/admin/auth/logout',
-      '/api/admin/auth/refresh',
-      
-      // Public endpoints
-      '/api/pub', // Tất cả public routes
-      
-      // CSRF token endpoint
-      '/api/pub/csrf-token',
-    ],
-    cookieName: 'XSRF-TOKEN',
-    headerName: 'x-csrf-token',
-  })
-);
+// CSRF Protection - Double Submit Cookie
+// app.use(
+//   csrfProtection({
+//     whitelist: [
+//       '/api/user/auth/login',
+//       '/api/user/auth/register',
+//       '/api/user/auth/logout',
+//       '/api/user/auth/refresh',
+//       '/api/user/auth/google',
+//       '/api/user/auth/facebook',
+//       '/api/admin/auth/login',
+//       '/api/admin/auth/logout',
+//       '/api/admin/auth/refresh',
+//       '/api/pub',
+//       '/api/pub/csrf-token',
+//     ],
+//     cookieName: 'XSRF-TOKEN',
+//     headerName: 'x-csrf-token',
+//   })
+// );
 
-// ============================================
-// STATIC FILE SERVING - UPLOADS
-// ============================================
+// Static File Serving - Uploads
 
 // Protected uploads (require authentication)
 const protectedUploads = [
@@ -142,9 +130,7 @@ publicUploads.forEach(dir => {
   );
 });
 
-// ============================================
-// ROUTES
-// ============================================
+// Routes
 
 app.use("/api/user", routerU);
 app.use("/api/admin", routerA);

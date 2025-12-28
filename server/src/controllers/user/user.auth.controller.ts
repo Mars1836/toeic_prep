@@ -429,8 +429,14 @@ async function verifyEmail(req: Request, res: Response) {
   if (store.password) {
     store.password = await hashPassword(store.password);
   }
-  const user = await userModel.create(store);
+  const createdUser = await userModel.create(store);
   redis.client.del(redisKey.verifyEmailKey(email));
+
+  // Query lại user để trigger decrypt hooks
+  const user = await userModel.findById(createdUser._id);
+  if (!user) {
+    throw new BadRequestError("User creation failed");
+  }
 
   // Generate JWT tokens sau khi verify email thành công
   const tokens = await generateTokenPair({
@@ -444,12 +450,7 @@ async function verifyEmail(req: Request, res: Response) {
 
   // Return user info và tokens
   res.status(200).json({
-    user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      ...user.toObject(),
-    },
+    user: user.toJSON(), // toJSON() triggers decrypt hooks
     ...tokens,
   });
 }
