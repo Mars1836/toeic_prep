@@ -43,6 +43,7 @@ import {
   detectAnomalousLogin,
   trustDevice,
 } from "../../services/login_history";
+import { trackFailedLogin, resetFailedAttempts } from "../../utils/progressive_blocking.utils";
 import jwt from "jsonwebtoken";
 
 /**
@@ -103,10 +104,15 @@ async function localSignupCache(req: Request, res: Response) {
  */
 async function login(req: Request, res: Response) {
   const { email, password } = req.body;
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
 
   // Xác thực user
-  const user = await userSrv.localLogin({ email, password });
-  console.log(`[Auth] User logged in: ${user.id}`);
+  try {
+    const user = await userSrv.localLogin({ email, password });
+    console.log(`[Auth] User logged in: ${user.id}`);
+    
+    // Reset failed attempts counter on successful login
+    await resetFailedAttempts(ip);
 
   // **SECURITY: Device fingerprinting & anomaly detection**
   const deviceInfo = generateDeviceFingerprint(req);
@@ -197,6 +203,14 @@ async function login(req: Request, res: Response) {
     user: userRes,
     ...tokens,
   });
+  } catch (error) {
+    console.error("[Login] Failed to login:", error);
+    // Track failed login attempt
+    await trackFailedLogin(ip);
+    
+    // Re-throw error to be handled by error middleware
+    throw error;
+  }
 }
 
 /**

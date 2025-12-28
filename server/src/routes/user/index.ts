@@ -22,12 +22,8 @@ import userExamResultRouter from "./exam_result";
 import bridgeNestRouter from "./bridge_nest";
 const routerU = express.Router();
 
-routerU.use(
-  "/auth",
-  RateLimitInstance.createLowLimitMiddleware(),
-
-  userAuthRouter
-);
+// Auth routes - rate limit per endpoint (not global)
+routerU.use("/auth", userAuthRouter);
 routerU.use(
   "/flashcard",
   RateLimitInstance.createHighLimitMiddleware(),

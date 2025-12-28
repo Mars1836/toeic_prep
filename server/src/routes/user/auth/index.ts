@@ -6,6 +6,8 @@ import { requireAuth } from "../../../middlewares/require_auth";
 import { jwtAuth } from "../../../middlewares/jwt_auth";
 import { validate_request } from "../../../middlewares/validate_request";
 import { body } from "express-validator";
+import { RateLimitInstance } from "../../../middlewares/rate_limit";
+import { checkIPBlocked } from "../../../middlewares/progressive_blocking.middleware";
 
 const userAuthRouter = express.Router();
 
@@ -17,9 +19,10 @@ userAuthRouter.get(
   }
 );
 
-// Signup endpoint - tạo user mới và return JWT tokens
+// Signup endpoint - LOW limit (10 req/min) - prevent spam
 userAuthRouter.post(
   "/signup",
+  RateLimitInstance.createLowLimitMiddleware(),
   [
     body("email").isEmail().withMessage("Email is required"),
     body("name").notEmpty().withMessage("Name is required"),
@@ -45,9 +48,11 @@ userAuthRouter.post(
   handleAsync(userAuthCtrl.localSignupCache)
 );
 
-// Login endpoint - xác thực user và return JWT tokens
+// Login endpoint - LOW limit (10 req/min) - prevent brute force
 userAuthRouter.post(
   "/login",
+  RateLimitInstance.createLowLimitMiddleware(),
+  handleAsync(checkIPBlocked), // Progressive blocking check
   [
     body("email").isEmail().withMessage("Email must be valid"),
     body("password").trim().notEmpty().withMessage("Password is required"),
@@ -79,17 +84,19 @@ userAuthRouter.post(
   handleAsync(userAuthCtrl.logout)
 );
 
-// Get user info - yêu cầu JWT authentication
+// Get user info - HIGH limit (100 req/min) - read operation
 userAuthRouter.get(
   "/getinfor",
+  RateLimitInstance.createHighLimitMiddleware(),
   handleAsync(jwtAuth),
   handleAsync(requireAuth),
   handleAsync(userAuthCtrl.getInfo)
 );
 
-// Get current user - yêu cầu JWT authentication
+// Get current user - HIGH limit (100 req/min) - read operation
 userAuthRouter.get(
   "/current-user",
+  RateLimitInstance.createHighLimitMiddleware(),
   handleAsync(jwtAuth),
   handleAsync(requireAuth),
   handleAsync(userAuthCtrl.getCurrentUser)
